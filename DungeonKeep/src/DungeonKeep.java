@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import static java.lang.Math.*;
 
 public class DungeonKeep {
 	
@@ -12,18 +13,6 @@ public class DungeonKeep {
 		}
 		public int getY() {
 			return y;
-		}
-		public void moveUp() {
-			y--;
-		}
-		public void moveDown() {
-			y++;
-		}
-		public void moveLeft() {
-			x--;
-		}
-		public void moveRigth() {
-			x++;
 		}
 	}
 	
@@ -66,9 +55,50 @@ public class DungeonKeep {
 		}
 	}
 	
+	public class Guard extends Entity{
+		public Guard(int beginX,int beginY)
+		{
+			x = beginX;
+			y = beginY;
+		}
+
+		char guardChar = 'G';
+		
+		public char getChar() {
+			return guardChar;
+		}
+		
+		public void moveUp() {
+			if(map[y-1][x] != 'X' && map[y-1][x] != 'I')
+			{
+				y = y - 1;
+			}
+		}
+		public void moveDown() {
+			if(map[y+1][x] != 'X' && map[y+1][x] != 'I')
+			{
+				y = y + 1;
+			}
+		}
+		public void moveLeft() {
+			if(map[y][x-1] != 'X' && map[y][x - 1] != 'I')
+			{
+				x = x - 1;
+			}
+		}
+		public void moveRigth() {
+			if(map[y][x+1] != 'X' && map[y][x + 1] != 'I')
+			{
+				x = x + 1;
+			}
+		}
+		
+	}
+	
+	
 	char map[][] = {
 			{'X','X','X','X','X','X','X','X','X','X'},
-			{'X',' ',' ',' ','I',' ','X',' ','G','X'},
+			{'X',' ',' ',' ','I',' ','X',' ',' ','X'},
 			{'X','X','X',' ','X','X','X',' ',' ','X'},
 			{'X',' ','I',' ','I',' ','X',' ',' ','X'},
 			{'X','X','X',' ','X','X','X',' ',' ','X'},
@@ -78,8 +108,10 @@ public class DungeonKeep {
 			{'X',' ','I',' ','I',' ','X','k',' ','X'},
 			{'X','X','X','X','X','X','X','X','X','X'}
 			};
+	int guardMovement[] = {3,2,2,2,2,3,3,3,3,3,3,2,4,4,4,4,4,4,4,1,1,1,1,1};
 	
 	Hero hero1 = new Hero(1,1);
+	Guard guard1 = new Guard(8,1);
 	
 	public void printMap()
 	{
@@ -87,7 +119,9 @@ public class DungeonKeep {
 		{
 			for (int j = 0; j < 10; j++)
 			{
-				if (j == hero1.getX() && i == hero1.getY()) {
+				if (j == guard1.getX() && i == guard1.getY()) {
+					System.out.print(guard1.getChar());
+				} else if (j == hero1.getX() && i == hero1.getY()) {
 					System.out.print(hero1.getChar());
 				} else {
 					System.out.print(map[i][j]);
@@ -114,21 +148,88 @@ public class DungeonKeep {
 		}
 	}
 	
+	public boolean checkCollisionAdjacent(Entity ent1, Entity ent2) {
+		double distance = hypot((double)(ent1.getX()-ent2.getX()),(double)(ent1.getY()-ent2.getY()));
+		if (distance <= 1.1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkCollisionStepOver(Entity ent1, Entity ent2) {
+		return ent1.getX() == ent2.getX() && ent1.getY() == ent2.getY();
+	}
+	
+	public boolean moveHero(int command, Hero hero)
+	{
+		if (command == 1) {
+			hero.moveUp();
+			return true;
+		} else if (command == 2) {
+			hero.moveDown();
+			return true;
+		} else if (command == 3) {
+			hero.moveLeft();
+			return true;
+		} else if (command == 4) {
+			hero.moveRigth();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean moveGuard(int command, Guard guard) {
+		if (command == 1) {
+			guard.moveUp();
+			return true;
+		} else if (command == 2) {
+			guard.moveDown();
+			return true;
+		} else if (command == 3) {
+			guard.moveLeft();
+			return true;
+		} else if (command == 4) {
+			guard.moveRigth();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	public boolean gameLoop() {
+		int guardStep = 0;
+		int command;
+		while(true)
+		{
+			printMap();
+			if (checkCollisionAdjacent(hero1, guard1)) {
+				return false;
+			}
+			command = readCommand();
+			moveHero(command, hero1);
+			if (guardStep == guardMovement.length) {
+				guardStep = 0;
+			}
+			moveGuard(guardMovement[guardStep],guard1);
+			guardStep++;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		DungeonKeep dungeon = new DungeonKeep();
-		int command;
-		while(true) { //game cycle
-			dungeon.printMap();
-			command = dungeon.readCommand();
-			if (command == 1) {
-				dungeon.hero1.moveUp();
-			} else if (command == 2){
-				dungeon.hero1.moveDown();
-			} else if (command == 3){
-				dungeon.hero1.moveLeft();
-			} else if (command == 4) {
-				dungeon.hero1.moveRigth();
-			}
+		if (dungeon.gameLoop()) {
+			System.out.print("You Won!");
+		} else {
+			System.out.print("Game Over");
 		}
 	}
 	
