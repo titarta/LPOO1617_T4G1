@@ -7,13 +7,21 @@ public class DungeonKeep {
 	public class Entity {
 		int x;
 		int y;
+		char entityChar;
 		
+		public char getChar() {
+			return entityChar;
+		}
 		public int getX() {
 			return x;
 		}
 		public int getY() {
 			return y;
 		}
+		public void moveUp() {}
+		public void moveDown() {}
+		public void moveLeft() {}
+		public void moveRigth() {}
 	}
 	
 	public class Hero extends Entity{
@@ -21,34 +29,29 @@ public class DungeonKeep {
 		{
 			x = beginX;
 			y = beginY;
-		}
-		
-		char heroChar = 'H';
-		
-		public char getChar() {
-			return heroChar;
+			entityChar = 'H';
 		}
 		
 		public void moveUp() {
-			if(map[y-1][x] != 'X' && map[y-1][x] != 'I')
+			if(map[y-1][x] != 'X')
 			{
 				y = y - 1;
 			}
 		}
 		public void moveDown() {
-			if(map[y+1][x] != 'X' && map[y+1][x] != 'I')
+			if(map[y+1][x] != 'X')
 			{
 				y = y + 1;
 			}
 		}
 		public void moveLeft() {
-			if(map[y][x-1] != 'X' && map[y][x - 1] != 'I')
+			if(map[y][x-1] != 'X')
 			{
 				x = x - 1;
 			}
 		}
 		public void moveRigth() {
-			if(map[y][x+1] != 'X' && map[y][x + 1] != 'I')
+			if(map[y][x+1] != 'X')
 			{
 				x = x + 1;
 			}
@@ -60,34 +63,29 @@ public class DungeonKeep {
 		{
 			x = beginX;
 			y = beginY;
-		}
-
-		char guardChar = 'G';
-		
-		public char getChar() {
-			return guardChar;
+			entityChar = 'G';
 		}
 		
 		public void moveUp() {
-			if(map[y-1][x] != 'X' && map[y-1][x] != 'I')
+			if(map[y-1][x] != 'X')
 			{
 				y = y - 1;
 			}
 		}
 		public void moveDown() {
-			if(map[y+1][x] != 'X' && map[y+1][x] != 'I')
+			if(map[y+1][x] != 'X')
 			{
 				y = y + 1;
 			}
 		}
 		public void moveLeft() {
-			if(map[y][x-1] != 'X' && map[y][x - 1] != 'I')
+			if(map[y][x-1] != 'X')
 			{
 				x = x - 1;
 			}
 		}
 		public void moveRigth() {
-			if(map[y][x+1] != 'X' && map[y][x + 1] != 'I')
+			if(map[y][x+1] != 'X')
 			{
 				x = x + 1;
 			}
@@ -95,17 +93,41 @@ public class DungeonKeep {
 		
 	}
 	
+	public class Door extends Entity {
+		boolean state;
+		public Door(int xBegin, int yBegin, boolean stateBegin) { //true - open; false - closed
+			x = xBegin;
+			y = yBegin;
+			state = stateBegin;
+			if (stateBegin) {
+				entityChar = 'S';
+			} else {
+				entityChar = 'I';
+			}
+		}
+		public void openDoor() {
+			 state = true;
+			 entityChar = 'S';
+		}
+		public void closeDoor() {
+			 state = false;
+			 entityChar = 'I';
+		}
+		public boolean getState() {
+			return state;
+		}
+	}
 	
 	char map[][] = {
 			{'X','X','X','X','X','X','X','X','X','X'},
-			{'X',' ',' ',' ','I',' ','X',' ',' ','X'},
+			{'X',' ',' ',' ',' ',' ','X',' ',' ','X'},
 			{'X','X','X',' ','X','X','X',' ',' ','X'},
-			{'X',' ','I',' ','I',' ','X',' ',' ','X'},
+			{'X',' ',' ',' ',' ',' ','X',' ',' ','X'},
 			{'X','X','X',' ','X','X','X',' ',' ','X'},
-			{'I',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'I',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+			{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+			{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
 			{'X','X','X',' ','X','X','X','X',' ','X'},
-			{'X',' ','I',' ','I',' ','X','k',' ','X'},
+			{'X',' ',' ',' ',' ',' ','X','k',' ','X'},
 			{'X','X','X','X','X','X','X','X','X','X'}
 			};
 	int guardMovement[] = {3,2,2,2,2,3,3,3,3,3,3,2,4,4,4,4,4,4,4,1,1,1,1,1};
@@ -113,17 +135,34 @@ public class DungeonKeep {
 	Hero hero1 = new Hero(1,1);
 	Guard guard1 = new Guard(8,1);
 	
+	Door door1 = new Door(0,5,true);
+	Door door2 = new Door(0,6,true);
+	Door door3 = new Door(2,3,false);
+	Door door4 = new Door(4,1,false);
+	Door door5 = new Door(4,3,false);
+	Door door6 = new Door(2,8,false);
+	Door door7 = new Door(4,8,false);
+	
+	Entity entities[] = {hero1,guard1,door1,door2,door3,door4,door5,door6,door7};
+	Door doors[] = {door1,door2,door3,door4,door5,door6,door7};
+	
 	public void printMap()
 	{
+		boolean entityPos = false;
 		for (int i = 0; i < 10; i++)
 		{
 			for (int j = 0; j < 10; j++)
 			{
-				if (j == guard1.getX() && i == guard1.getY()) {
-					System.out.print(guard1.getChar());
-				} else if (j == hero1.getX() && i == hero1.getY()) {
-					System.out.print(hero1.getChar());
-				} else {
+				entityPos = false;
+				for (Entity ent : entities)
+				{
+					if (j == ent.getX() && i == ent.getY()) {
+						System.out.print(ent.getChar());
+						entityPos = true;
+						break;
+					}
+				}
+				if(!entityPos) {
 					System.out.print(map[i][j]);
 				}
 			}
@@ -150,7 +189,7 @@ public class DungeonKeep {
 	
 	public boolean checkCollisionAdjacent(Entity ent1, Entity ent2) {
 		double distance = hypot((double)(ent1.getX()-ent2.getX()),(double)(ent1.getY()-ent2.getY()));
-		if (distance <= 1.1) {
+		if (distance < 1.1) {
 			return true;
 		} else {
 			return false;
@@ -161,40 +200,57 @@ public class DungeonKeep {
 		return ent1.getX() == ent2.getX() && ent1.getY() == ent2.getY();
 	}
 	
-	public boolean moveHero(int command, Hero hero)
-	{
-		if (command == 1) {
-			hero.moveUp();
-			return true;
-		} else if (command == 2) {
-			hero.moveDown();
-			return true;
-		} else if (command == 3) {
-			hero.moveLeft();
-			return true;
-		} else if (command == 4) {
-			hero.moveRigth();
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
-	public boolean moveGuard(int command, Guard guard) {
+	public void moveEntity(int command, Entity ent) {
+		boolean moveAble = true;
 		if (command == 1) {
-			guard.moveUp();
-			return true;
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() && d.getY() == ent.getY() - 1)
+				{
+					moveAble = false;
+					break;
+				}
+			}
+			if (moveAble) {
+				ent.moveUp();
+			}
+			return;
 		} else if (command == 2) {
-			guard.moveDown();
-			return true;
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() && d.getY() == ent.getY() + 1)
+				{
+					moveAble = false;
+					break;
+				}
+			}
+			if (moveAble) {
+				ent.moveDown();
+			}
+			return;
 		} else if (command == 3) {
-			guard.moveLeft();
-			return true;
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() - 1 && d.getY() == ent.getY())
+				{
+					moveAble = false;
+					break;
+				}
+			}
+			if (moveAble) {
+				ent.moveLeft();
+			}
+			return;
 		} else if (command == 4) {
-			guard.moveRigth();
-			return true;
-		} else {
-			return false;
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() + 1 && d.getY() == ent.getY())
+				{
+					moveAble = false;
+					break;
+				}
+			}
+			if (moveAble) {
+				ent.moveRigth();
+			}
+			return;
 		}
 	}
 	
@@ -209,11 +265,11 @@ public class DungeonKeep {
 				return false;
 			}
 			command = readCommand();
-			moveHero(command, hero1);
+			moveEntity(command, hero1);
 			if (guardStep == guardMovement.length) {
 				guardStep = 0;
 			}
-			moveGuard(guardMovement[guardStep],guard1);
+			moveEntity(guardMovement[guardStep],guard1);
 			guardStep++;
 		}
 	}
