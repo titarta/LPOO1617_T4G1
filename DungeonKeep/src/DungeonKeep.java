@@ -95,9 +95,9 @@ public class DungeonKeep {
 	
 	public class Door extends Entity {
 		boolean state;
-		public Door(int xBegin, int yBegin, boolean stateBegin) { //true - open; false - closed
-			x = xBegin;
-			y = yBegin;
+		public Door(int beginX, int beginY, boolean stateBegin) { //true - open; false - closed
+			x = beginX;
+			y = beginY;
 			state = stateBegin;
 			if (stateBegin) {
 				entityChar = 'S';
@@ -118,6 +118,14 @@ public class DungeonKeep {
 		}
 	}
 	
+	public class Key extends Entity {
+		public Key(int beginX, int beginY) {
+			x = beginX;
+			y = beginY;
+			entityChar = 'k';
+		}
+	}
+	
 	char map[][] = {
 			{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ',' ',' ','X',' ',' ','X'},
@@ -135,15 +143,17 @@ public class DungeonKeep {
 	Hero hero1 = new Hero(1,1);
 	Guard guard1 = new Guard(8,1);
 	
-	Door door1 = new Door(0,5,true);
-	Door door2 = new Door(0,6,true);
+	Door door1 = new Door(0,5,false);
+	Door door2 = new Door(0,6,false);
 	Door door3 = new Door(2,3,false);
 	Door door4 = new Door(4,1,false);
 	Door door5 = new Door(4,3,false);
 	Door door6 = new Door(2,8,false);
 	Door door7 = new Door(4,8,false);
 	
-	Entity entities[] = {hero1,guard1,door1,door2,door3,door4,door5,door6,door7};
+	Key key1 = new Key(7,8);
+	
+	Entity entities[] = {guard1,hero1,door1,door2,door3,door4,door5,door6,door7,key1};
 	Door doors[] = {door1,door2,door3,door4,door5,door6,door7};
 	
 	public void printMap()
@@ -271,6 +281,14 @@ public class DungeonKeep {
 			}
 			moveEntity(guardMovement[guardStep],guard1);
 			guardStep++;
+			if (checkCollisionStepOver(hero1, key1)) {
+				door1.openDoor();
+				door2.openDoor();
+			}
+			if (checkCollisionStepOver(hero1, door1) || checkCollisionStepOver(hero1, door2)) {
+				return true;
+				
+			}
 		}
 	}
 	
@@ -283,6 +301,7 @@ public class DungeonKeep {
 	public static void main(String[] args) {
 		DungeonKeep dungeon = new DungeonKeep();
 		if (dungeon.gameLoop()) {
+			dungeon.printMap();
 			System.out.print("You Won!");
 		} else {
 			System.out.print("Game Over");
