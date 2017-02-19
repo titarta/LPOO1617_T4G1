@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import static java.lang.Math.*;
-import java.util.Random;
 
 public class DungeonKeep {
 	
@@ -9,12 +8,7 @@ public class DungeonKeep {
 		int x;
 		int y;
 		char entityChar;
-		public Entity(int beginX,int beginY,char entChar) {
-			x = beginX;
-			y = beginY;
-			entityChar= entChar;
-		}
-
+		
 		public char getChar() {
 			return entityChar;
 		}
@@ -24,46 +18,115 @@ public class DungeonKeep {
 		public int getY() {
 			return y;
 		}
-		
-		public void setChar(char c) {
-			entityChar = c;
+		public void moveUp() {}
+		public void moveDown() {}
+		public void moveLeft() {}
+		public void moveRigth() {}
+	}
+	
+	public class Hero extends Entity{
+		public Hero(int beginX,int beginY)
+		{
+			x = beginX;
+			y = beginY;
+			entityChar = 'H';
 		}
 		
-		public boolean moveUp() {
-			if(map1[y-1][x] != 'X')
+		public void moveUp() {
+			if(map[y-1][x] != 'X')
 			{
 				y = y - 1;
-				return true;
 			}
-			return false;
 		}
-		public boolean moveDown() {
-			if(map1[y+1][x] != 'X')
+		public void moveDown() {
+			if(map[y+1][x] != 'X')
 			{
 				y = y + 1;
-				return true;
 			}
-			return false;
 		}
-		public boolean moveLeft() {
-			if(map1[y][x-1] != 'X')
+		public void moveLeft() {
+			if(map[y][x-1] != 'X')
 			{
 				x = x - 1;
-				return true;
 			}
-			return false;
 		}
-		public boolean moveRigth() {
-			if(map1[y][x+1] != 'X')
+		public void moveRigth() {
+			if(map[y][x+1] != 'X')
 			{
 				x = x + 1;
-				return true;
 			}
-			return false;
 		}
 	}
 	
-	char map1[][] = {
+	public class Guard extends Entity{
+		public Guard(int beginX,int beginY)
+		{
+			x = beginX;
+			y = beginY;
+			entityChar = 'G';
+		}
+		
+		public void moveUp() {
+			if(map[y-1][x] != 'X')
+			{
+				y = y - 1;
+			}
+		}
+		public void moveDown() {
+			if(map[y+1][x] != 'X')
+			{
+				y = y + 1;
+			}
+		}
+		public void moveLeft() {
+			if(map[y][x-1] != 'X')
+			{
+				x = x - 1;
+			}
+		}
+		public void moveRigth() {
+			if(map[y][x+1] != 'X')
+			{
+				x = x + 1;
+			}
+		}
+		
+	}
+	
+	public class Door extends Entity {
+		boolean state;
+		public Door(int beginX, int beginY, boolean stateBegin) { //true - open; false - closed
+			x = beginX;
+			y = beginY;
+			state = stateBegin;
+			if (stateBegin) {
+				entityChar = 'S';
+			} else {
+				entityChar = 'I';
+			}
+		}
+		public void openDoor() {
+			 state = true;
+			 entityChar = 'S';
+		}
+		public void closeDoor() {
+			 state = false;
+			 entityChar = 'I';
+		}
+		public boolean getState() {
+			return state;
+		}
+	}
+	
+	public class Key extends Entity {
+		public Key(int beginX, int beginY) {
+			x = beginX;
+			y = beginY;
+			entityChar = 'k';
+		}
+	}
+	
+	char map[][] = {
 			{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ',' ',' ','X',' ',' ','X'},
 			{'X','X','X',' ','X','X','X',' ',' ','X'},
@@ -75,45 +138,25 @@ public class DungeonKeep {
 			{'X',' ',' ',' ',' ',' ','X','k',' ','X'},
 			{'X','X','X','X','X','X','X','X','X','X'}
 			};
-	
 	int guardMovement[] = {3,2,2,2,2,3,3,3,3,3,3,2,4,4,4,4,4,4,4,1,1,1,1,1};
 	
-	Entity hero1 = new Entity(1,1,'H');
-	Entity guard1 = new Entity(8,1,'G');
+	Hero hero1 = new Hero(1,1);
+	Guard guard1 = new Guard(8,1);
 	
-	Entity door1 = new Entity(0,5,'I');
-	Entity door2 = new Entity(0,6,'I');
-	Entity door3 = new Entity(2,3,'I');
-	Entity door4 = new Entity(4,1,'I');
-	Entity door5 = new Entity(4,3,'I');
-	Entity door6 = new Entity(2,8,'I');
-	Entity door7 = new Entity(4,8,'I');
+	Door door1 = new Door(0,5,false);
+	Door door2 = new Door(0,6,false);
+	Door door3 = new Door(2,3,false);
+	Door door4 = new Door(4,1,false);
+	Door door5 = new Door(4,3,false);
+	Door door6 = new Door(2,8,false);
+	Door door7 = new Door(4,8,false);
 	
-	Entity key1 = new Entity(7,8,'k');
+	Key key1 = new Key(7,8);
 	
-	Entity entitiesGame1[] = {guard1,hero1,door1,door2,door3,door4,door5,door6,door7,key1};
-	Entity doorsGame1[] = {door1,door2,door3,door4,door5,door6,door7};
+	Entity entities[] = {guard1,hero1,door1,door2,door3,door4,door5,door6,door7,key1};
+	Door doors[] = {door1,door2,door3,door4,door5,door6,door7};
 	
-	//---Game 2----------------------
-	
-	char map2[][] = {
-			{'X','X','X','X','X','X','X','X','X','X'},
-			{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-			{'X','X','X','X','X','X','X','X','X','X'}
-			};
-	
-	Entity hero2 = new Entity(1,8,'H');
-	
-	Entity entitiesGame2[] = {hero2};
-	
-	public void printmap1()
+	public void printMap()
 	{
 		boolean entityPos = false;
 		for (int i = 0; i < 10; i++)
@@ -121,7 +164,7 @@ public class DungeonKeep {
 			for (int j = 0; j < 10; j++)
 			{
 				entityPos = false;
-				for (Entity ent : entitiesGame1)
+				for (Entity ent : entities)
 				{
 					if (j == ent.getX() && i == ent.getY()) {
 						System.out.print(ent.getChar());
@@ -130,30 +173,7 @@ public class DungeonKeep {
 					}
 				}
 				if(!entityPos) {
-					System.out.print(map1[i][j]);
-				}
-			}
-			System.out.println();
-		}
-	}
-	
-	public void printmap2() {
-		boolean entityPos = false;
-		for (int i = 0; i < 10; i++)
-		{
-			for (int j = 0; j < 10; j++)
-			{
-				entityPos = false;
-				for (Entity ent : entitiesGame2)
-				{
-					if (j == ent.getX() && i == ent.getY()) {
-						System.out.print(ent.getChar());
-						entityPos = true;
-						break;
-					}
-				}
-				if(!entityPos) {
-					System.out.print(map2[i][j]);
+					System.out.print(map[i][j]);
 				}
 			}
 			System.out.println();
@@ -185,6 +205,7 @@ public class DungeonKeep {
 			return false;
 		}
 	}
+	
 	public boolean checkCollisionStepOver(Entity ent1, Entity ent2) {
 		return ent1.getX() == ent2.getX() && ent1.getY() == ent2.getY();
 	}
@@ -193,8 +214,8 @@ public class DungeonKeep {
 	public void moveEntity(int command, Entity ent) {
 		boolean moveAble = true;
 		if (command == 1) {
-			for(Entity d : doorsGame1) {
-				if(d.getChar() == 'I' && d.getX() == ent.getX() && d.getY() == ent.getY() - 1)
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() && d.getY() == ent.getY() - 1)
 				{
 					moveAble = false;
 					break;
@@ -205,8 +226,8 @@ public class DungeonKeep {
 			}
 			return;
 		} else if (command == 2) {
-			for(Entity d : doorsGame1) {
-				if(d.getChar() == 'I' && d.getX() == ent.getX() && d.getY() == ent.getY() + 1)
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() && d.getY() == ent.getY() + 1)
 				{
 					moveAble = false;
 					break;
@@ -217,8 +238,8 @@ public class DungeonKeep {
 			}
 			return;
 		} else if (command == 3) {
-			for(Entity d : doorsGame1) {
-				if(d.getChar() == 'I' && d.getX() == ent.getX() - 1 && d.getY() == ent.getY())
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() - 1 && d.getY() == ent.getY())
 				{
 					moveAble = false;
 					break;
@@ -229,8 +250,8 @@ public class DungeonKeep {
 			}
 			return;
 		} else if (command == 4) {
-			for(Entity d : doorsGame1) {
-				if(d.getChar() == 'I' && d.getX() == ent.getX() + 1 && d.getY() == ent.getY())
+			for(Door d : doors) {
+				if(!d.getState() && d.getX() == ent.getX() + 1 && d.getY() == ent.getY())
 				{
 					moveAble = false;
 					break;
@@ -242,36 +263,14 @@ public class DungeonKeep {
 			return;
 		}
 	}
-	public void moveEntityRandom(Entity ent) {
-		Random randomGenerator = new Random();
-		while(true) {
-			int command = randomGenerator.nextInt(4) + 1;
-			if(command == 1) {
-				if (ent.moveUp()) {
-					break;
-				}
-			} else if(command == 2) {
-				if (ent.moveDown()) {
-					break;
-				}
-			} else if(command == 3) {
-				if (ent.moveLeft()) {
-					break;
-				}
-			} else if(command == 4) {
-				if (ent.moveRigth()) {
-					break;
-				}
-			}
-		}
-	}
 	
- 	public boolean gameLoop1() {
+	
+	public boolean gameLoop() {
 		int guardStep = 0;
 		int command;
 		while(true)
 		{
-			printmap1();
+			printMap();
 			if (checkCollisionAdjacent(hero1, guard1)) {
 				return false;
 			}
@@ -283,8 +282,8 @@ public class DungeonKeep {
 			moveEntity(guardMovement[guardStep],guard1);
 			guardStep++;
 			if (checkCollisionStepOver(hero1, key1)) {
-				door1.setChar('S');
-				door2.setChar('S');
+				door1.openDoor();
+				door2.openDoor();
 			}
 			if (checkCollisionStepOver(hero1, door1) || checkCollisionStepOver(hero1, door2)) {
 				return true;
@@ -294,25 +293,19 @@ public class DungeonKeep {
 	}
 	
 	
-	public boolean gameLoop2() {
-		printmap2();
-		return true;
-	}
+	
 	
 	
 	
 	
 	public static void main(String[] args) {
 		DungeonKeep dungeon = new DungeonKeep();
-		dungeon.gameLoop2();
-//		if (dungeon.gameLoop1()) {
-//			dungeon.printmap1();
-//			System.out.print("You Won!");
-//		} else {
-//			System.out.print("Game Over");
-//		}
-		
-		
+		if (dungeon.gameLoop()) {
+			dungeon.printMap();
+			System.out.print("You Won!");
+		} else {
+			System.out.print("Game Over");
+		}
 	}
 	
 
