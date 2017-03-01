@@ -1,5 +1,6 @@
 package dkeep.logic.Generic;
 
+import dkeep.logic.Generic.Generic;
 import dkeep.logic.Generic.Generic.Direction;
 
 public class Coordinate {
@@ -31,15 +32,8 @@ public class Coordinate {
 	}
 	
 	public Coordinate update(Direction direction) {
-		if (direction.equals(Direction.UP)) {
-			y++;
-		} else if (direction.equals(Direction.DOWN)) {
-			y--;
-		} else if (direction.equals(Direction.RIGHT)) {
-			x++;
-		} else if (direction.equals(Direction.LEFT)) {
-			x--;
-		}
+		x += direction.getX();
+		y += direction.getY();
 		return this;
 	}
 }

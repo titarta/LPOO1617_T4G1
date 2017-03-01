@@ -1,14 +1,16 @@
+
 package dkeep.logic;
 import java.util.Scanner;
 import static java.lang.Math.*;
 import java.util.Random;
+import dkeep.logic.Generic.Generic;;
 
 public class DungeonKeep {
-
+	/*
 	public enum Direction {
 		UP, DOWN, LEFT, RIGHT
 	}
-
+	
 	Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,
 			Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,
 			Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,
@@ -284,5 +286,5 @@ public class DungeonKeep {
 				return true;
 			}
 		}
-	}
+	}*/
 }
