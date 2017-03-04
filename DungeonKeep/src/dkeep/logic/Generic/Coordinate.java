@@ -5,7 +5,7 @@ import dkeep.logic.Generic.Generic.Direction;
 
 public class Coordinate {
 	
-	Coordinate(Integer x, Integer y) {
+	public Coordinate(Integer x, Integer y) {
 		this.x = x;
 		this.y = y;
 	}
