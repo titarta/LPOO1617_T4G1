@@ -5,14 +5,13 @@ import dkeep.logic.Generic.Generic.Direction;
 
 public class NonStatic extends Entity {
 
+	public NonStatic(Coordinate coord) {
+		super(coord);
+		blockMovement = false;
+	}
+
 	public void move(Direction direction) {
-		/*Coordinate nextCoordinate = getCoordinate().update(direction);
-		
-		if (getBoard().containsKey(nextCoordinate)) {
-			if (getBoard().get(nextCoordinate) instanceof Static) {
-				
-			}
-		}*/
+		coordinate.update(direction);
 	}
 
 }

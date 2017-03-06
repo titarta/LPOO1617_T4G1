@@ -2,11 +2,10 @@ package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Wall extends Static {
+public class Rookie extends Guard{
 
-	public Wall(Coordinate coord) {
+	public Rookie(Coordinate coord) {
 		super(coord);
-		entityChar = 'X';
 	}
 
 }

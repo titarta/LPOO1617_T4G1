@@ -1,14 +1,33 @@
 package dkeep.logic;
 
 import java.util.HashMap;
-
 import dkeep.logic.Generic.Coordinate;
+import dkeep.logic.Generic.Generic.Direction;
 
 public class Entity {
-	private Coordinate coordinate;
-	private HashMap<Coordinate, Entity> board;
-	private Entity holster;
+	protected Coordinate coordinate;
+	protected char entityChar;
+	protected boolean blockMovement;
 	
+	//private HashMap<Coordinate, Entity> board;
+	//private Entity holster;
+	
+	
+	
+	public Entity(Coordinate coord) {
+		coordinate = coord;
+	}
+	public boolean blocksMovement() {
+		return blockMovement;
+	}
+	public char getEntityChar() {
+		return entityChar;
+	}
+	
+	public void move(Direction direction) {
+	}
+
+	/*
 	public HashMap<Coordinate, Entity> getBoard() {
 		return board;
 	}
@@ -21,7 +40,7 @@ public class Entity {
 		this.board = board;
 		this.coordinate = coordinate;
 	}
-
+*/
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
@@ -30,11 +49,8 @@ public class Entity {
 		this.coordinate = coordinate;
 	}
 
-	Entity(HashMap<Coordinate, Entity> board) {
+	/*Entity(HashMap<Coordinate, Entity> board) {
 		this.board = board;
 	}
-	
-	Entity() {
-		
-	}
+	*/
 }
