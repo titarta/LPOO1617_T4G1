@@ -15,6 +15,4 @@ public class Drunken extends Guard{
 		return isSleeping;
 	}
 	
-	
-
 }

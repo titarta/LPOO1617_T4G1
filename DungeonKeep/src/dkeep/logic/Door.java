@@ -8,18 +8,19 @@ public class Door extends Static {
 		entityChar = 'I';
 	}
 
-	boolean state;
+	boolean open; //V - aberta
 
-	public boolean isState() {
-		return state;
+	public boolean isOpen() {
+		return open;
 	}
 
-	public void setState(boolean state) {
-		this.state = state;
+	public void setOpen(boolean state) {
+		this.open = state;
 	}
 	
 	public void toggle() {
-		state = state ? false : true;
+		open = open ? false : true;
+		blocksMovement = !blocksMovement;
 	}
 	
 }

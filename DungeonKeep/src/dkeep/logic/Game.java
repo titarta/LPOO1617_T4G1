@@ -1,6 +1,7 @@
 package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
+import dkeep.logic.Generic.Generic.Direction;
 
 public class Game {
 	GameMap gameMap;
@@ -22,5 +23,13 @@ public class Game {
 			}
 			System.out.println();
 		}
+	}
+	
+	public void moveEntity(Entity ent, Direction dir) {
+		gameMap.moveEntity(ent, dir);
+	}
+	
+	public Entity getHero() {
+		return gameMap.getHero();
 	}
 }

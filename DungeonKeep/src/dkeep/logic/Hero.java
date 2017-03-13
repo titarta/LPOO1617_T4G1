@@ -6,6 +6,7 @@ public class Hero extends NonStatic {
 
 	boolean hasKey;
 	
+	
 	public Hero(Coordinate coord) {
 		super(coord);
 		entityChar = 'H';
@@ -17,7 +18,7 @@ public class Hero extends NonStatic {
 		entityChar = 'K';
 	}
 	
-	public void releasKey() {
+	public void releaseKey() {
 		hasKey = false;
 		entityChar = 'H';
 	}
@@ -25,6 +26,9 @@ public class Hero extends NonStatic {
 	public boolean hasKey() {
 		return hasKey;
 	}
+
+	
+	
 	
 
 }
