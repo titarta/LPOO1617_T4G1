@@ -26,7 +26,6 @@ public class Game {
 	}
 	
 	public void moveEntity(Entity ent, Direction dir) {
-		gameMap.moveEntity(ent, dir);
 	}
 	
 	public Entity getHero() {

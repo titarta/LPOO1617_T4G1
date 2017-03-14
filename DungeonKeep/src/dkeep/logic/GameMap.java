@@ -1,19 +1,39 @@
 package dkeep.logic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import dkeep.logic.Generic.*;
 import dkeep.logic.Generic.Generic.Direction;
 
 public class GameMap {
-	private HashMap<Coordinate, Entity> coordToEntityMap;
+	private HashMap<Coordinate,ArrayList<Entity>> coordToEntityMap;
 	private int y;
 	private int x;
 	private Entity hero;
 	
+	public void addEntityToCoord(Entity ent, Coordinate coord) {
+		if (coordToEntityMap.get(coord) == null) {
+			ArrayList<Entity> aux = new ArrayList<Entity>();
+			aux.add(ent);
+			coordToEntityMap.put(coord, aux);
+		} else {
+			coordToEntityMap.get(coord).add(ent);
+		}
+	}
+	
+	public void removeEntityFromCoord(Entity ent, Coordinate coord) {
+		if (coordToEntityMap.get(coord).size() == 1) {
+			coordToEntityMap.remove(coord);
+		} else {
+			coordToEntityMap.get(coord).remove(ent);
+		}
+	}
+	
 	
 	public GameMap(char[][] map) {
-		coordToEntityMap = new HashMap<Coordinate, Entity>();
+		coordToEntityMap = new HashMap<Coordinate, ArrayList<Entity>>();
 		y = map.length;
 		x = map[0].length;
 		for(int j = 0; j < y; j++) {
@@ -22,20 +42,20 @@ public class GameMap {
 					if (map[j][i] == 'X') {
 						Coordinate newCoord = new Coordinate(j,i);
 						Wall wall = new Wall(newCoord);
-						coordToEntityMap.put(newCoord, wall);
+						addEntityToCoord(wall,newCoord);
 					} else if (map[j][i] == 'H') {
 						Coordinate newCoord = new Coordinate(j,i);
 						Hero hero = new Hero(newCoord);
-						coordToEntityMap.put(newCoord, hero);
+						addEntityToCoord(hero,newCoord);
 						this.hero = hero;
 					} else if (map[j][i] == 'I') {
 						Coordinate newCoord = new Coordinate(j,i);
 						Door door = new Door(newCoord);
-						coordToEntityMap.put(newCoord, door);
+						addEntityToCoord(door,newCoord);
 					} else if (map[j][i] == 'G') {
 						Coordinate newCoord = new Coordinate(j,i);
 						Guard guard = new Guard(newCoord);
-						coordToEntityMap.put(newCoord, guard);
+						addEntityToCoord(guard,newCoord);
 					}
 				}
 			}
@@ -43,81 +63,81 @@ public class GameMap {
 	}
 	
 	
-	public boolean moveEntity(Entity ent, Direction direction) {
-		if (ent instanceof Static) {
-			return false;
-		}
-		if (ent instanceof Hero) {
-			Coordinate oldCoord = ent.getCoordinate();
-			Coordinate newCoord = oldCoord;
-			newCoord.update(direction);
-			if (coordToEntityMap.get(newCoord).blocksMovement()) {
-				if (coordToEntityMap.get(newCoord) instanceof Door) {
-					if (((Hero)ent).hasKey()) {
-						((Door)coordToEntityMap.get(newCoord)).toggle();
-						((Hero)ent).releaseKey();
-					}
-				}
-				return false;
-			} else {
-				if (coordToEntityMap.get(newCoord) instanceof Key) {
-					if (((Hero)ent).getHolster() != null) {
-						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-					} else {
-						coordToEntityMap.remove(oldCoord);
-					}
-					coordToEntityMap.put(newCoord, ent);
-					ent.move(direction);
-					((Hero)ent).catchKey();
-					
-				}
-				if (coordToEntityMap.get(newCoord) instanceof Door) {
-					if (((Hero)ent).getHolster() != null) {
-						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-					} else {
-						coordToEntityMap.remove(oldCoord);
-					}
-					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
-					coordToEntityMap.put(newCoord, ent);
-					ent.move(direction);
-				}
-				if (coordToEntityMap.get(newCoord) instanceof Lever) {
-					for (Door d : ((Lever)coordToEntityMap.get(newCoord)).getDoors()) {
-						d.toggle();
-					}
-					if (((Hero)ent).getHolster() != null) {
-						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-					} else {
-						coordToEntityMap.remove(oldCoord);
-					}
-					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
-					coordToEntityMap.put(newCoord, ent);
-					ent.move(direction);
-				}
-				
-			}
-			return true;
-		} else {
-			Coordinate oldCoord = ent.getCoordinate();
-			Coordinate newCoord = oldCoord;
-			newCoord.update(direction);
-			if (coordToEntityMap.get(newCoord).blocksMovement()) {
-				return false;
-			} else {
-				if (((NonStatic)ent).getHolster() != null) {
-					coordToEntityMap.put(oldCoord, ((NonStatic)ent).getHolster());
-				} else {
-					coordToEntityMap.remove(oldCoord);
-				}
-				if ((coordToEntityMap.get(newCoord) instanceof Static)) {
-					((NonStatic)ent).setHolster(coordToEntityMap.get(newCoord));
-				}
-				coordToEntityMap.put(newCoord, ent);
-				ent.move(direction);
-			}
-			return true;
-		}
-	}
+//	public boolean moveEntity(Entity ent, Direction direction) {
+//		if (ent instanceof Static) {
+//			return false;
+//		}
+//		if (ent instanceof Hero) {
+//			Coordinate oldCoord = ent.getCoordinate();
+//			Coordinate newCoord = oldCoord;
+//			newCoord.update(direction);
+//			if (coordToEntityMap.get(newCoord).blocksMovement()) {
+//				if (coordToEntityMap.get(newCoord) instanceof Door) {
+//					if (((Hero)ent).hasKey()) {
+//						((Door)coordToEntityMap.get(newCoord)).toggle();
+//						((Hero)ent).releaseKey();
+//					}
+//				}
+//				return false;
+//			} else {
+//				if (coordToEntityMap.get(newCoord) instanceof Key) {
+//					if (((Hero)ent).getHolster() != null) {
+//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
+//					} else {
+//						coordToEntityMap.remove(oldCoord);
+//					}
+//					coordToEntityMap.put(newCoord, ent);
+//					ent.move(direction);
+//					((Hero)ent).catchKey();
+//					
+//				}
+//				if (coordToEntityMap.get(newCoord) instanceof Door) {
+//					if (((Hero)ent).getHolster() != null) {
+//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
+//					} else {
+//						coordToEntityMap.remove(oldCoord);
+//					}
+//					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
+//					coordToEntityMap.put(newCoord, ent);
+//					ent.move(direction);
+//				}
+//				if (coordToEntityMap.get(newCoord) instanceof Lever) {
+//					for (Door d : ((Lever)coordToEntityMap.get(newCoord)).getDoors()) {
+//						d.toggle();
+//					}
+//					if (((Hero)ent).getHolster() != null) {
+//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
+//					} else {
+//						coordToEntityMap.remove(oldCoord);
+//					}
+//					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
+//					coordToEntityMap.put(newCoord, ent);
+//					ent.move(direction);
+//				}
+//				
+//			}
+//			return true;
+//		} else {
+//			Coordinate oldCoord = ent.getCoordinate();
+//			Coordinate newCoord = oldCoord;
+//			newCoord.update(direction);
+//			if (coordToEntityMap.get(newCoord).blocksMovement()) {
+//				return false;
+//			} else {
+//				if (((NonStatic)ent).getHolster() != null) {
+//					coordToEntityMap.put(oldCoord, ((NonStatic)ent).getHolster());
+//				} else {
+//					coordToEntityMap.remove(oldCoord);
+//				}
+//				if ((coordToEntityMap.get(newCoord) instanceof Static)) {
+//					((NonStatic)ent).setHolster(coordToEntityMap.get(newCoord));
+//				}
+//				coordToEntityMap.put(newCoord, ent);
+//				ent.move(direction);
+//			}
+//			return true;
+//		}
+//	}
 
 	
 	
@@ -130,7 +150,7 @@ public class GameMap {
 	}
 	
 	public Entity getEntity(Coordinate coord) {
-		return coordToEntityMap.get(coord);
+		return coordToEntityMap.get(coord).get(0);
 	}
 
 

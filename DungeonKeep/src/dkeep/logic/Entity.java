@@ -1,6 +1,8 @@
 package dkeep.logic;
 
 import java.util.HashMap;
+import java.util.UUID;
+
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
 
@@ -8,6 +10,7 @@ public class Entity {
 	protected Coordinate coordinate;
 	protected char entityChar;
 	protected boolean blocksMovement;
+	private UUID id = UUID.randomUUID();
 	
 	//private HashMap<Coordinate, Entity> board;
 	//private Entity holster;
@@ -50,11 +53,14 @@ public class Entity {
 	}
 	
 	
+
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((coordinate == null) ? 0 : coordinate.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 	@Override
@@ -70,6 +76,11 @@ public class Entity {
 			if (other.coordinate != null)
 				return false;
 		} else if (!coordinate.equals(other.coordinate))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
