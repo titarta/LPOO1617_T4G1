@@ -8,14 +8,14 @@ import dkeep.logic.Generic.*;
 import dkeep.logic.Generic.Generic.Direction;
 
 public class GameMap {
-	private HashMap<Coordinate,ArrayList<Entity>> coordToEntityMap;
+	private HashMap<Coordinate,HashSet<Entity>> coordToEntityMap;
 	private int y;
 	private int x;
 	private Entity hero;
 	
 	public void addEntityToCoord(Entity ent, Coordinate coord) {
 		if (coordToEntityMap.get(coord) == null) {
-			ArrayList<Entity> aux = new ArrayList<Entity>();
+			HashSet<Entity> aux = new HashSet<Entity>();
 			aux.add(ent);
 			coordToEntityMap.put(coord, aux);
 		} else {
@@ -33,7 +33,7 @@ public class GameMap {
 	
 	
 	public GameMap(char[][] map) {
-		coordToEntityMap = new HashMap<Coordinate, ArrayList<Entity>>();
+		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
 		y = map.length;
 		x = map[0].length;
 		for(int j = 0; j < y; j++) {
@@ -150,7 +150,7 @@ public class GameMap {
 	}
 	
 	public Entity getEntity(Coordinate coord) {
-		return coordToEntityMap.get(coord).get(0);
+		return coordToEntityMap.get(coord).iterator().next();
 	}
 
 
