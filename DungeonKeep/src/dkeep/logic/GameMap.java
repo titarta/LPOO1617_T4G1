@@ -139,7 +139,31 @@ public class GameMap {
 //		}
 //	}
 
+	public boolean coordHasEntity(Coordinate coord, Entity ent) {
+		return coordToEntityMap.get(coord).contains(ent);
+	}
 	
+	public Entity coordHasKey(Coordinate coord) {
+		for(Entity e : coordToEntityMap.get(coord)) {
+			if (e instanceof Key) {
+				return e;
+			}
+		}
+		return null;
+	}
+	
+	public Entity coordHasLever(Coordinate coord) {
+		for(Entity e : coordToEntityMap.get(coord)) {
+			if (e instanceof Lever) {
+				return e;
+			}
+		}
+		return null;
+	}
+	
+	public boolean checkEntityStepOver (Entity ent1, Entity ent2) {
+		return ent1.getCoordinate() == ent2.getCoordinate();
+	}
 	
 	public int getX() {
 		return x;
