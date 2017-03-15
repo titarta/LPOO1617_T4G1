@@ -1,5 +1,7 @@
 package dkeep.logic.Generic;
 
+import java.util.ArrayList;
+
 import dkeep.logic.Generic.Generic;
 import dkeep.logic.Generic.Generic.Direction;
 
@@ -35,6 +37,10 @@ public class Coordinate {
 		x += direction.getX();
 		y += direction.getY();
 		return this;
+	}
+	
+	public boolean isAdjacent (Coordinate coord) {
+		return ((y-coord.getY())^2 + (x-coord.getX())^2) < 2.1;
 	}
 
 	@Override

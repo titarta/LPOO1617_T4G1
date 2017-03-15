@@ -138,6 +138,10 @@ public class GameMap {
 //			return true;
 //		}
 //	}
+	
+	public boolean coordBlocksMovement(Coordinate coord) {
+		return coordToEntityMap.get(coord).iterator().next().blocksMovement();
+	}
 
 	public boolean coordHasEntity(Coordinate coord, Entity ent) {
 		return coordToEntityMap.get(coord).contains(ent);
