@@ -61,6 +61,10 @@ public class GameMap {
 						Guard guard = new Guard(newCoord);
 						addEntityToCoord(guard,newCoord);
 						enemies.add(guard);
+					} else if (map[j][i] == 'k') {
+						Coordinate newCoord = new Coordinate(i,j);
+						Lever lever = new Lever(newCoord, new HashSet<Door>());
+						addEntityToCoord(lever,newCoord);
 					}
 				}
 			}
@@ -130,7 +134,7 @@ public class GameMap {
 	}
 	
 	public void addWinningCoord(Coordinate coord) {
-		if (0 < coord.getX() && coord.getX() < x && 0 < coord.getY() && coord.getY() < y) {
+		if (0 <= coord.getX() && coord.getX() < x && 0 <= coord.getY() && coord.getY() < y) {
 			winningCoords.add(coord);
 		}
 	}

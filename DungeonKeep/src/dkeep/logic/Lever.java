@@ -11,7 +11,7 @@ public class Lever extends Static {
 	public Lever(Coordinate coord, HashSet<Door> d) {
 		super(coord);
 		doors = d;
-		
+		blocksMovement = false;
 	}
 
 	public HashSet<Door> getDoors() {
