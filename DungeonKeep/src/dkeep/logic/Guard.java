@@ -6,6 +6,7 @@ import dkeep.logic.Generic.Generic.Direction;
 
 public class Guard extends NonStatic {
 	protected Direction[] walkPath;
+	protected int walkPathPosition;
 
 	public Guard(Coordinate coord) {
 		super(coord);
@@ -19,6 +20,14 @@ public class Guard extends NonStatic {
 	
 	public void setWalkPath(Direction[] walkPath) {
 		this.walkPath = walkPath;
+	}
+	
+	public void updateWalkPathPos() {
+		walkPathPosition++;
+	}
+	
+	public int getWalkPathPos() {
+		return walkPathPosition;
 	}
 	
 	

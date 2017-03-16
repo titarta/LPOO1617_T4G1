@@ -1,14 +1,23 @@
 package dkeep.logic;
 
+import java.util.HashSet;
+
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
 
 public class Game {
-	GameMap gameMap;
+	
+	private GameMap gameMap;
+	private Hero hero;
+	private HashSet<Entity> enemies;
+	private HashSet<Coordinate> winningCoords;
 	
 	
 	public Game(GameMap gameMap) {
 		this.gameMap = gameMap;
+		hero = gameMap.getHero();
+		enemies = gameMap.getEnemies();
+		winningCoords = gameMap.getWinningCoords();
 	}
 	
 	public void printMap() {
@@ -28,7 +37,40 @@ public class Game {
 	public void moveEntity(Entity ent, Direction dir) {
 	}
 	
+	public boolean moveHero(Direction dir) throws GameEndException {
+		Coordinate coord = hero.getCoordinate();
+		coord.update(dir);
+		if (gameMap.coordBlocksMovement(coord)) {
+			if (gameMap.coordHasDoor(coord) != null) {
+				((Door)(gameMap.coordHasDoor(coord))).toggle();
+			}
+			return false;
+		} else {
+			gameMap.moveEntity(hero, dir);
+			hero.move(dir);
+			if (gameMap.coordIsWinningCoord(coord)) {
+				throw new GameEndException(true);
+			}
+			if (gameMap.coordHasKey(coord) != null) { //se encontrar uma chave
+				hero.catchKey();
+				gameMap.removeEntityFromCoord(gameMap.coordHasKey(coord), coord);
+			}
+			if (gameMap.coordHasLever(coord) != null) { //se encontrar uma alavanca
+				for (Door d : ((Lever)(gameMap.coordHasLever(coord))).getDoors()) {
+					d.toggle();
+				}
+			}
+			for (Entity e : enemies) {
+				if (gameMap.checkAdjacency(hero, e)) {
+					throw new GameEndException(false);
+				}
+			}
+			return true;
+		}
+		
+	}
+	
 	public Entity getHero() {
-		return gameMap.getHero();
+		return hero;
 	}
 }

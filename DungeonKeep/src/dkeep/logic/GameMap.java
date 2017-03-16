@@ -12,6 +12,8 @@ public class GameMap {
 	private int y;
 	private int x;
 	private Entity hero;
+	private HashSet<Entity> enemies;
+	private HashSet<Coordinate> winningCoords;
 	
 	public void addEntityToCoord(Entity ent, Coordinate coord) {
 		if (coordToEntityMap.get(coord) == null) {
@@ -34,6 +36,7 @@ public class GameMap {
 	
 	public GameMap(char[][] map) {
 		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
+		enemies = new HashSet<Entity>();
 		y = map.length;
 		x = map[0].length;
 		for(int j = 0; j < y; j++) {
@@ -56,6 +59,7 @@ public class GameMap {
 						Coordinate newCoord = new Coordinate(j,i);
 						Guard guard = new Guard(newCoord);
 						addEntityToCoord(guard,newCoord);
+						enemies.add(guard);
 					}
 				}
 			}
@@ -63,111 +67,86 @@ public class GameMap {
 	}
 	
 	
-//	public boolean moveEntity(Entity ent, Direction direction) {
-//		if (ent instanceof Static) {
-//			return false;
-//		}
-//		if (ent instanceof Hero) {
-//			Coordinate oldCoord = ent.getCoordinate();
-//			Coordinate newCoord = oldCoord;
-//			newCoord.update(direction);
-//			if (coordToEntityMap.get(newCoord).blocksMovement()) {
-//				if (coordToEntityMap.get(newCoord) instanceof Door) {
-//					if (((Hero)ent).hasKey()) {
-//						((Door)coordToEntityMap.get(newCoord)).toggle();
-//						((Hero)ent).releaseKey();
-//					}
-//				}
-//				return false;
-//			} else {
-//				if (coordToEntityMap.get(newCoord) instanceof Key) {
-//					if (((Hero)ent).getHolster() != null) {
-//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-//					} else {
-//						coordToEntityMap.remove(oldCoord);
-//					}
-//					coordToEntityMap.put(newCoord, ent);
-//					ent.move(direction);
-//					((Hero)ent).catchKey();
-//					
-//				}
-//				if (coordToEntityMap.get(newCoord) instanceof Door) {
-//					if (((Hero)ent).getHolster() != null) {
-//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-//					} else {
-//						coordToEntityMap.remove(oldCoord);
-//					}
-//					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
-//					coordToEntityMap.put(newCoord, ent);
-//					ent.move(direction);
-//				}
-//				if (coordToEntityMap.get(newCoord) instanceof Lever) {
-//					for (Door d : ((Lever)coordToEntityMap.get(newCoord)).getDoors()) {
-//						d.toggle();
-//					}
-//					if (((Hero)ent).getHolster() != null) {
-//						coordToEntityMap.put(oldCoord, ((Hero)ent).getHolster());
-//					} else {
-//						coordToEntityMap.remove(oldCoord);
-//					}
-//					((Hero)ent).setHolster(coordToEntityMap.get(newCoord));
-//					coordToEntityMap.put(newCoord, ent);
-//					ent.move(direction);
-//				}
-//				
-//			}
-//			return true;
-//		} else {
-//			Coordinate oldCoord = ent.getCoordinate();
-//			Coordinate newCoord = oldCoord;
-//			newCoord.update(direction);
-//			if (coordToEntityMap.get(newCoord).blocksMovement()) {
-//				return false;
-//			} else {
-//				if (((NonStatic)ent).getHolster() != null) {
-//					coordToEntityMap.put(oldCoord, ((NonStatic)ent).getHolster());
-//				} else {
-//					coordToEntityMap.remove(oldCoord);
-//				}
-//				if ((coordToEntityMap.get(newCoord) instanceof Static)) {
-//					((NonStatic)ent).setHolster(coordToEntityMap.get(newCoord));
-//				}
-//				coordToEntityMap.put(newCoord, ent);
-//				ent.move(direction);
-//			}
-//			return true;
-//		}
-//	}
+	public void moveEntity(Entity ent, Direction dir) {
+		removeEntityFromCoord(ent,ent.getCoordinate());
+		addEntityToCoord(ent,ent.getCoordinate().update(dir));
+	}
+	
 	
 	public boolean coordBlocksMovement(Coordinate coord) {
-		return coordToEntityMap.get(coord).iterator().next().blocksMovement();
+		if (coordToEntityMap.get(coord) != null){
+			return coordToEntityMap.get(coord).iterator().next().blocksMovement();
+		}
+		return false;
 	}
 
 	public boolean coordHasEntity(Coordinate coord, Entity ent) {
-		return coordToEntityMap.get(coord).contains(ent);
+		if (coordToEntityMap.get(coord) != null){
+			return coordToEntityMap.get(coord).contains(ent);
+		}
+		return false;
 	}
 	
 	public Entity coordHasKey(Coordinate coord) {
-		for(Entity e : coordToEntityMap.get(coord)) {
-			if (e instanceof Key) {
-				return e;
+		if (coordToEntityMap.get(coord) != null ){
+			for(Entity e : coordToEntityMap.get(coord)) {
+				if (e instanceof Key) {
+					return e;
+				}
 			}
 		}
 		return null;
 	}
 	
 	public Entity coordHasLever(Coordinate coord) {
-		for(Entity e : coordToEntityMap.get(coord)) {
-			if (e instanceof Lever) {
-				return e;
+		if (coordToEntityMap.get(coord) != null ){
+			for(Entity e : coordToEntityMap.get(coord)) {
+				if (e instanceof Lever) {
+					return e;
+				}
 			}
 		}
 		return null;
 	}
 	
+	public Entity coordHasDoor(Coordinate coord) {
+		if (coordToEntityMap.get(coord) != null ){
+			for(Entity e : coordToEntityMap.get(coord)) {
+				if (e instanceof Door) {
+					return e;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean coordIsWinningCoord(Coordinate coord) {
+		for (Coordinate c : winningCoords) {
+			if (c.equals(coord)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void addWinningCoord(Coordinate coord) {
+		if (0 < coord.getX() && coord.getX() < x && 0 < coord.getY() && coord.getY() < y) {
+			winningCoords.add(coord);
+		}
+	}
+	
+	public HashSet<Coordinate> getWinningCoords() {
+		return winningCoords;
+	}
+
 	public boolean checkEntityStepOver (Entity ent1, Entity ent2) {
 		return ent1.getCoordinate() == ent2.getCoordinate();
 	}
+	
+	public boolean checkAdjacency(Entity ent1, Entity ent2) {
+		return ent1.getCoordinate().isAdjacent(ent2.getCoordinate());
+	}
+	
 	
 	public int getX() {
 		return x;
@@ -182,8 +161,12 @@ public class GameMap {
 	}
 
 
-	public Entity getHero() {
-		return hero;
+	public Hero getHero() {
+		return (Hero)hero;
+	}
+	
+	public HashSet<Entity> getEnemies() {
+		return enemies;
 	}
 
 	
