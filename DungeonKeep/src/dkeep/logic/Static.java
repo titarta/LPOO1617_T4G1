@@ -7,7 +7,7 @@ public class Static extends Entity {
 	
 	public Static(Coordinate coord) {
 		super(coord);
-		blocksMovement = false;
+		blocksMovement = true;
 	}
 	
 	

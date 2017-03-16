@@ -30,20 +30,7 @@ public class Entity {
 	public void move(Direction direction) {
 	}
 
-	/*
-	public HashMap<Coordinate, Entity> getBoard() {
-		return board;
-	}
 
-	public void setBoard(HashMap<Coordinate, Entity> board) {
-		this.board = board;
-	}
-	
-	Entity(HashMap<Coordinate, Entity> board, Coordinate coordinate) {
-		this.board = board;
-		this.coordinate = coordinate;
-	}
-*/
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}

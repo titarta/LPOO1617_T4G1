@@ -36,6 +36,7 @@ public class GameMap {
 	
 	public GameMap(char[][] map) {
 		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
+		winningCoords = new HashSet<Coordinate>();
 		enemies = new HashSet<Entity>();
 		y = map.length;
 		x = map[0].length;
@@ -43,20 +44,20 @@ public class GameMap {
 			for(int i = 0; i < x; i++) {
 				if (map[j][i] != ' ') {
 					if (map[j][i] == 'X') {
-						Coordinate newCoord = new Coordinate(j,i);
+						Coordinate newCoord = new Coordinate(i,j);
 						Wall wall = new Wall(newCoord);
 						addEntityToCoord(wall,newCoord);
 					} else if (map[j][i] == 'H') {
-						Coordinate newCoord = new Coordinate(j,i);
+						Coordinate newCoord = new Coordinate(i,j);
 						Hero hero = new Hero(newCoord);
 						addEntityToCoord(hero,newCoord);
 						this.hero = hero;
 					} else if (map[j][i] == 'I') {
-						Coordinate newCoord = new Coordinate(j,i);
+						Coordinate newCoord = new Coordinate(i,j);
 						Door door = new Door(newCoord);
 						addEntityToCoord(door,newCoord);
 					} else if (map[j][i] == 'G') {
-						Coordinate newCoord = new Coordinate(j,i);
+						Coordinate newCoord = new Coordinate(i,j);
 						Guard guard = new Guard(newCoord);
 						addEntityToCoord(guard,newCoord);
 						enemies.add(guard);
@@ -65,8 +66,7 @@ public class GameMap {
 			}
 		}
 	}
-	
-	
+
 	public void moveEntity(Entity ent, Direction dir) {
 		removeEntityFromCoord(ent,ent.getCoordinate());
 		addEntityToCoord(ent,ent.getCoordinate().update(dir));

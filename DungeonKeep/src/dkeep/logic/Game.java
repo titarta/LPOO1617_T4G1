@@ -35,7 +35,7 @@ public class Game {
 	}
 	
 	public boolean moveEntity(Entity ent, Direction dir) {
-		if (ent instanceof Hero) {
+		if (ent instanceof Hero || ent instanceof Guard) {
 			return false;
 		}
 		Coordinate coord = ent.getCoordinate();
@@ -43,14 +43,22 @@ public class Game {
 		if (gameMap.coordBlocksMovement(coord)) {
 			return false;
 		} else {
-			ent.move(dir);
 			gameMap.moveEntity(ent, dir);
 			return true;
 		}
 	}
 	
+	public boolean moveGuard(Entity ent) {
+		if (!(ent instanceof Guard)) {
+			return false;
+		}
+		gameMap.removeEntityFromCoord(ent,ent.getCoordinate());
+		gameMap.addEntityToCoord(ent, ((Guard)ent).updateGuard());
+		return true;
+	}
+	
 	public boolean moveHero(Direction dir) throws GameEndException {
-		Coordinate coord = hero.getCoordinate();
+		Coordinate coord = new Coordinate(hero.getCoordinate().getX(), hero.getCoordinate().getY());
 		coord.update(dir);
 		if (gameMap.coordBlocksMovement(coord)) {
 			if (gameMap.coordHasDoor(coord) != null) {
@@ -59,7 +67,6 @@ public class Game {
 			return false;
 		} else {
 			gameMap.moveEntity(hero, dir);
-			hero.move(dir);
 			if (gameMap.coordIsWinningCoord(coord)) {
 				throw new GameEndException(true);
 			}

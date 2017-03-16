@@ -4,7 +4,8 @@ import dkeep.logic.Generic.Coordinate;
 
 public class Hero extends NonStatic {
 
-	boolean hasKey;
+	protected boolean hasKey;
+	protected boolean isArmed;
 	
 	
 	public Hero(Coordinate coord) {
@@ -27,7 +28,10 @@ public class Hero extends NonStatic {
 		return hasKey;
 	}
 
-	
+	public boolean isArmed() {
+		return isArmed;
+	}
+
 	
 	
 
