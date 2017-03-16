@@ -30,6 +30,15 @@ public class Guard extends NonStatic {
 		return walkPathPosition;
 	}
 	
+	public Coordinate updateGuard() {
+		this.coordinate.update(walkPath[walkPathPosition]);
+		if (walkPathPosition < walkPath.length) {
+			walkPathPosition++;
+		} else {
+			walkPathPosition = 0;
+		}
+		return this.coordinate;
+	}
 	
 
 }

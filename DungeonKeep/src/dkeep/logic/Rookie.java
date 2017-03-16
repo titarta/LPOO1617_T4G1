@@ -8,4 +8,11 @@ public class Rookie extends Guard{
 		super(coord);
 	}
 
+	@Override
+	public Coordinate updateGuard() {
+		return super.updateGuard();
+	}
+	
+	
+
 }

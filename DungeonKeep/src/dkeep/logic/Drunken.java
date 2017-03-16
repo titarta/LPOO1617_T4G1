@@ -14,5 +14,16 @@ public class Drunken extends Guard{
 	public boolean isSleeping() {
 		return isSleeping;
 	}
+
+	@Override
+	public Coordinate updateGuard() {
+		if (!isSleeping) {
+			return super.updateGuard();
+		} else {
+			return this.coordinate;
+		}
+	}
+	
+	
 	
 }

@@ -34,7 +34,19 @@ public class Game {
 		}
 	}
 	
-	public void moveEntity(Entity ent, Direction dir) {
+	public boolean moveEntity(Entity ent, Direction dir) {
+		if (ent instanceof Hero) {
+			return false;
+		}
+		Coordinate coord = ent.getCoordinate();
+		coord.update(dir);
+		if (gameMap.coordBlocksMovement(coord)) {
+			return false;
+		} else {
+			ent.move(dir);
+			gameMap.moveEntity(ent, dir);
+			return true;
+		}
 	}
 	
 	public boolean moveHero(Direction dir) throws GameEndException {
