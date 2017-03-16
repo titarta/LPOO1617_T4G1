@@ -14,12 +14,25 @@ public class Drunken extends Guard{
 	public boolean isSleeping() {
 		return isSleeping;
 	}
+	
+	
+
+	@Override
+	protected boolean deploysEvent() {
+		if(super.deploysEvent()) {
+			isSleeping = !isSleeping;
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public Coordinate updateGuard() {
 		if (!isSleeping) {
+			this.deploysEvent();
 			return super.updateGuard();
 		} else {
+			this.deploysEvent();
 			return this.coordinate;
 		}
 	}

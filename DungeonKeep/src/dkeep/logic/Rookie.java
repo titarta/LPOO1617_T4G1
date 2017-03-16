@@ -10,7 +10,13 @@ public class Rookie extends Guard{
 
 	@Override
 	public Coordinate updateGuard() {
+		this.deploysEvent();
 		return super.updateGuard();
+	}
+
+	@Override
+	protected boolean deploysEvent() {
+		return false;
 	}
 	
 	
