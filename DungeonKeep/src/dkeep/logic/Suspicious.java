@@ -14,6 +14,21 @@ public class Suspicious extends Guard{
 		return isSuspicious;
 	}
 	
+	
+	
+	@Override
+	public void updateWalkPathPos() {
+		if (isSuspicious) {
+			if (walkPathPosition > 0) {
+				walkPathPosition--;
+			} else {
+				walkPathPosition = walkPath.length - 1;
+			}
+		} else {
+			super.updateWalkPathPos();
+		}
+	}
+
 	@Override
 	protected boolean deploysEvent() {
 		if(super.deploysEvent()) {
@@ -30,12 +45,12 @@ public class Suspicious extends Guard{
 			return super.updateGuard();
 		} else {
 			this.deploysEvent();
-			this.coordinate.set(this.coordinate.getX() - walkPath[walkPathPosition].getX(),this.coordinate.getY() - walkPath[walkPathPosition].getY());
 			if (walkPathPosition > 0) {
 				walkPathPosition--;
 			} else {
-				walkPathPosition = walkPath.length;
+				walkPathPosition = walkPath.length - 1;
 			}
+			this.coordinate.set(this.coordinate.getX() - walkPath[walkPathPosition].getX(),this.coordinate.getY() - walkPath[walkPathPosition].getY());
 			return this.coordinate;
 		}
 	}

@@ -84,6 +84,7 @@ public class Game {
 			gameMap.addEntityToCoord(ent, ((Guard)ent).updateGuard());
 			return true;
 		} else {
+			((Guard)ent).updateWalkPathPos();
 			return false;
 		}
 	}

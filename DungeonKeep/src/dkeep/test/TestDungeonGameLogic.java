@@ -232,5 +232,32 @@ public class TestDungeonGameLogic {
 		}
 	}
 	
+	char [][] map3 = {{'X','X','X','X','X'},
+			{'X',' ',' ',' ','X'},
+			{'I',' ',' ',' ','X'},
+			{'I',' ',' ',' ','X'},
+			{'X','X','X','X','X'}};
 	
+	@Test
+	public void testGuards() {
+		GameMap gameMap = new GameMap(map3);
+		Game game = new Game(gameMap);
+		Rookie rookie = new Rookie(new Coordinate(1,1));
+		Suspicious suspicious = new Suspicious(new Coordinate(2,1));
+		Drunken drunk = new Drunken(new Coordinate(3,1));
+		Direction[] walkpath= {Direction.DOWN,Direction.DOWN,Direction.UP,Direction.UP};
+		rookie.setWalkPath(walkpath);
+		suspicious.setWalkPath(walkpath);
+		drunk.setWalkPath(walkpath);
+		gameMap.addEntityToCoord(rookie, rookie.getCoordinate());
+		gameMap.addEntityToCoord(suspicious, suspicious.getCoordinate());
+		gameMap.addEntityToCoord(drunk, drunk.getCoordinate());
+		for(int i = 0; i < 40; i++) {
+			game.moveGuard(rookie);
+			game.moveGuard(drunk);
+			game.moveGuard(suspicious);
+			game.printMap();
+		}
+		assertEquals(rookie.getCoordinate(), new Coordinate(1,1));
+	}
 }

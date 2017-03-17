@@ -15,7 +15,7 @@ public class Guard extends NonStatic {
 	
 	protected boolean deploysEvent() {
 		Random rnd = new Random();
-		return rnd.nextInt(3) == 0;
+		return rnd.nextInt(6) == 0;
 	}
 	
 	public void setWalkPath(Direction[] walkPath) {
@@ -23,7 +23,11 @@ public class Guard extends NonStatic {
 	}
 	
 	public void updateWalkPathPos() {
-		walkPathPosition++;
+		if (walkPathPosition < walkPath.length - 1) {
+			walkPathPosition++;
+		} else {
+			walkPathPosition = 0;
+		}
 	}
 	
 	public int getWalkPathPos() {
@@ -32,7 +36,7 @@ public class Guard extends NonStatic {
 	
 	public Coordinate updateGuard() {
 		this.coordinate.update(walkPath[walkPathPosition]);
-		if (walkPathPosition < walkPath.length) {
+		if (walkPathPosition < walkPath.length - 1) {
 			walkPathPosition++;
 		} else {
 			walkPathPosition = 0;
