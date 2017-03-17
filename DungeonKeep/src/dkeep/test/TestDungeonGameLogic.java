@@ -209,4 +209,26 @@ public class TestDungeonGameLogic {
 		}
 		assertTrue(false);
 	}
+	
+	@Test(timeout=1000)
+	public void testSomeRandomBehaviour() {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		Ogre ogre = (Ogre) gameMap.getEntity(new Coordinate(5,1));
+		gameMap.removeEntityFromCoord(game.getHero(), game.getHero().getCoordinate());
+		boolean o1 = false, o2 = false, o3 = false, o4 = false;
+		while (!o1 || !o2 || !o3 || !o4) {
+			Coordinate oldC = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
+			game.moveOgre(ogre);
+			if (ogre.getCoordinate().getY() == oldC.getY() && ogre.getCoordinate().getX() == oldC.getX() - 1) {
+				o1 = true;
+			} else if (ogre.getCoordinate().getY() == oldC.getY() && ogre.getCoordinate().getX() == oldC.getX() + 1) {
+				o2 = true;
+			} else if (ogre.getCoordinate().getY() == oldC.getY() - 1 && ogre.getCoordinate().getX() == oldC.getX()) {
+				o3 = true;
+			} else if (ogre.getCoordinate().getY() == oldC.getY() + 1 && ogre.getCoordinate().getX() == oldC.getX()) {
+				o4 = true;
+			}
+		}
+	}
 }

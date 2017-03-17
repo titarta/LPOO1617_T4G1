@@ -28,5 +28,4 @@ public class Door extends Static {
 			entityChar = 'I';
 		}
 	}
-	
 }
