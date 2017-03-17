@@ -22,6 +22,11 @@ public class Door extends Static {
 	public void toggle() {
 		open = open ? false : true;
 		blocksMovement = !blocksMovement;
+		if (entityChar == 'I') {
+			entityChar = 'S';
+		} else {
+			entityChar = 'I';
+		}
 	}
 	
 }

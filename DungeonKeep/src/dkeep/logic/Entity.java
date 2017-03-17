@@ -39,7 +39,9 @@ public class Entity {
 		this.coordinate = coordinate;
 	}
 	
-	
+	public void setEntityChar(char c) {
+		entityChar = c;
+	}
 
 	
 	@Override

@@ -40,5 +40,9 @@ public class Guard extends NonStatic {
 		return this.coordinate;
 	}
 	
+	public Direction getGuardDirection() {
+		return walkPath[walkPathPosition];
+	}
+	
 
 }

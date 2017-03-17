@@ -166,7 +166,11 @@ public class GameMap {
 	}
 	
 	public Entity getEntity(Coordinate coord) {
-		return coordToEntityMap.get(coord).iterator().next();
+		if (coordToEntityMap.get(coord) == null) {
+			return null;
+		} else {
+			return coordToEntityMap.get(coord).iterator().next();
+		}
 	}
 
 

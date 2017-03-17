@@ -1,6 +1,7 @@
 package dkeep.logic;
 
 import java.util.HashSet;
+import java.util.Random;
 
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
@@ -23,7 +24,7 @@ public class Game {
 	public void printMap() {
 		for(int i = 0; i < gameMap.getX(); i++) {
 			for(int j = 0; j < gameMap.getY(); j++) {
-				Coordinate coord = new Coordinate(i, j);
+				Coordinate coord = new Coordinate(j, i);
 				if (gameMap.getEntity(coord) == null) {
 					System.out.print(' ');
 				} else {
@@ -34,13 +35,17 @@ public class Game {
 		}
 	}
 	
+	public HashSet<Entity> getEnemies() {
+		return enemies;
+	}
+	
 	public boolean moveEntity(Entity ent, Direction dir) {
 		if (ent instanceof Hero || ent instanceof Guard) {
 			return false;
 		}
-		Coordinate coord = ent.getCoordinate();
-		coord.update(dir);
-		if (gameMap.coordBlocksMovement(coord)) {
+		Coordinate nextCoord = ent.getCoordinate();
+		nextCoord.update(dir);
+		if (gameMap.coordBlocksMovement(nextCoord)) {
 			return false;
 		} else {
 			gameMap.moveEntity(ent, dir);
@@ -48,13 +53,39 @@ public class Game {
 		}
 	}
 	
+	public boolean moveOgre(Entity ent) {
+		Random rnd = new Random();
+		
+		while (true) {
+			Coordinate nextCoord = new Coordinate(ent.getCoordinate().getX(), ent.getCoordinate().getY());
+			Direction d = Direction.values()[rnd.nextInt(4)];
+			nextCoord.update(d);
+			if (gameMap.coordBlocksMovement(nextCoord)) {
+				continue;
+			} else {
+				((Ogre)ent).setOverKey(false);
+				gameMap.moveEntity(ent, d); 
+				if (gameMap.coordHasKey(ent.getCoordinate()) != null) {
+					((Ogre)ent).setOverKey(true);
+				}
+				return true;
+			}
+		}
+	}
+	
 	public boolean moveGuard(Entity ent) {
 		if (!(ent instanceof Guard)) {
 			return false;
 		}
-		gameMap.removeEntityFromCoord(ent,ent.getCoordinate());
-		gameMap.addEntityToCoord(ent, ((Guard)ent).updateGuard());
-		return true;
+		Coordinate nextCoord = new Coordinate(ent.getCoordinate().getX(), ent.getCoordinate().getY());
+		nextCoord.update(((Guard)ent).getGuardDirection());
+		if (!gameMap.coordBlocksMovement(nextCoord)) {
+			gameMap.removeEntityFromCoord(ent,ent.getCoordinate());
+			gameMap.addEntityToCoord(ent, ((Guard)ent).updateGuard());
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean moveHero(Direction dir) throws GameEndException {
