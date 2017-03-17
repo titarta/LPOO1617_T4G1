@@ -65,6 +65,11 @@ public class GameMap {
 						Coordinate newCoord = new Coordinate(i,j);
 						Lever lever = new Lever(newCoord, new HashSet<Door>());
 						addEntityToCoord(lever,newCoord);
+					} else if (map[j][i] == 'O') {
+						Coordinate newCoord = new Coordinate(i,j);
+						Ogre ogre = new Ogre(newCoord);
+						addEntityToCoord(ogre,newCoord);
+						enemies.add(ogre);
 					}
 				}
 			}

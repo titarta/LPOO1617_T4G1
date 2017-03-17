@@ -6,6 +6,7 @@ public class Door extends Static {
 	public Door(Coordinate coord) {
 		super(coord);
 		entityChar = 'I';
+		open = false;
 	}
 
 	boolean open; //V - aberta

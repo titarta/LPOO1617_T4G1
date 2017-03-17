@@ -92,4 +92,121 @@ public class TestDungeonGameLogic {
 		}
 		assertTrue(false);
 	}
+	
+	char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+					{ 'I', ' ', ' ', ' ', ' ', 'O', ' ', ' ', 'k', 'X' },
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+					{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+					{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+					{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+	
+	
+	@Test
+	public void testHeroDiesToOgre() throws GameEndException {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		game.moveHero(Direction.RIGHT);
+		game.moveHero(Direction.RIGHT);
+		game.moveHero(Direction.RIGHT);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		try {
+			game.moveHero(Direction.UP);
+		} catch (GameEndException e) {
+			assertTrue(true);
+			return;
+		}
+		assertTrue(false);
+	}
+	
+	@Test
+	public void testHeroCatchKey() throws GameEndException {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		Coordinate coord = new Coordinate(8,1);
+		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		Key key = new Key(coord);
+		gameMap.addEntityToCoord(key, coord);
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.RIGHT);
+			game.moveHero(Direction.UP);
+		}
+		assertEquals(game.getHero().getEntityChar(), 'K');
+	}
+	
+	@Test
+	public void testHeroCantOpenDoor() throws GameEndException {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		Coordinate coord = new Coordinate(8,1);
+		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		Key key = new Key(coord);
+		gameMap.addEntityToCoord(key, coord);
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.UP);
+		}
+		game.moveHero(Direction.LEFT);
+		assertEquals(game.getHero().getCoordinate(), (new Coordinate(1,1)));
+	}
+	
+	@Test
+	public void testHeroOpenDoor() throws GameEndException {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		Coordinate coord = new Coordinate(8,1);
+		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		Key key = new Key(coord);
+		gameMap.addEntityToCoord(key, coord);
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.RIGHT);
+			game.moveHero(Direction.UP);
+		}
+		game.moveHero(Direction.DOWN);
+		game.moveHero(Direction.DOWN);
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.LEFT);
+		}
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.LEFT);
+		assertTrue(((Door)gameMap.getEntity(new Coordinate(0, 1))).isOpen());
+	}
+	
+	@Test
+	public void testHeroWinsKeep() throws GameEndException {
+		GameMap gameMap = new GameMap(map2);
+		Game game = new Game(gameMap);
+		Coordinate coord = new Coordinate(8,1);
+		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		Key key = new Key(coord);
+		gameMap.addEntityToCoord(key, coord);
+		gameMap.addWinningCoord(new Coordinate(0, 1));
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.RIGHT);
+			game.moveHero(Direction.UP);
+		}
+		game.moveHero(Direction.DOWN);
+		game.moveHero(Direction.DOWN);
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.LEFT);
+		}
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.UP);
+		game.moveHero(Direction.LEFT);
+		try {
+			game.moveHero(Direction.LEFT);
+		} catch (GameEndException e) {
+			assertTrue(true);
+			return;
+		}
+		assertTrue(false);
+	}
 }

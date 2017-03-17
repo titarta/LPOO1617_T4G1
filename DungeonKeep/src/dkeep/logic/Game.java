@@ -86,8 +86,8 @@ public class Game {
 			}
 			return true;
 		}
-		
 	}
+	
 	
 	public Entity getHero() {
 		return hero;
