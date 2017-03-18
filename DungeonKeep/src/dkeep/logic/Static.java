@@ -10,6 +10,5 @@ public class Static extends Entity {
 		blocksMovement = true;
 	}
 	
-	
 
 }

@@ -63,13 +63,30 @@ public class Game {
 			if (gameMap.coordBlocksMovement(nextCoord)) {
 				continue;
 			} else {
-				((Ogre)ent).setOverKey(false);
-				gameMap.moveEntity(ent, d); 
+				gameMap.removeEntityFromCoord(ent,ent.getCoordinate());
+				ent.move(d);
+				gameMap.addEntityToCoord(ent,nextCoord);
 				if (gameMap.coordHasKey(ent.getCoordinate()) != null) {
-					((Ogre)ent).setOverKey(true);
+					((Ogre)ent).goOverKey(true);
 				}
+				while (moveClub(((Ogre)ent), Direction.values()[rnd.nextInt(4)])) {}
 				return true;
 			}
+		}
+	}
+	
+	private boolean moveClub(Ogre ogre, Direction dir) {
+		Coordinate nextCoord = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
+		nextCoord.update(dir);
+		if (!gameMap.coordBlocksMovement(nextCoord)) {
+			gameMap.setEntityCoord(ogre.getClub(), nextCoord);
+			ogre.getClub().use(nextCoord);
+			if (gameMap.coordHasKey(nextCoord) != null) {
+				ogre.getClub().goesToKey();
+			}
+			return false;
+		} else {
+			return true;
 		}
 	}
 	

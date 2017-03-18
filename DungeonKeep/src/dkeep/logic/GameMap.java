@@ -67,15 +67,27 @@ public class GameMap {
 						addEntityToCoord(lever,newCoord);
 					} else if (map[j][i] == 'O') {
 						Coordinate newCoord = new Coordinate(i,j);
-						Ogre ogre = new Ogre(newCoord);
+						Ogre ogre = new Ogre(newCoord, true);
 						addEntityToCoord(ogre,newCoord);
+						addEntityToCoord(ogre.getClub(), ogre.getClub().getCoordinate());
 						enemies.add(ogre);
+					} else if (map[j][i] == 'w') {
+						Coordinate newCoord = new Coordinate(i,j);
+						Weapon weapon = new Weapon(newCoord);
+						addEntityToCoord(weapon,newCoord);
 					}
 				}
 			}
 		}
 	}
 
+	
+	
+	public void setEntityCoord(Entity ent, Coordinate coord) {
+		removeEntityFromCoord(ent, ent.getCoordinate());
+		addEntityToCoord(ent, coord);
+	}
+	
 	public void moveEntity(Entity ent, Direction dir) {
 		removeEntityFromCoord(ent,ent.getCoordinate());
 		addEntityToCoord(ent,ent.getCoordinate().update(dir));

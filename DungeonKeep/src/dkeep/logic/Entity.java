@@ -12,10 +12,6 @@ public class Entity {
 	protected boolean blocksMovement;
 	private UUID id = UUID.randomUUID();
 	
-	//private HashMap<Coordinate, Entity> board;
-	//private Entity holster;
-	
-	
 	
 	public Entity(Coordinate coord) {
 		coordinate = coord;
@@ -74,10 +70,7 @@ public class Entity {
 		return true;
 	}
 
-	/*Entity(HashMap<Coordinate, Entity> board) {
-		this.board = board;
-	}
-	*/
+	
 	
 	
 }

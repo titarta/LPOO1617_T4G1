@@ -1,17 +1,33 @@
 package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
+import dkeep.logic.Generic.Generic.Direction;
 
 public class Ogre extends NonStatic {
 	protected boolean isStunned;
-	protected boolean isOverKey;
+	protected boolean isArmed;
+	protected Club club;
 
-	public Ogre(Coordinate coord) {
+	public Ogre(Coordinate coord, boolean hasClub) {
 		super(coord);
 		entityChar = 'O';
 		isStunned = false;
-		isOverKey = false;
+		isArmed = hasClub;
+		if (hasClub) {
+			club = new Club();
+		} else {
+			club = null;
+		}
 	}
+
+	public boolean isArmed() {
+		return isArmed;
+	}
+
+	public Club getClub() {
+		return club;
+	}
+
 
 	public boolean isStunned() {
 		return isStunned;
@@ -21,17 +37,15 @@ public class Ogre extends NonStatic {
 		this.isStunned = isStunned;
 	}
 
-	public boolean isOverKey() {
-		return isOverKey;
+
+	public void goOverKey(boolean isOverKey) {
+		entityChar = '$';
 	}
 
-	public void setOverKey(boolean isOverKey) {
-		if (isOverKey) {
-			entityChar = '$';
-		} else {
-			entityChar = 'O';
-		}
-		this.isOverKey = isOverKey;
+	@Override
+	public void move(Direction direction) {
+		entityChar = 'O';
+		super.move(direction);
 	}
 	
 
