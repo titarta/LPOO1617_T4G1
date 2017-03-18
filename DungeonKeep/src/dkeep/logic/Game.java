@@ -69,7 +69,9 @@ public class Game {
 				if (gameMap.coordHasKey(ent.getCoordinate()) != null) {
 					((Ogre)ent).goOverKey(true);
 				}
-				while (moveClub(((Ogre)ent), Direction.values()[rnd.nextInt(4)])) {}
+				if (((Ogre)ent).isArmed()) {
+					while (moveClub(((Ogre)ent), Direction.values()[rnd.nextInt(4)])) {}
+				}
 				return true;
 			}
 		}
@@ -116,14 +118,14 @@ public class Game {
 		} else {
 			gameMap.moveEntity(hero, dir); 
 		}
-		if (gameMap.coordIsWinningCoord(coord)) {
+		if (gameMap.coordIsWinningCoord(hero.getCoordinate())) {
 			throw new GameEndException(true);
 		}
-		if (gameMap.coordHasKey(coord) != null) { //se encontrar uma chave
+		if (gameMap.coordHasKey(hero.getCoordinate()) != null) { //se encontrar uma chave
 			hero.catchKey();
-			gameMap.removeEntityFromCoord(gameMap.coordHasKey(coord), coord);
+			gameMap.removeEntityFromCoord(gameMap.coordHasKey(hero.getCoordinate()), hero.getCoordinate());
 		}
-		if (gameMap.coordHasLever(coord) != null) { //se encontrar uma alavanca
+		if (gameMap.coordHasLever(hero.getCoordinate()) != null) { //se encontrar uma alavanca
 			for (Door d : ((Lever)(gameMap.coordHasLever(coord))).getDoors()) {
 				d.toggle();
 			}
