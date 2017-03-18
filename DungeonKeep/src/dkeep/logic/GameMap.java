@@ -26,10 +26,12 @@ public class GameMap {
 	}
 	
 	public void removeEntityFromCoord(Entity ent, Coordinate coord) {
-		if (coordToEntityMap.get(coord).size() == 1) {
+		if (coordToEntityMap.get(coord).size() <= 1) {
 			coordToEntityMap.remove(coord);
 		} else {
-			coordToEntityMap.get(coord).remove(ent);
+			if (coordToEntityMap.get(coord).contains(ent)) {
+				coordToEntityMap.get(coord).remove(ent);
+			}
 		}
 	}
 	

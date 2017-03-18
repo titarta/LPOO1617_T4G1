@@ -49,10 +49,8 @@ public class Main {
 		game1.printMap();
 		
 		while(true) {
-			Direction d = readCommand();
-			for (Entity e : game1.getEnemies()) {
-				game1.moveOgre(e);
-			}
+			Direction d = Direction.DOWN;
+			game1.moveOgre(game1.getEnemies().iterator().next());
 			try {
 				game1.moveHero(d);
 			} catch (GameEndException e1) {
