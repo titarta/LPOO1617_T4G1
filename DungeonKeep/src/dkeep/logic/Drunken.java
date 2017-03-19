@@ -71,7 +71,7 @@ public class Drunken extends Guard{
 				return super.updateGuard();
 			}
 		} else {
-			if (sleepTurn == 1) {
+			if (sleepTurn == 2) {
 				sleepTurn = 0;
 				Random r = new Random();
 				if (r.nextInt(2) == 0) {

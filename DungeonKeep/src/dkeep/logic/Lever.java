@@ -12,6 +12,8 @@ public class Lever extends Static {
 		super(coord);
 		doors = d;
 		blocksMovement = false;
+		entityChar = 'k';
+		priority = 8;
 	}
 
 	public HashSet<Door> getDoors() {

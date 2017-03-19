@@ -9,6 +9,7 @@ public class Club extends NonStatic {
 		super(new Coordinate(-1,-1));
 		entityChar = '*';
 		blocksMovement = false;
+		priority = 2;
 	}
 	
 	public boolean use(Coordinate coord) {

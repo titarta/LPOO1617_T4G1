@@ -10,15 +10,11 @@ public class Game {
 	
 	private GameMap gameMap;
 	private Hero hero;
-	private HashSet<Entity> enemies;
-	private HashSet<Coordinate> winningCoords;
 	
 	
-	public Game(GameMap gameMap) {
-		this.gameMap = gameMap;
+	public Game(char[][] map) {
+		this.gameMap = new GameMap(map);
 		hero = gameMap.getHero();
-		enemies = gameMap.getEnemies();
-		winningCoords = gameMap.getWinningCoords();
 	}
 	
 	public void printMap() {
@@ -36,7 +32,7 @@ public class Game {
 	}
 	
 	public HashSet<Entity> getEnemies() {
-		return enemies;
+		return gameMap.getEnemies();
 	}
 	
 	public boolean moveEntity(Entity ent, Direction dir) {
@@ -112,7 +108,7 @@ public class Game {
 		Coordinate coord = new Coordinate(hero.getCoordinate().getX(), hero.getCoordinate().getY());
 		coord.update(dir);
 		if (gameMap.coordBlocksMovement(coord)) {
-			if (gameMap.coordHasDoor(coord) != null) {
+			if (gameMap.coordHasDoor(coord) != null && hero.hasKey()) {
 				((Door)(gameMap.coordHasDoor(coord))).toggle();
 			}
 		} else {
@@ -130,16 +126,76 @@ public class Game {
 				d.toggle();
 			}
 		}
-		for (Entity e : enemies) {
+		for (Entity e : gameMap.getEnemies()) {
 			if (gameMap.checkAdjacency(hero, e)) {
+				if (e instanceof Drunken) {
+					if (((Drunken)e).isSleeping()) {
+						continue;
+					}
+				}
 				throw new GameEndException(false);
 			}
 		}
 		return true;
 	}
 	
+	public boolean addEntity(Entity ent) {
+		if (gameMap.coordBlocksMovement(ent.getCoordinate())) {
+			return false;
+		}
+		if (ent instanceof Guard || ent instanceof Ogre) {
+			gameMap.addEnemy(ent);
+		}
+		gameMap.addEntityToCoord(ent, ent.getCoordinate());
+		return true;
+	}
 	
 	public Entity getHero() {
 		return hero;
 	}
+	
+	
+	public GameMap getGameMap() {
+		return gameMap;
+	}
+
+	public void updateGame(Direction dir) throws GameEndException {
+		for(Entity e : gameMap.getEnemies()) {
+			if (e instanceof Guard) {
+				moveGuard(e);
+			} else if (e instanceof Ogre) {
+				moveOgre(e);
+			}
+		}
+		moveHero(dir);
+	}
+
+	public void addWinningCoords (Coordinate[] coords) {
+		for (Coordinate c : coords) {
+			gameMap.addWinningCoord(c);
+		}
+	}
+	
+	@Override
+	public String toString() {
+		String ret = "";
+		for(int i = 0; i < gameMap.getX(); i++) {
+			for(int j = 0; j < gameMap.getY(); j++) {
+				Coordinate coord = new Coordinate(j, i);
+				if (gameMap.getEntity(coord) == null) {
+					ret += "  ";
+				} else {
+					ret += gameMap.getEntity(coord).getEntityChar();
+					ret += " ";
+				}
+			}
+			ret += "\n";
+		}
+		
+		return ret;
+	}
+	
+	
+	
+	
 }

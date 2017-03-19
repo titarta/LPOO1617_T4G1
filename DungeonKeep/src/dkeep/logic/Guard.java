@@ -11,6 +11,7 @@ public class Guard extends NonStatic {
 	public Guard(Coordinate coord) {
 		super(coord);
 		entityChar = 'G';
+		priority = 4;
 	}
 	
 	protected boolean deploysEvent() {

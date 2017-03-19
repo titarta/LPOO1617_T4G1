@@ -20,8 +20,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testMoveHeroIntoToFreeCell() throws GameEndException {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		assertEquals(new Coordinate(1,1), game.getHero().getCoordinate());
 		game.moveHero(Direction.DOWN);
 		assertEquals(new Coordinate(1,2), game.getHero().getCoordinate());
@@ -29,8 +28,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testMoveHeroIntoWall() throws GameEndException {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		assertEquals(new Coordinate(1,1), game.getHero().getCoordinate());
 		game.moveHero(Direction.UP);
 		assertEquals(new Coordinate(1,1), game.getHero().getCoordinate());
@@ -38,8 +36,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroIsCaptureByGuard() {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		try {
 			game.moveHero(Direction.RIGHT);
 		} catch (GameEndException e) {
@@ -51,8 +48,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroCantPassDoor() throws GameEndException {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.LEFT);
 		assertEquals(new Coordinate(1,2), game.getHero().getCoordinate());
@@ -60,28 +56,26 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testDoorsOpen() throws GameEndException {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		HashSet<Door> doors = new HashSet<Door>();
-		doors.add((Door) gameMap.getEntity(new Coordinate(0,2)));
-		doors.add((Door) gameMap.getEntity(new Coordinate(0,3)));
-		((Lever)gameMap.getEntity(new Coordinate(1,3))).setDoors(doors);
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,2)));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,3)));
+		((Lever)game.getGameMap().getEntity(new Coordinate(1,3))).setDoors(doors);
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.DOWN);
-		assertTrue(((Door)gameMap.getEntity(new Coordinate(0,3))).isOpen());
-		assertTrue(((Door)gameMap.getEntity(new Coordinate(0,2))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0,3))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0,2))).isOpen());
 	}
 	
 	@Test
 	public void testHeroWinsMap() throws GameEndException {
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(map);
 		HashSet<Door> doors = new HashSet<Door>();
-		doors.add((Door) gameMap.getEntity(new Coordinate(0,2)));
-		doors.add((Door) gameMap.getEntity(new Coordinate(0,3)));
-		((Lever)gameMap.getEntity(new Coordinate(1,3))).setDoors(doors);
-		gameMap.addWinningCoord(new Coordinate(0,2));
-		gameMap.addWinningCoord(new Coordinate(0,3));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,2)));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,3)));
+		((Lever)game.getGameMap().getEntity(new Coordinate(1,3))).setDoors(doors);
+		game.getGameMap().addWinningCoord(new Coordinate(0,2));
+		game.getGameMap().addWinningCoord(new Coordinate(0,3));
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.DOWN);
 		try {
@@ -107,8 +101,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroDiesToOgre() throws GameEndException {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
+		Game game = new Game(map2);
 		game.moveHero(Direction.RIGHT);
 		game.moveHero(Direction.RIGHT);
 		game.moveHero(Direction.RIGHT);
@@ -129,12 +122,11 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroCatchKey() throws GameEndException {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
+		Game game = new Game(map2);
 		Coordinate coord = new Coordinate(8,1);
-		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
-		gameMap.addEntityToCoord(key, coord);
+		game.getGameMap().addEntityToCoord(key, coord);
 		for (int i = 0; i < 7; i++) {
 			game.moveHero(Direction.RIGHT);
 			game.moveHero(Direction.UP);
@@ -144,12 +136,11 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroCantOpenDoor() throws GameEndException {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
+		Game game = new Game(map2);
 		Coordinate coord = new Coordinate(8,1);
-		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
-		gameMap.addEntityToCoord(key, coord);
+		game.getGameMap().addEntityToCoord(key, coord);
 		for (int i = 0; i < 7; i++) {
 			game.moveHero(Direction.UP);
 		}
@@ -159,12 +150,11 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testHeroOpenDoor() throws GameEndException {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
+		Game game = new Game(map2);
 		Coordinate coord = new Coordinate(8,1);
-		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
-		gameMap.addEntityToCoord(key, coord);
+		game.getGameMap().addEntityToCoord(key, coord);
 		for (int i = 0; i < 7; i++) {
 			game.moveHero(Direction.RIGHT);
 			game.moveHero(Direction.UP);
@@ -177,18 +167,17 @@ public class TestDungeonGameLogic {
 		game.moveHero(Direction.UP);
 		game.moveHero(Direction.UP);
 		game.moveHero(Direction.LEFT);
-		assertTrue(((Door)gameMap.getEntity(new Coordinate(0, 1))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0, 1))).isOpen());
 	}
 	
 	@Test
 	public void testHeroWinsKeep() throws GameEndException {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
+		Game game = new Game(map2);
 		Coordinate coord = new Coordinate(8,1);
-		gameMap.removeEntityFromCoord(gameMap.getEntity(coord), coord);
+		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
-		gameMap.addEntityToCoord(key, coord);
-		gameMap.addWinningCoord(new Coordinate(0, 1));
+		game.getGameMap().addEntityToCoord(key, coord);
+		game.getGameMap().addWinningCoord(new Coordinate(0, 1));
 		for (int i = 0; i < 7; i++) {
 			game.moveHero(Direction.RIGHT);
 			game.moveHero(Direction.UP);
@@ -212,10 +201,9 @@ public class TestDungeonGameLogic {
 	
 	@Test(timeout=1000)
 	public void testSomeRandomBehaviour() {
-		GameMap gameMap = new GameMap(map2);
-		Game game = new Game(gameMap);
-		Ogre ogre = (Ogre) gameMap.getEntity(new Coordinate(5,1));
-		gameMap.removeEntityFromCoord(game.getHero(), game.getHero().getCoordinate());
+		Game game = new Game(map2);
+		Ogre ogre = (Ogre) game.getGameMap().getEntity(new Coordinate(5,1));
+		game.getGameMap().removeEntityFromCoord(game.getHero(), game.getHero().getCoordinate());
 		boolean o1 = false, o2 = false, o3 = false, o4 = false;
 		while (!o1 || !o2 || !o3 || !o4) {
 			Coordinate oldC = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
@@ -240,8 +228,7 @@ public class TestDungeonGameLogic {
 	
 	@Test
 	public void testGuards() {
-		GameMap gameMap = new GameMap(map3);
-		Game game = new Game(gameMap);
+		Game game = new Game(map3);
 		Rookie rookie = new Rookie(new Coordinate(1,1));
 		Suspicious suspicious = new Suspicious(new Coordinate(2,1));
 		Drunken drunk = new Drunken(new Coordinate(3,1));
@@ -249,9 +236,9 @@ public class TestDungeonGameLogic {
 		rookie.setWalkPath(walkpath);
 		suspicious.setWalkPath(walkpath);
 		drunk.setWalkPath(walkpath);
-		gameMap.addEntityToCoord(rookie, rookie.getCoordinate());
-		gameMap.addEntityToCoord(suspicious, suspicious.getCoordinate());
-		gameMap.addEntityToCoord(drunk, drunk.getCoordinate());
+		game.getGameMap().addEntityToCoord(rookie, rookie.getCoordinate());
+		game.getGameMap().addEntityToCoord(suspicious, suspicious.getCoordinate());
+		game.getGameMap().addEntityToCoord(drunk, drunk.getCoordinate());
 		for(int i = 0; i < 40; i++) {
 			game.moveGuard(rookie);
 			game.moveGuard(drunk);

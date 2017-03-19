@@ -8,6 +8,7 @@ public class Key extends Static {
 		super(coord);
 		entityChar = 'k';
 		blocksMovement = false;
+		priority = 7;
 	}
 	
 }

@@ -7,6 +7,7 @@ public class Weapon extends Static{
 	public Weapon(Coordinate coord) {
 		super(coord);
 		entityChar = 'w';
+		priority = 9;
 	}
 
 }

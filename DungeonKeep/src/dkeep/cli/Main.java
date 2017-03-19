@@ -30,7 +30,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		char map[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-				{ 'I', ' ', ' ', ' ', ' ', 'O', ' ', ' ', 'k', 'X' },
+				{ 'I', ' ', ' ', 'O', 'O', 'O', 'O', ' ', 'k', 'X' },
 				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
 				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
@@ -40,17 +40,19 @@ public class Main {
 				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 		
-		GameMap gameMap1 = new GameMap(map);
-		Game game1 = new Game(gameMap1);
-		gameMap1.removeEntityFromCoord(gameMap1.coordHasKey(new Coordinate(8,1)), new Coordinate(8,1));
+		
+		Game game1 = new Game(map);
+		game1.getGameMap().removeEntityFromCoord(game1.getGameMap().coordHasKey(new Coordinate(8,1)), new Coordinate(8,1));
 		Key key = new Key(new Coordinate(8,1));
-		gameMap1.addEntityToCoord(key, key.getCoordinate());
-		gameMap1.addWinningCoord(new Coordinate(0, 1));
+		game1.getGameMap().addEntityToCoord(key, key.getCoordinate());
+		game1.getGameMap().addWinningCoord(new Coordinate(0, 1));
 		game1.printMap();
 		
 		while(true) {
 			Direction d = Direction.DOWN;
-			game1.moveOgre(game1.getEnemies().iterator().next());
+			for (Entity e : game1.getEnemies()) {
+				game1.moveOgre(e);
+			}
 			try {
 				game1.moveHero(d);
 			} catch (GameEndException e1) {

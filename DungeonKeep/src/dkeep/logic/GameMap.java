@@ -181,10 +181,18 @@ public class GameMap {
 	}
 	
 	public Entity getEntity(Coordinate coord) {
+		Entity ret = null;
+		int i = 100;
 		if (coordToEntityMap.get(coord) == null) {
 			return null;
 		} else {
-			return coordToEntityMap.get(coord).iterator().next();
+			for (Entity e : coordToEntityMap.get(coord)) {
+				if (e.getPriority() < i) {
+					i = e.getPriority();
+					ret = e;
+				}
+			}
+			return ret;
 		}
 	}
 
@@ -196,7 +204,10 @@ public class GameMap {
 	public HashSet<Entity> getEnemies() {
 		return enemies;
 	}
-
+	
+	public void addEnemy(Entity e) {
+		enemies.add(e);
+	}
 	
 	
 }

@@ -18,6 +18,7 @@ public class Ogre extends NonStatic {
 		} else {
 			club = null;
 		}
+		priority = 3;
 	}
 
 	public boolean isArmed() {

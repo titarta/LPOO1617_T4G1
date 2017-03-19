@@ -12,6 +12,7 @@ public class Hero extends NonStatic {
 		super(coord);
 		entityChar = 'H';
 		hasKey = false;
+		priority = 5;
 	}
 	
 	public void catchKey() {

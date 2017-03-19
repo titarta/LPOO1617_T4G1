@@ -10,6 +10,7 @@ public class Entity {
 	protected Coordinate coordinate;
 	protected char entityChar;
 	protected boolean blocksMovement;
+	protected int priority;
 	private UUID id = UUID.randomUUID();
 	
 	
@@ -38,8 +39,13 @@ public class Entity {
 	public void setEntityChar(char c) {
 		entityChar = c;
 	}
+	
+	
 
 	
+	public int getPriority() {
+		return priority;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
