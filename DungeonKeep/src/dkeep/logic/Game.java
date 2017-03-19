@@ -122,7 +122,7 @@ public class Game {
 			gameMap.removeEntityFromCoord(gameMap.coordHasKey(hero.getCoordinate()), hero.getCoordinate());
 		}
 		if (gameMap.coordHasLever(hero.getCoordinate()) != null) { //se encontrar uma alavanca
-			for (Door d : ((Lever)(gameMap.coordHasLever(coord))).getDoors()) {
+			for (Door d : ((Lever)(gameMap.coordHasLever(hero.getCoordinate()))).getDoors()) {
 				d.toggle();
 			}
 		}
