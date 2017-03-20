@@ -110,6 +110,7 @@ public class Game {
 		if (gameMap.coordBlocksMovement(coord)) {
 			if (gameMap.coordHasDoor(coord) != null && hero.hasKey()) {
 				((Door)(gameMap.coordHasDoor(coord))).toggle();
+				hero.releaseKey();
 			}
 		} else {
 			gameMap.moveEntity(hero, dir); 
@@ -125,6 +126,10 @@ public class Game {
 			for (Door d : ((Lever)(gameMap.coordHasLever(hero.getCoordinate()))).getDoors()) {
 				d.toggle();
 			}
+		}
+		if (gameMap.coordHasWeapon(hero.getCoordinate()) != null) {
+			gameMap.removeEntityFromCoord(gameMap.coordHasWeapon(hero.getCoordinate()), hero.getCoordinate());
+			hero.catchWeapon();
 		}
 		for (Entity e : gameMap.getEnemies()) {
 			if (gameMap.checkAdjacency(hero, e)) {

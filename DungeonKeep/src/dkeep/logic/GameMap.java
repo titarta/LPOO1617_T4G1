@@ -111,6 +111,17 @@ public class GameMap {
 		return false;
 	}
 	
+	public Entity coordHasWeapon(Coordinate coord) {
+		if (coordToEntityMap.get(coord) != null){
+			for(Entity e : coordToEntityMap.get(coord)) {
+				if (e instanceof Weapon) {
+					return e;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public Entity coordHasKey(Coordinate coord) {
 		if (coordToEntityMap.get(coord) != null ){
 			for(Entity e : coordToEntityMap.get(coord)) {

@@ -32,6 +32,7 @@ public class DKeepGUI {
 	private ActionListener winGame;
 	private ActionListener loseGame;
 	private int guardType;
+	private int numberOgres;
 	
 	/**
 	 * Launch the application.
@@ -86,6 +87,12 @@ public class DKeepGUI {
 		frame.getContentPane().add(lblNumberOfOgres);
 		
 		JTextField numberOfOgresTextField = new JTextField();
+		numberOfOgresTextField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numberOgres = Integer.parseInt(numberOfOgresTextField.getText());
+			}
+		});
+		numberOfOgresTextField.setFont(new Font("Courier New", Font.PLAIN, 11));
 		numberOfOgresTextField.setBounds(155, 7, 41, 20);
 		frame.getContentPane().add(numberOfOgresTextField);
 		numberOfOgresTextField.setColumns(10);
@@ -129,12 +136,12 @@ public class DKeepGUI {
 				
 				
 				Game level1 = new Game(map1);
-				HashSet<Door> doors = new HashSet<Door>();
+				HashSet<Door> doors1 = new HashSet<Door>();
 				Door door1 = new Door(new Coordinate(0,5));
 				Door door2 = new Door(new Coordinate(0,6));
-				doors.add(door1);
-				doors.add(door2);
-				Lever lever1 = new Lever(new Coordinate(7, 8), doors);
+				doors1.add(door1);
+				doors1.add(door2);
+				Lever lever1 = new Lever(new Coordinate(7, 8), doors1);
 				level1.addEntity(door1);
 				level1.addEntity(door2);
 				level1.addEntity(lever1);
@@ -157,6 +164,25 @@ public class DKeepGUI {
 				Coordinate[] winningCoords1 = {new Coordinate(0,5),new Coordinate(0,6)};
 				level1.addWinningCoords(winningCoords1);
 				game.add(level1);
+				
+				char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+						{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+						{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+				
+				Game level2 = new Game(map2);
+				Key key1 = new Key(new Coordinate(8, 1));
+				level2.addEntity(key1);
+				for (int i = 0; i < numberOgres; i++) {
+					level2.addEntity(new Ogre(new Coordinate(4, 1), false));
+				}
+				Coordinate[] winningCoords2 = {new Coordinate(0,1)};
+				level2.addWinningCoords(winningCoords2);
+				level2.addEntity(new Weapon(new Coordinate(2,8)));
+				game.add(level2);
+				
 				gameOutput.setText(game.get(level) + "");
 			}
 		});
@@ -273,8 +299,15 @@ public class DKeepGUI {
 		winGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gameOutput.setText(game.get(level) + "");
-				gameStatus.setText("You won!");
-				disableButtons.actionPerformed(null);
+				if (level == game.size() - 1) {
+					disableButtons.actionPerformed(null);
+					gameStatus.setText("You won!");
+				} else {
+					level++;
+					gameOutput.setText(game.get(level) + "");
+					gameStatus.setText("");
+				}
+				
 			}
 		};
 		

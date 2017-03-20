@@ -22,4 +22,6 @@ public class Club extends NonStatic {
 		entityChar = '$';
 	}
 	
+	
+	
 }

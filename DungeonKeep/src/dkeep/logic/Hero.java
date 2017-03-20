@@ -22,7 +22,11 @@ public class Hero extends NonStatic {
 	
 	public void releaseKey() {
 		hasKey = false;
-		entityChar = 'H';
+		if (isArmed) {
+			entityChar = 'A';
+		} else {
+			entityChar = 'H';
+		}
 	}
 	
 	public boolean hasKey() {
@@ -31,6 +35,13 @@ public class Hero extends NonStatic {
 
 	public boolean isArmed() {
 		return isArmed;
+	}
+	
+	public void catchWeapon() {
+		isArmed = true;
+		if (!hasKey) {
+			entityChar = 'A';
+		}
 	}
 
 	
