@@ -29,10 +29,12 @@ public class GameMap {
 		if (!coordToEntityMap.containsKey(coord)) {
 			return;
 		}
+		
 		if (coordToEntityMap.get(coord).size() <= 1) {
 			coordToEntityMap.remove(coord);
 			return;
 		}
+		
 		coordToEntityMap.get(coord).remove(ent);
 	}
 	
@@ -194,17 +196,18 @@ public class GameMap {
 	public Entity getEntity(Coordinate coord) {
 		Entity ret = null;
 		int i = 100;
+		
 		if (coordToEntityMap.get(coord) == null) {
 			return null;
-		} else {
-			for (Entity e : coordToEntityMap.get(coord)) {
-				if (e.getPriority() < i) {
-					i = e.getPriority();
-					ret = e;
-				}
-			}
-			return ret;
 		}
+
+		for (Entity e : coordToEntityMap.get(coord)) {
+			if (e.getPriority() < i) {
+				i = e.getPriority();
+				ret = e;
+			}
+		}
+		return ret;
 	}
 
 

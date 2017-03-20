@@ -17,6 +17,8 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
@@ -176,7 +178,9 @@ public class DKeepGUI {
 				Key key1 = new Key(new Coordinate(8, 1));
 				level2.addEntity(key1);
 				for (int i = 0; i < numberOgres; i++) {
-					level2.addEntity(new Ogre(new Coordinate(4, 1), false));
+					Ogre ogre = new Ogre(new Coordinate(4, 1), true);
+					level2.addEntity(ogre);
+					level2.addEntity(ogre.getClub());
 				}
 				Coordinate[] winningCoords2 = {new Coordinate(0,1)};
 				level2.addWinningCoords(winningCoords2);

@@ -49,42 +49,41 @@ public class Game {
 		}
 	}
 	
-	public boolean moveOgre(Entity ent) {
+	public boolean moveOgre(Ogre ogre) {
 		Random rnd = new Random();
-		
-		while (true) {
-			Coordinate nextCoord = new Coordinate(ent.getCoordinate().getX(), ent.getCoordinate().getY());
-			Direction d = Direction.values()[rnd.nextInt(4)];
-			nextCoord.update(d);
-			if (gameMap.coordBlocksMovement(nextCoord)) {
-				continue;
-			} else {
-				gameMap.removeEntityFromCoord(ent,ent.getCoordinate());
-				ent.move(d);
-				gameMap.addEntityToCoord(ent,nextCoord);
-				if (gameMap.coordHasKey(ent.getCoordinate()) != null) {
-					((Ogre)ent).goOverKey(true);
-				}
-				if (((Ogre)ent).isArmed()) {
-					while (moveClub(((Ogre)ent), Direction.values()[rnd.nextInt(4)])) {}
-				}
-				return true;
-			}
+
+		Coordinate nextCoord = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
+		Direction d;
+		do {
+			nextCoord.set(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
+			d = Direction.values()[rnd.nextInt(4)];
+		} while (gameMap.coordBlocksMovement(nextCoord.update(d)));
+
+		gameMap.removeEntityFromCoord(ogre, ogre.getCoordinate());
+		ogre.move(d);
+		if (gameMap.coordHasKey(ogre.getCoordinate()) != null) {
+			((Ogre) ogre).goOverKey(true);
 		}
+		if (ogre.isArmed()) {
+			placeClub(ogre);
+		}
+		gameMap.addEntityToCoord(ogre, nextCoord);
+		return true;
 	}
 	
-	public boolean moveClub(Ogre ogre, Direction dir) {
+	public void placeClub(Ogre ogre) {
+		gameMap.removeEntityFromCoord(ogre.getClub(),ogre.getClub().getCoordinate());
 		Coordinate nextCoord = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
-		nextCoord.update(dir);
-		if (!gameMap.coordBlocksMovement(nextCoord)) {
-			gameMap.setEntityCoord(ogre.getClub(), nextCoord);
-			ogre.getClub().use(nextCoord);
-			if (gameMap.coordHasKey(nextCoord) != null) {
+		Random rnd = new Random();
+		Direction d;
+		do {
+			nextCoord.set(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
+			d = Direction.values()[rnd.nextInt(4)];
+		} while (gameMap.coordBlocksMovement(nextCoord.update(d)));
+		ogre.getClub().use(nextCoord);
+		gameMap.addEntityToCoord(ogre.getClub(), nextCoord);
+		if (gameMap.coordHasKey(nextCoord) != null) {
 				ogre.getClub().goesToKey();
-			}
-			return false;
-		} else {
-			return true;
 		}
 	}
 	
@@ -144,6 +143,8 @@ public class Game {
 		return true;
 	}
 	
+	
+	
 	public boolean addEntity(Entity ent) {
 		if (gameMap.coordBlocksMovement(ent.getCoordinate())) {
 			return false;
@@ -169,7 +170,7 @@ public class Game {
 			if (e instanceof Guard) {
 				moveGuard(e);
 			} else if (e instanceof Ogre) {
-				moveOgre(e);
+				moveOgre((Ogre)e);
 			}
 		}
 		moveHero(dir);

@@ -51,7 +51,7 @@ public class Main {
 		while(true) {
 			Direction d = Direction.DOWN;
 			for (Entity e : game1.getEnemies()) {
-				game1.moveOgre(e);
+				game1.moveOgre((Ogre)e);
 			}
 			try {
 				game1.moveHero(d);
