@@ -50,6 +50,11 @@ public class Game {
 	}
 	
 	public boolean moveOgre(Ogre ogre) {
+		if (ogre.isStunned()) {
+			ogre.updateStunCounter();
+			return false;
+		}
+		
 		Random rnd = new Random();
 
 		Coordinate nextCoord = new Coordinate(ogre.getCoordinate().getX(), ogre.getCoordinate().getY());
@@ -131,18 +136,35 @@ public class Game {
 			hero.catchWeapon();
 		}
 		for (Entity e : gameMap.getEnemies()) {
-			if (gameMap.checkAdjacency(hero, e)) {
-				if (e instanceof Drunken) {
-					if (((Drunken)e).isSleeping()) {
-						continue;
-					}
-				}
-				throw new GameEndException(false);
+			if (e instanceof Ogre) {
+				checkHeroColisionWithOgre((Ogre)e);
+				continue;
 			}
+			if (!gameMap.checkAdjacency(hero, e)) {
+				continue;
+			}
+			if (e instanceof Drunken) {
+				if (((Drunken)e).isSleeping()) {
+					continue;
+				}
+			}
+			throw new GameEndException(false);
 		}
 		return true;
 	}
 	
+	
+	public void checkHeroColisionWithOgre (Ogre ogre) throws GameEndException {
+		if (gameMap.checkAdjacency(hero, ogre.getClub())) {
+			throw new GameEndException(false);
+		}
+		if (gameMap.checkAdjacency(hero, ogre) && !hero.isArmed()) {
+			throw new GameEndException(false);
+		}
+		if (gameMap.checkAdjacency(hero, ogre) && hero.isArmed()) {
+			ogre.getStunned();
+		}
+	}
 	
 	
 	public boolean addEntity(Entity ent) {
@@ -189,13 +211,11 @@ public class Game {
 			for(int j = 0; j < gameMap.getY(); j++) {
 				Coordinate coord = new Coordinate(j, i);
 				if (gameMap.getEntity(coord) == null) {
-					ret += "  ";
+					ret += " ";
 				} else {
 					ret += gameMap.getEntity(coord).getEntityChar();
-					ret += " ";
 				}
 			}
-			ret += "\n";
 		}
 		
 		return ret;

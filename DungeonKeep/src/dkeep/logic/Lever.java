@@ -12,7 +12,7 @@ public class Lever extends Static {
 		super(coord);
 		doors = d;
 		blocksMovement = false;
-		entityChar = 'k';
+		entityChar = 'l';
 		priority = 8;
 	}
 

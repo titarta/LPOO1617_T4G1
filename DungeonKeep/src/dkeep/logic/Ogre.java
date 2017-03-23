@@ -6,6 +6,7 @@ import dkeep.logic.Generic.Generic.Direction;
 public class Ogre extends NonStatic {
 	protected boolean isStunned;
 	protected boolean isArmed;
+	protected int stunCounter;
 	protected Club club;
 
 	public Ogre(Coordinate coord, boolean hasClub) {
@@ -19,6 +20,7 @@ public class Ogre extends NonStatic {
 			club = null;
 		}
 		priority = 3;
+		stunCounter = 0;
 	}
 
 	public boolean isArmed() {
@@ -27,6 +29,21 @@ public class Ogre extends NonStatic {
 
 	public Club getClub() {
 		return club;
+	}
+	
+	public void getStunned() {
+		isStunned = true;
+		stunCounter = 2;
+		entityChar = '8';
+	}
+	
+	public void updateStunCounter() {
+		if (stunCounter == 0) {
+			isStunned = false;
+			entityChar = 'O';
+		} else {
+			stunCounter--;
+		}
 	}
 
 

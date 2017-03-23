@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JTextField;
 
 import org.junit.rules.DisableOnDebug;
@@ -19,10 +21,12 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
 
 public class DKeepGUI {
 
@@ -35,6 +39,7 @@ public class DKeepGUI {
 	private ActionListener loseGame;
 	private int guardType;
 	private int numberOgres;
+	private GamePanel gamePanel;
 	
 	/**
 	 * Launch the application.
@@ -69,18 +74,17 @@ public class DKeepGUI {
 		/**
 		 *  SWING Interface
 		 */
+		
+		
+		
+		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 629, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JTextArea gameOutput = new JTextArea();
-		gameOutput.setFont(new Font("Courier New", Font.PLAIN, 13));
-		gameOutput.setBounds(22, 59, 238, 166);
-		frame.getContentPane().add(gameOutput);
-		
 		JLabel gameStatus = new JLabel("");
-		gameStatus.setBounds(22, 236, 215, 14);
+		gameStatus.setBounds(22, 419, 215, 14);
 		frame.getContentPane().add(gameStatus);
 		
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
@@ -123,6 +127,7 @@ public class DKeepGUI {
 				enableButtons.actionPerformed(null);
 				game.clear();
 				level = 0;
+				
 				
 				char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},
 						{'X','H',' ',' ','I',' ','X',' ',' ','X'},
@@ -187,11 +192,18 @@ public class DKeepGUI {
 				level2.addEntity(new Weapon(new Coordinate(2,8)));
 				game.add(level2);
 				
-				gameOutput.setText(game.get(level) + "");
+				gamePanel = new GamePanel(game.get(level));
+				gamePanel.setBounds(30, 65, 350, 385);
+				gamePanel.setVisible(true);
+				frame.getContentPane().add(gamePanel);
+				
+				
+				gamePanel.paintComponent(gamePanel.getGraphics());
+				//gameOutput.setText(game.get(level) + "");
 			}
 		});
 		btnNewGame.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnNewGame.setBounds(300, 60, 90, 25);
+		btnNewGame.setBounds(450, 50, 90, 25);
 		frame.getContentPane().add(btnNewGame);
 		
 		JButton btnExit = new JButton("Exit");
@@ -201,7 +213,7 @@ public class DKeepGUI {
 			}
 		});
 		btnExit.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnExit.setBounds(300, 200, 90, 25);
+		btnExit.setBounds(450, 240, 90, 25);
 		frame.getContentPane().add(btnExit);
 		
 		JButton btnUp = new JButton("Up");
@@ -209,7 +221,8 @@ public class DKeepGUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					game.get(level).updateGame(Direction.UP);
-					gameOutput.setText(game.get(level) + "");
+					gamePanel.paintComponent(gamePanel.getGraphics());
+				//	gameOutput.setText(game.get(level) + "");
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
 						winGame.actionPerformed(null);
@@ -220,15 +233,18 @@ public class DKeepGUI {
 			}
 		});
 		btnUp.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnUp.setBounds(310, 110, 70, 15);
+		btnUp.setBounds(460, 100, 70, 30);
 		frame.getContentPane().add(btnUp);
+		
+		
 		
 		JButton btnLeft = new JButton("Left");
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					game.get(level).updateGame(Direction.LEFT);
-					gameOutput.setText(game.get(level) + "");
+					gamePanel.paintComponent(gamePanel.getGraphics());
+				//	gameOutput.setText(game.get(level) + "");
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
 						winGame.actionPerformed(null);
@@ -239,7 +255,7 @@ public class DKeepGUI {
 			}
 		});
 		btnLeft.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnLeft.setBounds(270, 130, 70, 15);
+		btnLeft.setBounds(420, 140, 70, 30);
 		frame.getContentPane().add(btnLeft);
 		
 		JButton btnRight = new JButton("Right");
@@ -247,7 +263,8 @@ public class DKeepGUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					game.get(level).updateGame(Direction.RIGHT);
-					gameOutput.setText(game.get(level) + "");
+					gamePanel.paintComponent(gamePanel.getGraphics());
+					//gameOutput.setText(game.get(level) + "");
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
 						winGame.actionPerformed(null);
@@ -258,7 +275,7 @@ public class DKeepGUI {
 			}
 		});
 		btnRight.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnRight.setBounds(350, 130, 70, 15);
+		btnRight.setBounds(500, 140, 70, 30);
 		frame.getContentPane().add(btnRight);
 		
 		JButton btnDown = new JButton("Down");
@@ -267,7 +284,8 @@ public class DKeepGUI {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					game.get(level).updateGame(Direction.DOWN);
-					gameOutput.setText(game.get(level) + "");
+					gamePanel.paintComponent(gamePanel.getGraphics());
+					//gameOutput.setText(game.get(level) + "");
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
 						winGame.actionPerformed(null);
@@ -277,7 +295,7 @@ public class DKeepGUI {
 				}
 			}
 		});
-		btnDown.setBounds(310, 150, 70, 15);
+		btnDown.setBounds(460, 180, 70, 30);
 		frame.getContentPane().add(btnDown);
 		
 		disableButtons = new ActionListener() {
@@ -302,13 +320,16 @@ public class DKeepGUI {
 		
 		winGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameOutput.setText(game.get(level) + "");
+				gamePanel.paintComponent(gamePanel.getGraphics());
+				//gameOutput.setText(game.get(level) + "");
 				if (level == game.size() - 1) {
 					disableButtons.actionPerformed(null);
 					gameStatus.setText("You won!");
 				} else {
 					level++;
-					gameOutput.setText(game.get(level) + "");
+					gamePanel.setGame(game.get(level));
+					gamePanel.paintComponent(gamePanel.getGraphics());
+					//gameOutput.setText(game.get(level) + "");
 					gameStatus.setText("");
 				}
 				
@@ -317,12 +338,12 @@ public class DKeepGUI {
 		
 		loseGame = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gameOutput.setText(game.get(level) + "");
+				gamePanel.paintComponent(gamePanel.getGraphics());
+				//gameOutput.setText(game.get(level) + "");
 				gameStatus.setText("You lost...");
 				disableButtons.actionPerformed(null);
 			}
 		};
 		
 	}
-	
 }

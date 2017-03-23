@@ -1,9 +1,9 @@
 package dkeep.logic;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+
 import dkeep.logic.Generic.*;
 import dkeep.logic.Generic.Generic.Direction;
 
@@ -113,57 +113,38 @@ public class GameMap {
 		return false;
 	}
 	
-	public Entity coordHasWeapon(Coordinate coord) {
-		if (coordToEntityMap.get(coord) != null){
-			for(Entity e : coordToEntityMap.get(coord)) {
-				if (e instanceof Weapon) {
-					return e;
-				}
+	public Entity coordHas(Coordinate coord, Class<? extends Entity> c) {
+		if (coordToEntityMap.get(coord) == null){
+			return null;
+		}
+		
+		for (Entity e : coordToEntityMap.get(coord)) {
+			if (c.isInstance(e)) {
+				return e;
 			}
 		}
 		return null;
+
+	}
+
+	public Entity coordHasWeapon(Coordinate coord) {
+		return coordHas(coord, Weapon.class);
 	}
 	
 	public Entity coordHasKey(Coordinate coord) {
-		if (coordToEntityMap.get(coord) != null ){
-			for(Entity e : coordToEntityMap.get(coord)) {
-				if (e instanceof Key) {
-					return e;
-				}
-			}
-		}
-		return null;
+		return coordHas(coord, Key.class);
 	}
 	
 	public Entity coordHasLever(Coordinate coord) {
-		if (coordToEntityMap.get(coord) != null ){
-			for(Entity e : coordToEntityMap.get(coord)) {
-				if (e instanceof Lever) {
-					return e;
-				}
-			}
-		}
-		return null;
+		return coordHas(coord, Lever.class);
 	}
 	
 	public Entity coordHasDoor(Coordinate coord) {
-		if (coordToEntityMap.get(coord) != null ){
-			for(Entity e : coordToEntityMap.get(coord)) {
-				if (e instanceof Door) {
-					return e;
-				}
-			}
-		}
-		return null;
+		return coordHas(coord, Door.class);
 	}
 	
 	public boolean coordIsWinningCoord(Coordinate coord) {
-		for (Coordinate c : winningCoords) {
-			if (c.equals(coord)) {
-				return true;
-			}
-		}
-		return false;
+		return winningCoords.contains(coord);
 	}
 	
 	public void addWinningCoord(Coordinate coord) {
