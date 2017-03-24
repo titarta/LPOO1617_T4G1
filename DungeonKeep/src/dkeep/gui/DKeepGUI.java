@@ -267,8 +267,8 @@ public class DKeepGUI {
 			public void actionPerformed(ActionEvent e) {
 				gamePanel.paintComponent(gamePanel.getGraphics());
 				if (level == game.size() - 1) {
-					disableButtons.actionPerformed(null);
 					gameStatus.setText("You won!");
+					disableButtons.actionPerformed(null);
 					gamePanel.requestFocusInWindow();
 				} else {
 					level++;
