@@ -17,6 +17,19 @@ public class Game {
 		hero = gameMap.getHero();
 	}
 	
+	public Game(int x, int y) {
+		gameMap = new GameMap(x, y);
+		for (int i = 0; i < y; i++) {
+			for (int j = 0; j < x; j++) {
+				if (i == 0 || i == y-1 || j == 0 || j == x-1) {
+					gameMap.addEntityToCoord(new Wall(new Coordinate(i,j)), new Coordinate(i,j));
+				}
+			}
+		}
+		
+		hero = null;
+	}
+	
 	public void printMap() {
 		for(int i = 0; i < gameMap.getX(); i++) {
 			for(int j = 0; j < gameMap.getY(); j++) {
@@ -207,9 +220,9 @@ public class Game {
 	@Override
 	public String toString() {
 		String ret = "";
-		for(int i = 0; i < gameMap.getX(); i++) {
-			for(int j = 0; j < gameMap.getY(); j++) {
-				Coordinate coord = new Coordinate(j, i);
+		for(int i = 0; i < gameMap.getY(); i++) {
+			for(int j = 0; j < gameMap.getX(); j++) {
+				Coordinate coord = new Coordinate(i, j);
 				if (gameMap.getEntity(coord) == null) {
 					ret += " ";
 				} else {

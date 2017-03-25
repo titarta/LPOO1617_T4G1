@@ -77,10 +77,8 @@ public class DKeepGUI {
 		 */
 		
 		
-		
-		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 629, 500);
+		frame.setBounds(100, 100, 630, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -366,25 +364,18 @@ public class DKeepGUI {
 		
 		startGame.actionPerformed(null);
 		gamePanel = new GamePanel(game.get(level));
-		gamePanel.setBounds(30, 65, 350, 385);
+		gamePanel.setBounds(30, 65, 320, 320);
 		gamePanel.setVisible(true);
 		enableButtons.actionPerformed(null);
 		
 		gamePanel.requestFocusInWindow();
 		
 		gamePanel.addKeyListener(new KeyListener() {
+				@Override
+				public void keyTyped(KeyEvent e) {}
 				
 				@Override
-				public void keyTyped(KeyEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void keyReleased(KeyEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void keyReleased(KeyEvent e) {}
 				
 				@Override
 				public void keyPressed(KeyEvent e) {

@@ -38,6 +38,13 @@ public class GameMap {
 		coordToEntityMap.get(coord).remove(ent);
 	}
 	
+	public GameMap(int x, int y) {
+		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
+		winningCoords = new HashSet<Coordinate>();
+		enemies = new HashSet<Entity>();
+		this.x = x;
+		this.y = y;
+	}
 	
 	public GameMap(char[][] map) {
 		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
