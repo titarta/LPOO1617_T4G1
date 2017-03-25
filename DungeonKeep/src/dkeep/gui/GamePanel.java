@@ -34,6 +34,7 @@ public class GamePanel extends JPanel{
 	private BufferedImage key;
 	private BufferedImage club;
 	private BufferedImage lever;
+	private BufferedImage brokenKey;
 	private Game game;
 	
 	
@@ -76,6 +77,8 @@ public class GamePanel extends JPanel{
 		armedHeroWithKey = ImageIO.read(new File("src/dkeep/gui/Images/armedHeroWithKey.png"));
 		
 		club = ImageIO.read(new File("src/dkeep/gui/Images/club.png"));
+		
+		brokenKey = ImageIO.read(new File("src/dkeep/gui/Images/brokenKey.png"));
 		} catch (IOException e) {
 			System.out.print("Couldn't load textures");
 		}
@@ -139,6 +142,9 @@ public class GamePanel extends JPanel{
 					break;
 				case 'l':
 					g.drawImage(lever, i*tile, j*tile, tile, tile, null);
+					break;
+				case '$':
+					g.drawImage(brokenKey, i*tile, j*tile, tile, tile, null);
 					break;
 				}
 			}

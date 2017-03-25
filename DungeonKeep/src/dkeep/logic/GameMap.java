@@ -133,6 +133,10 @@ public class GameMap {
 		return null;
 
 	}
+	
+	public void removeCoord(Coordinate coord) {
+		coordToEntityMap.remove(coord);
+	}
 
 	public Entity coordHasWeapon(Coordinate coord) {
 		return coordHas(coord, Weapon.class);
@@ -148,6 +152,10 @@ public class GameMap {
 	
 	public Entity coordHasDoor(Coordinate coord) {
 		return coordHas(coord, Door.class);
+	}
+	
+	public boolean coordHasSomething(Coordinate coord) {
+		return coordToEntityMap.containsKey(coord);
 	}
 	
 	public boolean coordIsWinningCoord(Coordinate coord) {

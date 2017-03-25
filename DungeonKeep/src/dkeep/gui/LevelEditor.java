@@ -22,23 +22,31 @@ public class LevelEditor {
 
 	private JFrame frame;
 	private Game game;
+	private GameMap gameMap;
 	private int xValue;
 	private int yValue;
 	private String elementToAdd;
 	private GameEditorPanel gPanel;
+	private JButton hero;
+	private JButton door;
+	private JButton ogre;
+	private JButton weapon;
+	private JButton key;
+	private JButton wall;
+	private boolean has1Hero;
+	private boolean canWin;
+	private boolean hasAtleast1Ogre;
+	private DKeepGUI frameToSend;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LevelEditor window = new LevelEditor();
+			public void run(){
+					LevelEditor window;
+					window = new LevelEditor();
 					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
 	}
@@ -46,28 +54,37 @@ public class LevelEditor {
 	/**
 	 * Create the application.
 	 */
-	public LevelEditor() {
+	public LevelEditor(){
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(){
 		frame = new JFrame();
 		frame.setBounds(100, 100, 620, 560);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JButton saveGame = new JButton("Save Game");
+		JButton saveGame = new JButton("Save");
 		saveGame.setBounds(505, 55, 90, 25);
 		frame.getContentPane().add(saveGame);
+		saveGame.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (has1Hero && hasAtleast1Ogre && canWin) {
+					frameToSend.addGame(game);
+				}
+			}
+		});
 		
 		JButton cancel = new JButton("Cancel");
 		cancel.setBounds(505, 450, 90, 25);
 		frame.getContentPane().add(cancel);
 		
-		JButton hero = new JButton("Hero");
+		hero = new JButton("Hero");
 		hero.setBounds(505, 150, 90, 25);
 		frame.getContentPane().add(hero);
 		hero.addActionListener(new ActionListener() {
@@ -78,7 +95,7 @@ public class LevelEditor {
 			}
 		});
 		
-		JButton door = new JButton("Door");
+		door = new JButton("Door");
 		door.setBounds(505, 180, 90, 25);
 		frame.getContentPane().add(door);
 		door.addActionListener( new ActionListener() {
@@ -89,7 +106,7 @@ public class LevelEditor {
 			}
 		});
 		
-		JButton wall = new JButton("Wall");
+		wall = new JButton("Wall");
 		wall.setBounds(505, 210, 90, 25);
 		frame.getContentPane().add(wall);
 		wall.addActionListener( new ActionListener() {
@@ -100,7 +117,7 @@ public class LevelEditor {
 			}
 		});
 		
-		JButton ogre = new JButton("Ogre");
+		ogre = new JButton("Ogre");
 		ogre.setBounds(505, 240, 90, 25);
 		frame.getContentPane().add(ogre);
 		ogre.addActionListener( new ActionListener() {
@@ -111,13 +128,24 @@ public class LevelEditor {
 			}
 		});
 		
-		JButton key = new JButton("Key");
+		key = new JButton("Key");
 		key.setBounds(505, 270, 90, 25);
 		frame.getContentPane().add(key);
 		key.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				elementToAdd = "Key";
+				gPanel.requestFocusInWindow();
+			}
+		});
+		
+		weapon = new JButton("Weapon");
+		weapon.setBounds(505, 300, 90, 25);
+		frame.getContentPane().add(weapon);
+		weapon.addActionListener( new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				elementToAdd = "Weapon";
 				gPanel.requestFocusInWindow();
 			}
 		});
@@ -172,8 +200,13 @@ public class LevelEditor {
 	}
 	
 	private void generatePanel() {
+		hasAtleast1Ogre = false;
+		has1Hero = false;
+		canWin = false;
+		hero.setEnabled(true);
 		game = new Game(xValue, yValue);
 		gPanel = new GameEditorPanel(game);
+		gameMap = game.getGameMap();
 		gPanel.setBounds(50, 70, 32*13, 32*13);
 		frame.getContentPane().add(gPanel);
 		gPanel.setVisible(true);
@@ -188,19 +221,22 @@ public class LevelEditor {
 			public void mousePressed(MouseEvent e) {
 				switch(elementToAdd) {
 				case "Hero":
-					game.addEntity(new Hero(new Coordinate(e.getPoint().y /32, e.getPoint().x /32)));
+					placeHero(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
 					break;
 				case "Door":
-					game.addEntity(new Door(new Coordinate(e.getPoint().y /32, e.getPoint().x /32)));
+					placeDoor(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
 					break;
 				case "Wall":
-					game.addEntity(new Wall(new Coordinate(e.getPoint().y /32, e.getPoint().x /32)));
+					placeWall(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
 					break;
 				case "Ogre":
-					game.addEntity(new Ogre(new Coordinate(e.getPoint().y /32, e.getPoint().x /32),true));
+					placeOgre(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
 					break;
 				case "Key":
-					game.addEntity(new Key(new Coordinate(e.getPoint().y /32, e.getPoint().x /32)));
+					placeKey(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
+					break;
+				case "Weapon":
+					placeWeapon(new Coordinate(e.getPoint().y /32, e.getPoint().x /32));
 					break;
 				}
 				gPanel.setGame(game);
@@ -221,5 +257,63 @@ public class LevelEditor {
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+		
 	}
+	
+	private void placeHero(Coordinate coord) {
+		if (gameMap.coordHasSomething(coord)) {
+			return;
+		}
+		has1Hero = true;
+		game.addEntity(new Hero(coord));
+		hero.setEnabled(false);
+		elementToAdd = "";
+	}
+	
+	private void placeWall(Coordinate coord) {
+		if (gameMap.coordHasSomething(coord)) {
+			return;
+		}
+		game.addEntity(new Wall(coord));
+	}
+	
+	private void placeDoor(Coordinate coord) {
+		if (!gameMap.coordBlocksMovement(coord)) {
+			return;
+		}
+		gameMap.removeCoord(coord);
+		game.addEntity(new Door(coord));
+		if (coord.getX() == 0 || coord.getY() == 0 || coord.getX() == xValue - 1 || coord.getY() == yValue - 1) {
+			Coordinate[] c = {coord};
+			game.addWinningCoords(c);
+			canWin = true;
+		}
+	}
+	
+	private void placeKey(Coordinate coord) {
+		if (gameMap.coordHasSomething(coord)) {
+			return;
+		}
+		game.addEntity(new Key(coord));
+	}
+	
+	private void placeOgre(Coordinate coord) {
+		if (gameMap.coordHasSomething(coord)) {
+			return;
+		}
+		game.addEntity(new Ogre(coord,true));
+		hasAtleast1Ogre = true;
+	}
+	
+	private void placeWeapon(Coordinate coord) {
+		if (gameMap.coordHasSomething(coord)) {
+			return;
+		}
+		game.addEntity(new Weapon(coord));
+	}
+	
+	public void setFrame (DKeepGUI frameToSet){
+		frameToSend = frameToSet;
+	}
+	
 }

@@ -78,9 +78,10 @@ public class DKeepGUI {
 		
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 630, 500);
+		frame.setBounds(100, 100, 630, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 		
 		
 		
@@ -147,6 +148,21 @@ public class DKeepGUI {
 		btnNewGame.setFont(new Font("Courier New", Font.PLAIN, 11));
 		btnNewGame.setBounds(450, 50, 90, 25);
 		frame.getContentPane().add(btnNewGame);
+		
+		JButton createLevel = new JButton("Create Level");
+		createLevel.setBounds(410, 300, 170, 50);
+		createLevel.setFont(new Font("Courier New", Font.PLAIN, 11));
+		frame.getContentPane().add(createLevel);
+		createLevel.addActionListener(new ActionListener() {
+			
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createLevelWindow();
+				
+			}
+		});
+		
 		
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
@@ -400,5 +416,15 @@ public class DKeepGUI {
 		
 		
 		
+	}
+	
+	public void addGame(Game game) {
+		this.game.add(game);
+	}
+	
+	public void createLevelWindow() {
+		LevelEditor levelEditor= new LevelEditor();
+		levelEditor.main(null);
+		levelEditor.setFrame(this);
 	}
 }
