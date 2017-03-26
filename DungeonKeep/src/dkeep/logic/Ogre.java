@@ -3,7 +3,9 @@ package dkeep.logic;
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
 
-public class Ogre extends NonStatic {
+public class Ogre extends NonStatic implements java.io.Serializable{
+
+	private static final long serialVersionUID = 1L;
 	protected boolean isStunned;
 	protected boolean isArmed;
 	protected int stunCounter;

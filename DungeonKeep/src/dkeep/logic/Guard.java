@@ -4,7 +4,9 @@ import java.util.Random;
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
 
-public class Guard extends NonStatic {
+public class Guard extends NonStatic implements java.io.Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	protected Direction[] walkPath;
 	protected int walkPathPosition;
 

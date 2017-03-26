@@ -2,7 +2,9 @@ package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Door extends Static {
+public class Door extends Static implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
+
 	public Door(Coordinate coord) {
 		super(coord);
 		entityChar = 'I';

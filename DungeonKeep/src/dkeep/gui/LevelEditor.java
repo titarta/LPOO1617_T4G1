@@ -279,7 +279,7 @@ public class LevelEditor extends JFrame{
 		}
 		gameMap.removeCoord(coord);
 		game.addEntity(new Door(coord));
-		if (coord.getX() == 0 || coord.getY() == 0 || coord.getX() == xValue - 1 || coord.getY() == yValue - 1) {
+		if (coord.getX() == 0 || coord.getY() == 0 || coord.getX() == yValue - 1 || coord.getY() == xValue - 1) {
 			Coordinate[] c = {coord};
 			game.addWinningCoords(c);
 			canWin = true;

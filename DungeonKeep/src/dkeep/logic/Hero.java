@@ -2,8 +2,9 @@ package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Hero extends NonStatic {
+public class Hero extends NonStatic implements java.io.Serializable{
 
+	private static final long serialVersionUID = 1L;
 	protected boolean hasKey;
 	protected boolean isArmed;
 	

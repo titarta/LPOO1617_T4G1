@@ -5,8 +5,10 @@ import java.lang.Math;
 import dkeep.logic.Generic.Generic;
 import dkeep.logic.Generic.Generic.Direction;
 
-public class Coordinate {
+public class Coordinate implements java.io.Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	public Coordinate(Integer x, Integer y) {
 		this.x = x;
 		this.y = y;

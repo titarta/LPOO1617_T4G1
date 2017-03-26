@@ -21,7 +21,11 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
@@ -35,6 +39,7 @@ public class DKeepGUI {
 	private ArrayList<Game> game;
 	private ArrayList<Game> createdLevels;
 	private int level;
+	private int storedLevel;
 	private JButton btnLeft;
 	private JButton btnRight;
 	private JButton btnDown;
@@ -46,6 +51,8 @@ public class DKeepGUI {
 	private JLabel lblGuardPersonality;
 	private JButton btnNewGame;
 	private JButton btnExit;
+	private JButton btnSave;
+	private JButton btnLoad;
 	private int guardType;
 	private int numberOgres;
 	private GamePanel gamePanel;
@@ -89,6 +96,7 @@ public class DKeepGUI {
 		createdLevels = new ArrayList<Game>();
 		startGame();
 		generateGamePanel();
+		disableButtons();
 	}
 	
 	private void createButtons() {
@@ -99,6 +107,8 @@ public class DKeepGUI {
 		createCreateLevelButton();
 		createButtonExit();
 		createNewGameButton();
+		createSaveStateButton();
+		createLoadStateButton();
 	}
 	
 	private void createCreateLevelButton() {
@@ -157,6 +167,7 @@ public class DKeepGUI {
 		btnLeft.setEnabled(false);
 		btnRight.setEnabled(false);
 		gamePanel.setEnabled(false);
+		btnSave.setEnabled(false);
 	}
 	
 	private void enableButtons() {
@@ -165,6 +176,7 @@ public class DKeepGUI {
 		btnLeft.setEnabled(true);
 		btnRight.setEnabled(true);
 		gamePanel.setEnabled(true);
+		btnSave.setEnabled(true);
 	}
 	
 	private void generateGamePanel() {
@@ -417,5 +429,69 @@ public class DKeepGUI {
 		frame.getContentPane().add(btnRight);
 	}
 
-
+	private void createSaveStateButton() {
+		btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveState();
+				gamePanel.requestFocusInWindow();
+			}
+		});
+		btnSave.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnSave.setBounds(300, 10, 90, 40);
+		frame.getContentPane().add(btnSave);
+	}
+	
+	private void createLoadStateButton() {
+		btnLoad = new JButton("Load");
+		btnLoad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadStatestartGame();
+				gamePanel.requestFocusInWindow();
+			}
+		});
+		btnLoad.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnLoad.setBounds(400, 10, 90, 40);
+		frame.getContentPane().add(btnLoad);
+	}
+	
+	private void saveState() {
+		storedLevel = level;
+		try {
+			FileOutputStream fileOut =  new FileOutputStream("src/tmp/gameState.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(game);
+			out.close();
+			fileOut.close();
+		} catch (IOException i) {
+			System.out.print("Couldn't save the game");
+		}
+	}
+	
+	private void loadState() {
+		try {
+	         FileInputStream fileIn = new FileInputStream("src/tmp/gameState.ser");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         game = (ArrayList<Game>)in.readObject();
+	         in.close();
+	         fileIn.close();
+	      }catch(IOException | ClassNotFoundException i) {
+	         i.printStackTrace();
+	         return;
+	      }
+	}
+	
+	private void loadStatestartGame() {
+		enableButtons();
+		gamePanel.setBounds(30, 65, 320, 320);
+		frame.getContentPane().add(gamePanel);
+		gameStatus.setText("");
+		game = new ArrayList<Game>();
+		level = storedLevel;
+		loadState();
+		gamePanel.setGame(game.get(level));
+		gamePanel.setVisible(true);
+		gamePanel.cleanBoard(gamePanel.getGraphics());
+		gamePanel.paintComponent(gamePanel.getGraphics());
+	}
 }

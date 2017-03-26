@@ -2,7 +2,9 @@ package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Weapon extends Static{
+public class Weapon extends Static implements java.io.Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	public Weapon(Coordinate coord) {
 		super(coord);

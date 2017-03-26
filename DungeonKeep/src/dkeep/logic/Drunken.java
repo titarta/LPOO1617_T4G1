@@ -4,8 +4,9 @@ import java.util.Random;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Drunken extends Guard{
+public class Drunken extends Guard implements java.io.Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private boolean isSleeping;
 	private boolean isConfused;
 	private int sleepTurn;

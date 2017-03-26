@@ -4,8 +4,9 @@ import java.util.HashSet;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Lever extends Static {
+public class Lever extends Static implements java.io.Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private HashSet<Door> doors;
 
 	public Lever(Coordinate coord, HashSet<Door> d) {

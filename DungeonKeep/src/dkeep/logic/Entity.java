@@ -6,7 +6,9 @@ import java.util.UUID;
 import dkeep.logic.Generic.Coordinate;
 import dkeep.logic.Generic.Generic.Direction;
 
-public class Entity {
+public class Entity implements java.io.Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	protected Coordinate coordinate;
 	protected char entityChar;
 	protected boolean blocksMovement;

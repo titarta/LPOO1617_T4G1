@@ -2,8 +2,9 @@ package dkeep.logic;
 
 import dkeep.logic.Generic.Coordinate;
 
-public class Suspicious extends Guard{
+public class Suspicious extends Guard implements java.io.Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private boolean isSuspicious;
 	
 	public Suspicious(Coordinate coord) {
