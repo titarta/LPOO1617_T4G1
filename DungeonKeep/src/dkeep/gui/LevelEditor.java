@@ -18,8 +18,9 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 
-public class LevelEditor {
-
+public class LevelEditor extends JFrame{
+	private static final long serialVersionUID = 1L;
+	
 	private JFrame frame;
 	private Game game;
 	private GameMap gameMap;
@@ -38,55 +39,47 @@ public class LevelEditor {
 	private boolean hasAtleast1Ogre;
 	private DKeepGUI frameToSend;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run(){
-					LevelEditor window;
-					window = new LevelEditor();
-					window.frame.setVisible(true);
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public LevelEditor(){
+	
+	public LevelEditor (DKeepGUI window) {
+		frameToSend = window;
 		initialize();
+	}
+	
+	public void start() {
+		setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(){
-		frame = new JFrame();
-		frame.setBounds(100, 100, 620, 560);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		
+		setSize(720, 560);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLayout(null);
+		
 		
 		JButton saveGame = new JButton("Save");
 		saveGame.setBounds(505, 55, 90, 25);
-		frame.getContentPane().add(saveGame);
+		add(saveGame);
 		saveGame.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (has1Hero && hasAtleast1Ogre && canWin) {
 					frameToSend.addGame(game);
+					dispose();
 				}
 			}
 		});
 		
 		JButton cancel = new JButton("Cancel");
 		cancel.setBounds(505, 450, 90, 25);
-		frame.getContentPane().add(cancel);
+		add(cancel);
 		
 		hero = new JButton("Hero");
 		hero.setBounds(505, 150, 90, 25);
-		frame.getContentPane().add(hero);
+		add(hero);
 		hero.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +90,7 @@ public class LevelEditor {
 		
 		door = new JButton("Door");
 		door.setBounds(505, 180, 90, 25);
-		frame.getContentPane().add(door);
+		add(door);
 		door.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +101,7 @@ public class LevelEditor {
 		
 		wall = new JButton("Wall");
 		wall.setBounds(505, 210, 90, 25);
-		frame.getContentPane().add(wall);
+		add(wall);
 		wall.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,7 +112,7 @@ public class LevelEditor {
 		
 		ogre = new JButton("Ogre");
 		ogre.setBounds(505, 240, 90, 25);
-		frame.getContentPane().add(ogre);
+		add(ogre);
 		ogre.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -130,7 +123,7 @@ public class LevelEditor {
 		
 		key = new JButton("Key");
 		key.setBounds(505, 270, 90, 25);
-		frame.getContentPane().add(key);
+		add(key);
 		key.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -141,7 +134,7 @@ public class LevelEditor {
 		
 		weapon = new JButton("Weapon");
 		weapon.setBounds(505, 300, 90, 25);
-		frame.getContentPane().add(weapon);
+		add(weapon);
 		weapon.addActionListener( new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -152,11 +145,11 @@ public class LevelEditor {
 		
 		JLabel xValueLabel = new JLabel("X:");
 		xValueLabel.setBounds(30, 20, 20, 20);
-		frame.getContentPane().add(xValueLabel);
+		add(xValueLabel);
 		
 		JLabel yValueLabel = new JLabel("Y:");
 		yValueLabel.setBounds(150, 20, 20, 20);
-		frame.getContentPane().add(yValueLabel);
+		add(yValueLabel);
 		
 		xValue = 5;
 		JComboBox xComboBox = new JComboBox();
@@ -169,7 +162,7 @@ public class LevelEditor {
 			}
 		});
 		xComboBox.setBounds(50, 20, 50, 20);
-		frame.getContentPane().add(xComboBox);
+		add(xComboBox);
 		
 		yValue = 5;
 		JComboBox yComboBox = new JComboBox();
@@ -182,11 +175,11 @@ public class LevelEditor {
 			}
 		});
 		yComboBox.setBounds(170, 20, 50, 20);
-		frame.getContentPane().add(yComboBox);
+		add(yComboBox);
 		
 		JButton generateMap = new JButton("Generate");
 		generateMap.setBounds(300, 22, 100, 20);
-		frame.getContentPane().add(generateMap);
+		add(generateMap);
 		generateMap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -208,7 +201,7 @@ public class LevelEditor {
 		gPanel = new GameEditorPanel(game);
 		gameMap = game.getGameMap();
 		gPanel.setBounds(50, 70, 32*13, 32*13);
-		frame.getContentPane().add(gPanel);
+		add(gPanel);
 		gPanel.setVisible(true);
 		gPanel.paintComponent(gPanel.getGraphics());
 		gPanel.addMouseListener(new MouseListener() {
@@ -265,7 +258,10 @@ public class LevelEditor {
 			return;
 		}
 		has1Hero = true;
-		game.addEntity(new Hero(coord));
+		Hero hero1 = new Hero(coord);
+		game.addEntity(hero1);
+		game.setHero(hero1);
+		gameMap.setHero(hero1);
 		hero.setEnabled(false);
 		elementToAdd = "";
 	}
@@ -312,8 +308,8 @@ public class LevelEditor {
 		game.addEntity(new Weapon(coord));
 	}
 	
-	public void setFrame (DKeepGUI frameToSet){
-		frameToSend = frameToSet;
+	public Game getGame() {
+		return game;
 	}
 	
 }

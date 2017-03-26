@@ -26,10 +26,13 @@ public class Game {
 				}
 			}
 		}
-		
 		hero = null;
 	}
-	
+
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
+
 	public void printMap() {
 		for(int i = 0; i < gameMap.getX(); i++) {
 			for(int j = 0; j < gameMap.getY(); j++) {

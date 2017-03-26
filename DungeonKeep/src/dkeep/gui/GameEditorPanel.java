@@ -51,7 +51,7 @@ public class GameEditorPanel extends JPanel{
 		
 		for (int i = 0; i < game.getGameMap().getY(); i++) {
 			for (int j = 0; j < game.getGameMap().getX(); j++) {
-				switch (gameString.getBytes()[i*(game.getGameMap().getX()) + j]) {
+				switch (gameString.getBytes()[i*game.getGameMap().getX() + j]) {
 				case ' ':
 					g.drawImage(editorFloor, j*tile, i*tile, tile, tile, null);
 					break;

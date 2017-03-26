@@ -20,6 +20,10 @@ public class Coordinate {
 		setY(y);
 	}
 	
+	public Coordinate copy() {
+		return new Coordinate(x,y);
+	}
+	
 	public Integer getX() {
 		return x;
 	}

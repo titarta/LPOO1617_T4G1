@@ -56,35 +56,35 @@ public class GameMap {
 			for(int i = 0; i < x; i++) {
 				if (map[j][i] != ' ') {
 					if (map[j][i] == 'X') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Wall wall = new Wall(newCoord);
 						addEntityToCoord(wall,newCoord);
 					} else if (map[j][i] == 'H') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Hero hero = new Hero(newCoord);
 						addEntityToCoord(hero,newCoord);
 						this.hero = hero;
 					} else if (map[j][i] == 'I') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Door door = new Door(newCoord);
 						addEntityToCoord(door,newCoord);
 					} else if (map[j][i] == 'G') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Guard guard = new Guard(newCoord);
 						addEntityToCoord(guard,newCoord);
 						enemies.add(guard);
 					} else if (map[j][i] == 'k') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Lever lever = new Lever(newCoord, new HashSet<Door>());
 						addEntityToCoord(lever,newCoord);
 					} else if (map[j][i] == 'O') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Ogre ogre = new Ogre(newCoord, true);
 						addEntityToCoord(ogre,newCoord);
 						addEntityToCoord(ogre.getClub(), ogre.getClub().getCoordinate());
 						enemies.add(ogre);
 					} else if (map[j][i] == 'w') {
-						Coordinate newCoord = new Coordinate(i,j);
+						Coordinate newCoord = new Coordinate(j,i);
 						Weapon weapon = new Weapon(newCoord);
 						addEntityToCoord(weapon,newCoord);
 					}
@@ -95,6 +95,12 @@ public class GameMap {
 
 	
 	
+	public GameMap() {
+		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
+		winningCoords = new HashSet<Coordinate>();
+		enemies = new HashSet<Entity>();
+	}
+
 	public void setEntityCoord(Entity ent, Coordinate coord) {
 		removeEntityFromCoord(ent, ent.getCoordinate());
 		addEntityToCoord(ent, coord);
@@ -206,6 +212,9 @@ public class GameMap {
 		return ret;
 	}
 
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
 
 	public Hero getHero() {
 		return (Hero)hero;
@@ -218,6 +227,8 @@ public class GameMap {
 	public void addEnemy(Entity e) {
 		enemies.add(e);
 	}
+	
+	
 	
 	
 }

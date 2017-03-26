@@ -31,6 +31,10 @@ public class Guard extends NonStatic {
 		}
 	}
 	
+	public void setWalkPathPosition(int walkPathPosition) {
+		this.walkPathPosition = walkPathPosition;
+	}
+
 	public int getWalkPathPos() {
 		return walkPathPosition;
 	}

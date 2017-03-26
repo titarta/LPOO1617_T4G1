@@ -88,6 +88,10 @@ public class GamePanel extends JPanel{
 		this.game = game;
 	}
 	
+	public void cleanBoard(Graphics g) {
+		super.paintComponent(g);
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		String gameString = game.toString();
@@ -96,55 +100,55 @@ public class GamePanel extends JPanel{
 			for (int j = 0; j < game.getGameMap().getX(); j++) {
 				switch (gameString.getBytes()[i*game.getGameMap().getX() + j]) {
 				case ' ':
-					g.drawImage(floor, i*tile, j*tile, tile, tile, null);
+					g.drawImage(floor, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'w':
-					g.drawImage(weapon,  i*tile,j*tile, tile, tile, null);
+					g.drawImage(weapon, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'H':
-					g.drawImage(hero,  i*tile,j*tile, tile, tile, null);
+					g.drawImage(hero, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'K':
-					g.drawImage(heroWithKey, i*tile,j*tile, tile, tile, null);
+					g.drawImage(heroWithKey, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'A':
-					g.drawImage(armedHero, i*tile, j*tile, tile, tile, null);
+					g.drawImage(armedHero, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'O':
-					g.drawImage(ogre, i*tile, j*tile, tile, tile, null);
+					g.drawImage(ogre, j*tile, i*tile, tile, tile, null);
 					break;
 				case '*':
-					g.drawImage(club, i*tile, j*tile, tile, tile, null);
+					g.drawImage(club, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'G':
-					g.drawImage(guard, i*tile, j*tile, tile, tile, null);
+					g.drawImage(guard, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'g':
-					g.drawImage(sleepingGuard, i*tile, j*tile, tile, tile, null);
+					g.drawImage(sleepingGuard, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'X':
-					g.drawImage(wall, i*tile, j*tile, tile, tile, null);
+					g.drawImage(wall, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'k':
-					g.drawImage(key, i*tile, j*tile, tile, tile, null);
+					g.drawImage(key, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'I':
-					g.drawImage(closedDoor, i*tile, j*tile, tile, tile, null);
+					g.drawImage(closedDoor, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'S':
-					g.drawImage(openedDoor, i*tile, j*tile, tile, tile, null);
+					g.drawImage(openedDoor, j*tile, i*tile, tile, tile, null);
 					break;
 				case '8':
-					g.drawImage(stunnedOgre, i*tile, j*tile, tile, tile, null);
+					g.drawImage(stunnedOgre, j*tile, i*tile, tile, tile, null);
 					break;
 				case 's':
-					g.drawImage(armedHeroWithKey, i*tile, j*tile, tile, tile, null);
+					g.drawImage(armedHeroWithKey, j*tile, i*tile, tile, tile, null);
 					break;
 				case 'l':
-					g.drawImage(lever, i*tile, j*tile, tile, tile, null);
+					g.drawImage(lever, j*tile, i*tile, tile, tile, null);
 					break;
 				case '$':
-					g.drawImage(brokenKey, i*tile, j*tile, tile, tile, null);
+					g.drawImage(brokenKey, j*tile, i*tile, tile, tile, null);
 					break;
 				}
 			}

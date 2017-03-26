@@ -31,16 +31,15 @@ import javax.swing.JPanel;
 public class DKeepGUI {
 
 	private JFrame frame;
+	private LevelEditor levelEditor;
 	private ArrayList<Game> game;
 	private int level;
 	private ActionListener disableButtons;
 	private ActionListener enableButtons;
-	private ActionListener winGame;
-	private ActionListener loseGame;
-	private ActionListener startGame;
 	private int guardType;
 	private int numberOgres;
 	private GamePanel gamePanel;
+	private JLabel gameStatus;
 	
 	/**
 	 * Launch the application.
@@ -63,6 +62,7 @@ public class DKeepGUI {
 	 */
 	public DKeepGUI() {
 		initialize();
+		levelEditor = new LevelEditor(this);
 	}
 
 	/**
@@ -70,11 +70,7 @@ public class DKeepGUI {
 	 */
 	private void initialize() {
 		
-		game = new ArrayList<Game>();
 		
-		/**
-		 *  SWING Interface
-		 */
 		
 		
 		frame = new JFrame();
@@ -84,9 +80,7 @@ public class DKeepGUI {
 		frame.setResizable(false);
 		
 		
-		
-		
-		JLabel gameStatus = new JLabel("");
+		gameStatus = new JLabel("");
 		gameStatus.setBounds(22, 419, 215, 14);
 		frame.getContentPane().add(gameStatus);
 		
@@ -133,7 +127,9 @@ public class DKeepGUI {
 		btnNewGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				enableButtons.actionPerformed(null);
-				startGame.actionPerformed(null);
+				gameStatus.setText("");
+				level = 0;
+				resetGame();
 				gamePanel.setGame(game.get(level));
 				gamePanel.setBounds(30, 65, 350, 385);
 				gamePanel.setVisible(true);
@@ -183,9 +179,9 @@ public class DKeepGUI {
 					gamePanel.requestFocusInWindow();
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
-						winGame.actionPerformed(null);
+						winGame();
 					} else {
-						loseGame.actionPerformed(null);
+						loseGame();
 					}
 				}
 			}
@@ -205,9 +201,9 @@ public class DKeepGUI {
 					gamePanel.requestFocusInWindow();
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
-						winGame.actionPerformed(null);
+						winGame();
 					} else {
-						loseGame.actionPerformed(null);
+						loseGame();
 					}
 				}
 			}
@@ -225,9 +221,9 @@ public class DKeepGUI {
 					gamePanel.requestFocusInWindow();
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
-						winGame.actionPerformed(null);
+						winGame();
 					} else {
-						loseGame.actionPerformed(null);
+						loseGame();
 					}
 				}
 			}
@@ -246,9 +242,9 @@ public class DKeepGUI {
 					gamePanel.requestFocusInWindow();
 				} catch (GameEndException e1) {
 					if (e1.getResult()) {
-						winGame.actionPerformed(null);
+						winGame();
 					} else {
-						loseGame.actionPerformed(null);
+						loseGame();
 					}
 				}
 			}
@@ -277,108 +273,11 @@ public class DKeepGUI {
 			}
 		};
 		
-		winGame = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				gamePanel.paintComponent(gamePanel.getGraphics());
-				if (level == game.size() - 1) {
-					gameStatus.setText("You won!");
-					disableButtons.actionPerformed(null);
-					gamePanel.requestFocusInWindow();
-				} else {
-					level++;
-					gamePanel.setGame(game.get(level));
-					gamePanel.paintComponent(gamePanel.getGraphics());
-					gameStatus.setText("");
-					gamePanel.requestFocusInWindow();
-				}
-				
-			}
-		};
-		
-		loseGame = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				gamePanel.paintComponent(gamePanel.getGraphics());
-				gameStatus.setText("You lost...");
-				disableButtons.actionPerformed(null);
-				gamePanel.requestFocusInWindow();
-			}
-		};
-		
-		startGame = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				gameStatus.setText("");
-				game.clear();
-				level = 0;
-				
-				char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},
-						{'X','H',' ',' ','I',' ','X',' ',' ','X'},
-						{'X','X','X',' ','X','X','X',' ',' ','X'},
-						{'X',' ','I',' ','I',' ','X',' ',' ','X'},
-						{'X','X','X',' ','X','X','X',' ',' ','X'},
-						{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-						{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-						{'X','X','X',' ','X','X','X','X',' ','X'},
-						{'X',' ','I',' ','I',' ','X',' ',' ','X'},
-						{'X','X','X','X','X','X','X','X','X','X'}
-						};
-				
-				
-				Game level1 = new Game(map1);
-				HashSet<Door> doors1 = new HashSet<Door>();
-				Door door1 = new Door(new Coordinate(0,5));
-				Door door2 = new Door(new Coordinate(0,6));
-				doors1.add(door1);
-				doors1.add(door2);
-				Lever lever1 = new Lever(new Coordinate(7, 8), doors1);
-				level1.addEntity(door1);
-				level1.addEntity(door2);
-				level1.addEntity(lever1);
-				Guard guard1;
-				if (guardType == 0) {
-					guard1 = new Rookie(new Coordinate(8, 1));
-				} else if (guardType == 1) {
-					guard1 = new Suspicious(new Coordinate(8, 1));
-				} else if (guardType == 2) {
-					guard1 = new Drunken(new Coordinate(8, 1));
-				} else {
-					guard1 = new Rookie(new Coordinate(8, 1));
-				}
-				Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,
-						Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,
-						Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,
-						Direction.RIGHT, Direction.RIGHT, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP };
-				guard1.setWalkPath(guardMovement);
-				level1.addEntity(guard1);
-				Coordinate[] winningCoords1 = {new Coordinate(0,5),new Coordinate(0,6)};
-				level1.addWinningCoords(winningCoords1);
-				game.add(level1);
-				
-				char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-						{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-						{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-						{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
-				
-				Game level2 = new Game(map2);
-				Key key1 = new Key(new Coordinate(8, 1));
-				level2.addEntity(key1);
-				for (int i = 0; i < numberOgres; i++) {
-					Ogre ogre = new Ogre(new Coordinate(4, 1), true);
-					level2.addEntity(ogre);
-					level2.addEntity(ogre.getClub());
-				}
-				Coordinate[] winningCoords2 = {new Coordinate(0,1)};
-				level2.addWinningCoords(winningCoords2);
-				level2.addEntity(new Weapon(new Coordinate(2,8)));
-				game.add(level2);
-				
-			}
-		};
 		
 		
-		startGame.actionPerformed(null);
+		
+		
+		startGame();
 		gamePanel = new GamePanel(game.get(level));
 		gamePanel.setBounds(30, 65, 320, 320);
 		gamePanel.setVisible(true);
@@ -423,8 +322,120 @@ public class DKeepGUI {
 	}
 	
 	public void createLevelWindow() {
-		LevelEditor levelEditor= new LevelEditor();
-		levelEditor.main(null);
-		levelEditor.setFrame(this);
+		levelEditor.start();
 	}
+	
+	private void loseGame() {
+		gamePanel.paintComponent(gamePanel.getGraphics());
+		gameStatus.setText("You lost...");
+		disableButtons.actionPerformed(null);
+		gamePanel.requestFocusInWindow();
+	}
+	
+	private void winGame() {
+		gamePanel.paintComponent(gamePanel.getGraphics());
+		if (level == game.size() - 1) {
+			gameStatus.setText("You won!");
+			disableButtons.actionPerformed(null);
+			gamePanel.requestFocusInWindow();
+		} else {
+			level++;
+			gamePanel.setGame(game.get(level));
+			gamePanel.cleanBoard(gamePanel.getGraphics());
+			gamePanel.paintComponent(gamePanel.getGraphics());
+			gameStatus.setText("");
+			gamePanel.requestFocusInWindow();
+		}
+	}
+	
+	private void startGame() {
+		game = new ArrayList<Game>();
+		level = 0;
+		
+		char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},
+				{'X','H',' ',' ','I',' ','X',' ',' ','X'},
+				{'X','X','X',' ','X','X','X',' ',' ','X'},
+				{'X',' ','I',' ','I',' ','X',' ',' ','X'},
+				{'X','X','X',' ','X','X','X',' ',' ','X'},
+				{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+				{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
+				{'X','X','X',' ','X','X','X','X',' ','X'},
+				{'X',' ','I',' ','I',' ','X',' ',' ','X'},
+				{'X','X','X','X','X','X','X','X','X','X'}
+				};
+		
+		
+		Game level1 = new Game(map1);
+		HashSet<Door> doors1 = new HashSet<Door>();
+		Door door1 = new Door(new Coordinate(5,0));
+		Door door2 = new Door(new Coordinate(6,0));
+		doors1.add(door1);
+		doors1.add(door2);
+		Lever lever1 = new Lever(new Coordinate(8, 7), doors1);
+		level1.addEntity(door1);
+		level1.addEntity(door2);
+		level1.addEntity(lever1);
+		Guard guard1;
+		if (guardType == 0) {
+			guard1 = new Rookie(new Coordinate(1, 8));
+		} else if (guardType == 1) {
+			guard1 = new Suspicious(new Coordinate(1, 8));
+		} else if (guardType == 2) {
+			guard1 = new Drunken(new Coordinate(1, 8));
+		} else {
+			guard1 = new Rookie(new Coordinate(1, 8));
+		}
+		Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,
+				Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,
+				Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,
+				Direction.RIGHT, Direction.RIGHT, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP };
+		guard1.setWalkPath(guardMovement);
+		level1.addEntity(guard1);
+		Coordinate[] winningCoords1 = {new Coordinate(5,0),new Coordinate(6,0)};
+		level1.addWinningCoords(winningCoords1);
+		game.add(level1);
+		
+		char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+				{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+		
+		Game level2 = new Game(map2);
+		Key key1 = new Key(new Coordinate(1, 8));
+		level2.addEntity(key1);
+		for (int i = 0; i < numberOgres; i++) {
+			Ogre ogre = new Ogre(new Coordinate(1, 4), true);
+			level2.addEntity(ogre);
+			level2.addEntity(ogre.getClub());
+		}
+		Coordinate[] winningCoords2 = {new Coordinate(1,0)};
+		level2.addWinningCoords(winningCoords2);
+		level2.addEntity(new Weapon(new Coordinate(8,2)));
+		game.add(level2);
+	}
+
+	private void resetGame() {
+			game.get(0).getHero().getCoordinate().set(1, 1);
+			game.get(0).getEnemies().iterator().next().getCoordinate().set(1,8);
+			((Guard)game.get(0).getEnemies().iterator().next()).setWalkPathPosition(0);
+			 
+			
+			game.get(1).setHero(new Hero(new Coordinate(8, 1)));
+			game.get(1).getGameMap().removeCoord(new Coordinate(8,2));
+			game.get(1).addEntity(new Weapon(new Coordinate(8,2)));
+			game.get(1).getGameMap().removeCoord(new Coordinate(1,8));
+			game.get(1).addEntity(new Key(new Coordinate(1,8)));
+			for (Entity e : game.get(1).getEnemies()) {
+				e.setCoordinate(new Coordinate(1, 4));
+			}
+			
+			//TODO
+			//gamePanel.paintComponent(gamePanel.getGraphics());
+		
+		
+	}
+
+
 }
