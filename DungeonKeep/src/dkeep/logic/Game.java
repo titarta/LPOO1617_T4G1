@@ -40,7 +40,7 @@ public class Game {
 	public void printMap() {
 		for(int i = 0; i < gameMap.getX(); i++) {
 			for(int j = 0; j < gameMap.getY(); j++) {
-				Coordinate coord = new Coordinate(j, i);
+				Coordinate coord = new Coordinate(i, j);
 				if (gameMap.getEntity(coord) == null) {
 					System.out.print(' ');
 				} else {

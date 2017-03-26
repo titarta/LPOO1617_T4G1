@@ -75,9 +75,6 @@ public class DKeepGUI {
 	 */
 	private void initialize() {
 		
-		
-		
-		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

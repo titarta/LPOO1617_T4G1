@@ -138,13 +138,6 @@ public class GameMap {
 		}
 		return false;
 	}
-
-	public boolean coordHasEntity(Coordinate coord, Entity ent) {
-		if (coordToEntityMap.get(coord) != null){
-			return coordToEntityMap.get(coord).contains(ent);
-		}
-		return false;
-	}
 	
 	public Entity coordHas(Coordinate coord, Class<? extends Entity> c) {
 		if (coordToEntityMap.get(coord) == null){

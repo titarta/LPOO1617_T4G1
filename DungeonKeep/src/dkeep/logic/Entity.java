@@ -24,27 +24,15 @@ public class Entity {
 		return entityChar;
 	}
 	
-	public void move(Direction direction) {
-	}
-
+	public void move(Direction direction) {}
 
 	public Coordinate getCoordinate() {
 		return coordinate;
-	}
-
-	public void setCoordinate(Coordinate coordinate) {
-		this.coordinate = coordinate;
-	}
-	
-	public void setEntityChar(char c) {
-		entityChar = c;
 	}
 	
 	public boolean isOgre() {
 		return false;
 	}
-	
-
 	
 	public int getPriority() {
 		return priority;
@@ -78,6 +66,7 @@ public class Entity {
 			return false;
 		return true;
 	}
+	
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		return new Entity((Coordinate) coordinate.clone());

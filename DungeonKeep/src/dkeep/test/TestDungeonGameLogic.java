@@ -2,6 +2,7 @@ package dkeep.test;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.junit.Test;
@@ -220,11 +221,67 @@ public class TestDungeonGameLogic {
 		}
 	}
 	
+	@Test
+	public void testStunOgre() throws GameEndException {
+		Game game = new Game(map2);
+		assertFalse(game.getHero().equals(new Hero(new Coordinate(8,1))));
+		assertEquals(game.getEnemies().size(), 1);
+		Ogre ogre = (Ogre) game.getGameMap().getEntity(new Coordinate(1,5));
+		((Hero)game.getHero()).catchWeapon();
+		for (int i = 0; i < 7; i++) {
+			game.moveHero(Direction.UP);
+		}
+		game.moveHero(Direction.RIGHT);
+		game.moveHero(Direction.RIGHT);
+		game.moveHero(Direction.RIGHT);
+		assertTrue(ogre.isStunned());
+		game.moveHero(Direction.LEFT);
+		game.moveHero(Direction.LEFT);
+		game.moveOgre(ogre);
+		game.moveOgre(ogre);
+		game.moveOgre(ogre);
+		assertFalse(ogre.isStunned());
+		game.addEntity(new Key(new Coordinate(1,1)));
+		Coordinate[] c = {new Coordinate(1,0)};
+		game.addWinningCoords(c);
+		game.moveHero(Direction.LEFT);
+		game.moveHero(Direction.LEFT);
+		
+		try {
+			game.moveHero(Direction.LEFT);
+		} catch (GameEndException e) {
+			assertTrue(true);
+			return;
+		}
+		assertTrue(false);
+		
+		
+	}
+	
 	char [][] map3 = {{'X','X','X','X','X'},
 			{'X',' ',' ',' ','X'},
 			{'I',' ',' ',' ','X'},
 			{'I',' ',' ',' ','X'},
 			{'X','X','X','X','X'}};
+	
+	@Test
+	public void testUpdateGame() throws GameEndException {
+		Game game = new Game(map3);
+		Rookie rookie = new Rookie(new Coordinate(1,1));
+		Direction[] walkpath= {Direction.DOWN,Direction.DOWN,Direction.UP,Direction.UP};
+		rookie.setWalkPath(walkpath);
+		Hero h = new Hero(new Coordinate(3, 3));
+		game.addEntity(h);
+		game.setHero(h);
+		game.getGameMap().setHero(h);
+		game.updateGame(Direction.UP);
+		assertEquals(game.toString(), "XXXXXX   XI  HXI   XXXXXX");
+		Weapon w = new Weapon(new Coordinate(2,2));
+		game.addEntity(w);
+		game.updateGame(Direction.LEFT);
+		assertEquals(game.toString(), "XXXXXX   XI A XI   XXXXXX");
+	}
+	
 	
 	@Test
 	public void testGuards() {
@@ -247,4 +304,19 @@ public class TestDungeonGameLogic {
 		}
 		assertEquals(rookie.getCoordinate(), new Coordinate(1,1));
 	}
+	
+	@Test
+	public void testGameConstructorsWithNoInfo() throws CloneNotSupportedException {
+		GameMap g = new GameMap(new HashMap<Coordinate, HashSet<Entity>>(),new HashSet<Coordinate>(),new Hero(new Coordinate(0,0)),0,0);
+		Game game = new Game(g);
+		GameMap g2 = new GameMap(0,0);
+		assertTrue(true);
+	}
+	
+	@Test
+	public void testClones() {
+		Hero hero = new Hero(new Coordinate(0,0));
+	}
+	
+	
 }
