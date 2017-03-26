@@ -176,39 +176,17 @@ public class DKeepGUI {
 		JButton btnUp = new JButton("Up");
 		btnUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					game.get(level).updateGame(Direction.UP);
-					gamePanel.paintComponent(gamePanel.getGraphics());
-					gamePanel.requestFocusInWindow();
-				} catch (GameEndException e1) {
-					if (e1.getResult()) {
-						winGame();
-					} else {
-						loseGame();
-					}
-				}
+				btnFunction(Direction.UP);
 			}
 		});
 		btnUp.setFont(new Font("Courier New", Font.PLAIN, 11));
 		btnUp.setBounds(560, 100, 70, 30);
 		frame.getContentPane().add(btnUp);
 		
-		
-		
 		JButton btnLeft = new JButton("Left");
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					game.get(level).updateGame(Direction.LEFT);
-					gamePanel.paintComponent(gamePanel.getGraphics());
-					gamePanel.requestFocusInWindow();
-				} catch (GameEndException e1) {
-					if (e1.getResult()) {
-						winGame();
-					} else {
-						loseGame();
-					}
-				}
+				btnFunction(Direction.LEFT);
 			}
 		});
 		btnLeft.setFont(new Font("Courier New", Font.PLAIN, 11));
@@ -218,17 +196,7 @@ public class DKeepGUI {
 		JButton btnRight = new JButton("Right");
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					game.get(level).updateGame(Direction.RIGHT);
-					gamePanel.paintComponent(gamePanel.getGraphics());
-					gamePanel.requestFocusInWindow();
-				} catch (GameEndException e1) {
-					if (e1.getResult()) {
-						winGame();
-					} else {
-						loseGame();
-					}
-				}
+				btnFunction(Direction.RIGHT);
 			}
 		});
 		btnRight.setFont(new Font("Courier New", Font.PLAIN, 11));
@@ -239,17 +207,7 @@ public class DKeepGUI {
 		btnDown.setFont(new Font("Courier New", Font.PLAIN, 11));
 		btnDown.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					game.get(level).updateGame(Direction.DOWN);
-					gamePanel.paintComponent(gamePanel.getGraphics());
-					gamePanel.requestFocusInWindow();
-				} catch (GameEndException e1) {
-					if (e1.getResult()) {
-						winGame();
-					} else {
-						loseGame();
-					}
-				}
+				btnFunction(Direction.DOWN);
 			}
 		});
 		btnDown.setBounds(560, 180, 70, 30);
@@ -314,8 +272,6 @@ public class DKeepGUI {
 				        }
 				}
 			});
-		
-		
 		
 		
 	}
@@ -400,10 +356,14 @@ public class DKeepGUI {
 		game.add(level1);
 		
 		char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-				{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
+				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 		
 		Game level2 = new Game(map2);
@@ -424,6 +384,20 @@ public class DKeepGUI {
 		startGame();
 		for (Game g : createdLevels) {
 			game.add(new Game(new GameMap(g.getGameMap().getCoordToEntityMap(),g.getGameMap().getWinningCoords(),(Hero) g.getHero(),g.getGameMap().getX(),g.getGameMap().getY())));
+		}
+	}
+	
+	private void btnFunction(Direction d) {
+		try {
+			game.get(level).updateGame(d);
+			gamePanel.paintComponent(gamePanel.getGraphics());
+			gamePanel.requestFocusInWindow();
+		} catch (GameEndException e1) {
+			if (e1.getResult()) {
+				winGame();
+			} else {
+				loseGame();
+			}
 		}
 	}
 
