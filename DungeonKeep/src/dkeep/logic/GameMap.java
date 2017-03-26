@@ -3,6 +3,7 @@ package dkeep.logic;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import dkeep.logic.Generic.*;
 import dkeep.logic.Generic.Generic.Direction;
@@ -95,10 +96,29 @@ public class GameMap {
 
 	
 	
-	public GameMap() {
+	public GameMap(HashMap<Coordinate, HashSet<Entity>> hashMap ,HashSet<Coordinate> winCoords, Hero hero, int x, int y) throws CloneNotSupportedException {
 		coordToEntityMap = new HashMap<Coordinate, HashSet<Entity>>();
 		winningCoords = new HashSet<Coordinate>();
 		enemies = new HashSet<Entity>();
+		for(Entry<Coordinate, HashSet<Entity>> c : hashMap.entrySet()) {
+			HashSet<Entity> newSet = new HashSet<Entity>();
+			for (Entity e : c.getValue()) {
+				Entity newEntity = (Entity) e.clone();
+				if (newEntity.isOgre()) {
+					enemies.add(newEntity);
+				}
+				newSet.add(newEntity);
+			}
+			coordToEntityMap.put((Coordinate)c.getKey().clone(), newSet);
+		}
+		this.hero = (Entity) hero.clone();
+		this.winningCoords = new HashSet<Coordinate>(winCoords);
+		this.x = x;
+		this.y = y;
+	} 
+
+	public HashMap<Coordinate, HashSet<Entity>> getCoordToEntityMap() {
+		return coordToEntityMap;
 	}
 
 	public void setEntityCoord(Entity ent, Coordinate coord) {

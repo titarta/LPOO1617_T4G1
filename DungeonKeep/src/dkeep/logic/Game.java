@@ -11,6 +11,10 @@ public class Game {
 	private GameMap gameMap;
 	private Hero hero;
 	
+	public Game(GameMap map) {
+		gameMap = map;
+		hero = gameMap.getHero();
+	}
 	
 	public Game(char[][] map) {
 		this.gameMap = new GameMap(map);

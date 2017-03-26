@@ -11,4 +11,11 @@ public class Weapon extends Static{
 		priority = 9;
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Weapon((Coordinate) coordinate.clone());
+	}
+	
+	
+
 }

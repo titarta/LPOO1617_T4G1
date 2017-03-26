@@ -20,10 +20,15 @@ public class Coordinate {
 		setY(y);
 	}
 	
-	public Coordinate copy() {
+
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
 		return new Coordinate(x,y);
 	}
-	
+
+
+
 	public Integer getX() {
 		return x;
 	}

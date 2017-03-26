@@ -50,6 +50,11 @@ public class Hero extends NonStatic {
 		}
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Hero((Coordinate) coordinate.clone());
+	}
+
 	
 	
 

@@ -23,6 +23,11 @@ public class Lever extends Static {
 	public void setDoors(HashSet<Door> doors) {
 		this.doors = doors;
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Lever((Coordinate) coordinate.clone(),null);
+	}
 	
 	
 	

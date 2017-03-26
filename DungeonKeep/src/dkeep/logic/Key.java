@@ -10,5 +10,10 @@ public class Key extends Static {
 		blocksMovement = false;
 		priority = 7;
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Key((Coordinate) coordinate.clone());
+	}
 	
 }

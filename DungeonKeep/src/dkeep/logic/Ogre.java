@@ -65,6 +65,18 @@ public class Ogre extends NonStatic {
 		entityChar = 'O';
 		super.move(direction);
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Ogre((Coordinate) coordinate.clone(),true);
+	}
+
+	@Override
+	public boolean isOgre() {
+		return true;
+	}
+	
+	
 	
 
 }

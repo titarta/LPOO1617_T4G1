@@ -23,7 +23,7 @@ public class TestDungeonGameLogic {
 		Game game = new Game(map);
 		assertEquals(new Coordinate(1,1), game.getHero().getCoordinate());
 		game.moveHero(Direction.DOWN);
-		assertEquals(new Coordinate(1,2), game.getHero().getCoordinate());
+		assertEquals(new Coordinate(2,1), game.getHero().getCoordinate());
 	}
 	
 	@Test
@@ -51,31 +51,31 @@ public class TestDungeonGameLogic {
 		Game game = new Game(map);
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.LEFT);
-		assertEquals(new Coordinate(1,2), game.getHero().getCoordinate());
+		assertEquals(new Coordinate(2,1), game.getHero().getCoordinate());
 	}
 	
 	@Test
 	public void testDoorsOpen() throws GameEndException {
 		Game game = new Game(map);
 		HashSet<Door> doors = new HashSet<Door>();
-		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,2)));
-		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,3)));
-		((Lever)game.getGameMap().getEntity(new Coordinate(1,3))).setDoors(doors);
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(2,0)));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(3,0)));
+		((Lever)game.getGameMap().getEntity(new Coordinate(3,1))).setDoors(doors);
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.DOWN);
-		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0,3))).isOpen());
-		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0,2))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(3,0))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(2,0))).isOpen());
 	}
 	
 	@Test
 	public void testHeroWinsMap() throws GameEndException {
 		Game game = new Game(map);
 		HashSet<Door> doors = new HashSet<Door>();
-		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,2)));
-		doors.add((Door) game.getGameMap().getEntity(new Coordinate(0,3)));
-		((Lever)game.getGameMap().getEntity(new Coordinate(1,3))).setDoors(doors);
-		game.getGameMap().addWinningCoord(new Coordinate(0,2));
-		game.getGameMap().addWinningCoord(new Coordinate(0,3));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(2,0)));
+		doors.add((Door) game.getGameMap().getEntity(new Coordinate(3,0)));
+		((Lever)game.getGameMap().getEntity(new Coordinate(3,1))).setDoors(doors);
+		game.getGameMap().addWinningCoord(new Coordinate(2,0));
+		game.getGameMap().addWinningCoord(new Coordinate(3,0));
 		game.moveHero(Direction.DOWN);
 		game.moveHero(Direction.DOWN);
 		try {
@@ -123,7 +123,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroCatchKey() throws GameEndException {
 		Game game = new Game(map2);
-		Coordinate coord = new Coordinate(8,1);
+		Coordinate coord = new Coordinate(1,8);
 		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
 		game.getGameMap().addEntityToCoord(key, coord);
@@ -151,7 +151,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroOpenDoor() throws GameEndException {
 		Game game = new Game(map2);
-		Coordinate coord = new Coordinate(8,1);
+		Coordinate coord = new Coordinate(1,8);
 		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
 		game.getGameMap().addEntityToCoord(key, coord);
@@ -167,17 +167,17 @@ public class TestDungeonGameLogic {
 		game.moveHero(Direction.UP);
 		game.moveHero(Direction.UP);
 		game.moveHero(Direction.LEFT);
-		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(0, 1))).isOpen());
+		assertTrue(((Door)game.getGameMap().getEntity(new Coordinate(1, 0))).isOpen());
 	}
 	
 	@Test
 	public void testHeroWinsKeep() throws GameEndException {
 		Game game = new Game(map2);
-		Coordinate coord = new Coordinate(8,1);
+		Coordinate coord = new Coordinate(1,8);
 		game.getGameMap().removeEntityFromCoord(game.getGameMap().getEntity(coord), coord);
 		Key key = new Key(coord);
 		game.getGameMap().addEntityToCoord(key, coord);
-		game.getGameMap().addWinningCoord(new Coordinate(0, 1));
+		game.getGameMap().addWinningCoord(new Coordinate(1, 0));
 		for (int i = 0; i < 7; i++) {
 			game.moveHero(Direction.RIGHT);
 			game.moveHero(Direction.UP);
@@ -202,7 +202,7 @@ public class TestDungeonGameLogic {
 	@Test(timeout=1000)
 	public void testSomeRandomBehaviour() {
 		Game game = new Game(map2);
-		Ogre ogre = (Ogre) game.getGameMap().getEntity(new Coordinate(5,1));
+		Ogre ogre = (Ogre) game.getGameMap().getEntity(new Coordinate(1,5));
 		game.getGameMap().removeEntityFromCoord(game.getHero(), game.getHero().getCoordinate());
 		boolean o1 = false, o2 = false, o3 = false, o4 = false;
 		while (!o1 || !o2 || !o3 || !o4) {

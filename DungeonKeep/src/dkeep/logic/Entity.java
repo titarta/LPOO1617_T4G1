@@ -40,6 +40,9 @@ public class Entity {
 		entityChar = c;
 	}
 	
+	public boolean isOgre() {
+		return false;
+	}
 	
 
 	
@@ -74,6 +77,10 @@ public class Entity {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Entity((Coordinate) coordinate.clone());
 	}
 
 	

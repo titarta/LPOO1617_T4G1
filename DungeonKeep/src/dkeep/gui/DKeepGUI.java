@@ -33,6 +33,7 @@ public class DKeepGUI {
 	private JFrame frame;
 	private LevelEditor levelEditor;
 	private ArrayList<Game> game;
+	private ArrayList<Game> createdLevels;
 	private int level;
 	private ActionListener disableButtons;
 	private ActionListener enableButtons;
@@ -40,6 +41,10 @@ public class DKeepGUI {
 	private int numberOgres;
 	private GamePanel gamePanel;
 	private JLabel gameStatus;
+	private ArrayList<Coordinate> createdLevelsHeroCoordinate;
+	private ArrayList<ArrayList<Coordinate>> createdLevelsKeyCoordinate;
+	private ArrayList<ArrayList<Coordinate>> createdLevelsWeaponCoordinate;
+	private ArrayList<ArrayList<Coordinate>> createdLevelsOgreCoordinate;
 	
 	/**
 	 * Launch the application.
@@ -74,14 +79,14 @@ public class DKeepGUI {
 		
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 630, 600);
+		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		
 		
 		gameStatus = new JLabel("");
-		gameStatus.setBounds(22, 419, 215, 14);
+		gameStatus.setBounds(30, 500, 200, 15);
 		frame.getContentPane().add(gameStatus);
 		
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
@@ -129,9 +134,13 @@ public class DKeepGUI {
 				enableButtons.actionPerformed(null);
 				gameStatus.setText("");
 				level = 0;
-				resetGame();
+				try {
+					resetGame();
+				} catch (CloneNotSupportedException e1) {
+					e1.printStackTrace();
+				}
+				gamePanel.setBounds(30, 65, 320, 320);
 				gamePanel.setGame(game.get(level));
-				gamePanel.setBounds(30, 65, 350, 385);
 				gamePanel.setVisible(true);
 				frame.getContentPane().add(gamePanel);
 				enableButtons.actionPerformed(null);
@@ -142,20 +151,17 @@ public class DKeepGUI {
 			}
 		});
 		btnNewGame.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnNewGame.setBounds(450, 50, 90, 25);
+		btnNewGame.setBounds(550, 50, 90, 25);
 		frame.getContentPane().add(btnNewGame);
 		
 		JButton createLevel = new JButton("Create Level");
-		createLevel.setBounds(410, 300, 170, 50);
+		createLevel.setBounds(510, 300, 170, 50);
 		createLevel.setFont(new Font("Courier New", Font.PLAIN, 11));
 		frame.getContentPane().add(createLevel);
 		createLevel.addActionListener(new ActionListener() {
-			
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				createLevelWindow();
-				
 			}
 		});
 		
@@ -167,7 +173,7 @@ public class DKeepGUI {
 			}
 		});
 		btnExit.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnExit.setBounds(450, 240, 90, 25);
+		btnExit.setBounds(550, 240, 90, 25);
 		frame.getContentPane().add(btnExit);
 		
 		JButton btnUp = new JButton("Up");
@@ -187,7 +193,7 @@ public class DKeepGUI {
 			}
 		});
 		btnUp.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnUp.setBounds(460, 100, 70, 30);
+		btnUp.setBounds(560, 100, 70, 30);
 		frame.getContentPane().add(btnUp);
 		
 		
@@ -209,7 +215,7 @@ public class DKeepGUI {
 			}
 		});
 		btnLeft.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnLeft.setBounds(420, 140, 70, 30);
+		btnLeft.setBounds(520, 140, 70, 30);
 		frame.getContentPane().add(btnLeft);
 		
 		JButton btnRight = new JButton("Right");
@@ -229,7 +235,7 @@ public class DKeepGUI {
 			}
 		});
 		btnRight.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnRight.setBounds(500, 140, 70, 30);
+		btnRight.setBounds(600, 140, 70, 30);
 		frame.getContentPane().add(btnRight);
 		
 		JButton btnDown = new JButton("Down");
@@ -249,7 +255,7 @@ public class DKeepGUI {
 				}
 			}
 		});
-		btnDown.setBounds(460, 180, 70, 30);
+		btnDown.setBounds(560, 180, 70, 30);
 		frame.getContentPane().add(btnDown);
 		
 		
@@ -276,7 +282,7 @@ public class DKeepGUI {
 		
 		
 		
-		
+		createdLevels = new ArrayList<Game>();
 		startGame();
 		gamePanel = new GamePanel(game.get(level));
 		gamePanel.setBounds(30, 65, 320, 320);
@@ -318,7 +324,7 @@ public class DKeepGUI {
 	}
 	
 	public void addGame(Game game) {
-		this.game.add(game);
+		this.createdLevels.add(game);
 	}
 	
 	public void createLevelWindow() {
@@ -341,6 +347,7 @@ public class DKeepGUI {
 		} else {
 			level++;
 			gamePanel.setGame(game.get(level));
+			gamePanel.setBounds(30, 65, 32*game.get(level).getGameMap().getX(), 32*game.get(level).getGameMap().getY());
 			gamePanel.cleanBoard(gamePanel.getGraphics());
 			gamePanel.paintComponent(gamePanel.getGraphics());
 			gameStatus.setText("");
@@ -416,25 +423,11 @@ public class DKeepGUI {
 		game.add(level2);
 	}
 
-	private void resetGame() {
-			game.get(0).getHero().getCoordinate().set(1, 1);
-			game.get(0).getEnemies().iterator().next().getCoordinate().set(1,8);
-			((Guard)game.get(0).getEnemies().iterator().next()).setWalkPathPosition(0);
-			 
-			
-			game.get(1).setHero(new Hero(new Coordinate(8, 1)));
-			game.get(1).getGameMap().removeCoord(new Coordinate(8,2));
-			game.get(1).addEntity(new Weapon(new Coordinate(8,2)));
-			game.get(1).getGameMap().removeCoord(new Coordinate(1,8));
-			game.get(1).addEntity(new Key(new Coordinate(1,8)));
-			for (Entity e : game.get(1).getEnemies()) {
-				e.setCoordinate(new Coordinate(1, 4));
-			}
-			
-			//TODO
-			//gamePanel.paintComponent(gamePanel.getGraphics());
-		
-		
+	private void resetGame() throws CloneNotSupportedException {
+		startGame();
+		for (Game g : createdLevels) {
+			game.add(new Game(new GameMap(g.getGameMap().getCoordToEntityMap(),g.getGameMap().getWinningCoords(),(Hero) g.getHero(),g.getGameMap().getX(),g.getGameMap().getY())));
+		}
 	}
 
 

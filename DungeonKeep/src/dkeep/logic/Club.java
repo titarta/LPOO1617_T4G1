@@ -21,6 +21,11 @@ public class Club extends NonStatic {
 	public void goesToKey() {
 		entityChar = '$';
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Club();
+	}
 	
 	
 	

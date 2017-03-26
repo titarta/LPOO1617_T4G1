@@ -97,6 +97,14 @@ public class Drunken extends Guard{
 	public void setSleepTurn(int sleepTurn) {
 		this.sleepTurn = sleepTurn;
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Drunken d = new Drunken((Coordinate) coordinate.clone());
+		d.setWalkPathPosition(0);
+		d.setWalkPath(walkPath);
+		return d;
+	}
 	
 	
 	

@@ -29,4 +29,11 @@ public class Door extends Static {
 			entityChar = 'I';
 		}
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Door((Coordinate) coordinate.clone());
+	}
+	
+	
 }

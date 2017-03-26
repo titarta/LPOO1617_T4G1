@@ -10,4 +10,9 @@ public class Wall extends Static {
 		priority = 1;
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Wall((Coordinate) coordinate.clone());
+	}
+	
 }

@@ -52,6 +52,12 @@ public class Guard extends NonStatic {
 	public Direction getGuardDirection() {
 		return walkPath[walkPathPosition];
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new Guard((Coordinate) coordinate.clone());
+	}
+	
 	
 
 }
