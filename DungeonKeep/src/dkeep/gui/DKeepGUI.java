@@ -35,16 +35,21 @@ public class DKeepGUI {
 	private ArrayList<Game> game;
 	private ArrayList<Game> createdLevels;
 	private int level;
-	private ActionListener disableButtons;
-	private ActionListener enableButtons;
+	private JButton btnLeft;
+	private JButton btnRight;
+	private JButton btnDown;
+	private JButton btnUp;
+	private JButton createLevel;
+	private JComboBox guardPersonalityComboBox;
+	private JLabel lblNumberOfOgres;
+	private JTextField numberOfOgresTextField;
+	private JLabel lblGuardPersonality;
+	private JButton btnNewGame;
+	private JButton btnExit;
 	private int guardType;
 	private int numberOgres;
 	private GamePanel gamePanel;
 	private JLabel gameStatus;
-	private ArrayList<Coordinate> createdLevelsHeroCoordinate;
-	private ArrayList<ArrayList<Coordinate>> createdLevelsKeyCoordinate;
-	private ArrayList<ArrayList<Coordinate>> createdLevelsWeaponCoordinate;
-	private ArrayList<ArrayList<Coordinate>> createdLevelsOgreCoordinate;
 	
 	/**
 	 * Launch the application.
@@ -74,23 +79,161 @@ public class DKeepGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
+		initializeFrame();
+		createButtons();
+		createGameStatus();
+		createTextField();
+		createComboBox();
+		createGuardPersonalityLabel();
+		createNumberOgresLabel();
+		createdLevels = new ArrayList<Game>();
+		startGame();
+		generateGamePanel();
+	}
+	
+	private void createButtons() {
+		createButtonUP();
+		createButtonDOWN();
+		createButtonLEFT();
+		createButtonRIGHT();
+		createCreateLevelButton();
+		createButtonExit();
+		createNewGameButton();
+	}
+	
+	private void createCreateLevelButton() {
+		createLevel = new JButton("Create Level");
+		createLevel.setBounds(510, 300, 170, 50);
+		createLevel.setFont(new Font("Courier New", Font.PLAIN, 11));
+		frame.getContentPane().add(createLevel);
+		createLevel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createLevelWindow();
+			}
+		});
+	}
+	
+	private void createButtonExit() {
+		btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		btnExit.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnExit.setBounds(550, 240, 90, 25);
+		frame.getContentPane().add(btnExit);
+	}
+	
+	private void createNewGameButton() {
+		btnNewGame = new JButton("New Game");
+		btnNewGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				enableButtons();
+				gameStatus.setText("");
+				try {
+					resetGame();
+				} catch (CloneNotSupportedException e1) {
+					e1.printStackTrace();
+				}
+				gamePanel.setGame(game.get(level));
+				gamePanel.setVisible(true);
+				frame.getContentPane().add(gamePanel);
+				enableButtons();
+				gamePanel.paintComponent(gamePanel.getGraphics());
+				gamePanel.requestFocusInWindow();
+				
+			}
+		});
+		btnNewGame.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnNewGame.setBounds(550, 50, 90, 25);
+		frame.getContentPane().add(btnNewGame);
+	}
+	
+	private void disableButtons() {
+		btnUp.setEnabled(false);
+		btnDown.setEnabled(false);
+		btnLeft.setEnabled(false);
+		btnRight.setEnabled(false);
+		gamePanel.setEnabled(false);
+	}
+	
+	private void enableButtons() {
+		btnUp.setEnabled(true);
+		btnDown.setEnabled(true);
+		btnLeft.setEnabled(true);
+		btnRight.setEnabled(true);
+		gamePanel.setEnabled(true);
+	}
+	
+	private void generateGamePanel() {
+		gamePanel = new GamePanel(game.get(level));
+		gamePanel.setBounds(30, 65, 320, 320);
+		gamePanel.setVisible(true);
+		enableButtons();
+		gamePanel.requestFocusInWindow();
+		gamePanel.addKeyListener(new KeyListener() {
+				@Override
+				public void keyTyped(KeyEvent e) {}
+				@Override
+				public void keyReleased(KeyEvent e) {}
+				@Override
+				public void keyPressed(KeyEvent e) {
+					 switch(e.getKeyCode()){
+				        case KeyEvent.VK_LEFT:
+				        	btnLeft.getActionListeners()[0].actionPerformed(null);
+				            break;
+				        case KeyEvent.VK_RIGHT:
+				        	btnRight.getActionListeners()[0].actionPerformed(null);
+				            break;
+				        case KeyEvent.VK_UP:
+				        	btnUp.getActionListeners()[0].actionPerformed(null);
+				            break;
+				        case KeyEvent.VK_DOWN:
+				        	btnDown.getActionListeners()[0].actionPerformed(null);
+				            break;
+				        }
+				}
+			});
+	}
+	
+	private void createComboBox() {
+		guardPersonalityComboBox = new JComboBox();
+		guardPersonalityComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				guardType = guardPersonalityComboBox.getSelectedIndex();
+			}
+		});
+		guardPersonalityComboBox.setModel(new DefaultComboBoxModel(new String[] {"Rookie", "Suspicious", "Drunken"}));
+		guardPersonalityComboBox.setSelectedIndex(0);
+		guardPersonalityComboBox.setFont(new Font("Courier New", Font.PLAIN, 11));
+		guardPersonalityComboBox.setBounds(155, 32, 95, 20);
+		frame.getContentPane().add(guardPersonalityComboBox);
+	}
+	
+	private void createGameStatus() {
+		gameStatus = new JLabel("");
+		gameStatus.setBounds(30, 500, 200, 15);
+		frame.getContentPane().add(gameStatus);
+	}
+	
+	private void initializeFrame() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
-		
-		
-		gameStatus = new JLabel("");
-		gameStatus.setBounds(30, 500, 200, 15);
-		frame.getContentPane().add(gameStatus);
-		
-		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
+	}
+	
+	private void createNumberOgresLabel() {
+		lblNumberOfOgres = new JLabel("Number of Ogres");
 		lblNumberOfOgres.setFont(new Font("Courier New", Font.PLAIN, 11));
 		lblNumberOfOgres.setBounds(22, 11, 110, 14);
 		frame.getContentPane().add(lblNumberOfOgres);
-		
+	}
+	
+	private void createTextField() {
 		JTextField numberOfOgresTextField = new JTextField();
 		numberOfOgresTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,187 +250,27 @@ public class DKeepGUI {
 		numberOfOgresTextField.setBounds(155, 7, 41, 20);
 		frame.getContentPane().add(numberOfOgresTextField);
 		numberOfOgresTextField.setColumns(10);
-		
-		JLabel lblGuardPersonality = new JLabel("Guard personality");
+	}
+
+	private void createGuardPersonalityLabel() {
+		lblGuardPersonality = new JLabel("Guard personality");
 		lblGuardPersonality.setFont(new Font("Courier New", Font.PLAIN, 11));
 		lblGuardPersonality.setBounds(22, 36, 119, 14);
 		frame.getContentPane().add(lblGuardPersonality);
-		
-		JComboBox guardPersonalityComboBox = new JComboBox();
-		guardPersonalityComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				guardType = guardPersonalityComboBox.getSelectedIndex();
-			}
-		});
-		guardPersonalityComboBox.setModel(new DefaultComboBoxModel(new String[] {"Rookie", "Suspicious", "Drunken"}));
-		guardPersonalityComboBox.setSelectedIndex(0);
-		guardPersonalityComboBox.setFont(new Font("Courier New", Font.PLAIN, 11));
-		guardPersonalityComboBox.setBounds(155, 32, 95, 20);
-		frame.getContentPane().add(guardPersonalityComboBox);
-		
-		JButton btnNewGame = new JButton("New Game");
-		btnNewGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				enableButtons.actionPerformed(null);
-				gameStatus.setText("");
-				level = 0;
-				try {
-					resetGame();
-				} catch (CloneNotSupportedException e1) {
-					e1.printStackTrace();
-				}
-				gamePanel.setBounds(30, 65, 320, 320);
-				gamePanel.setGame(game.get(level));
-				gamePanel.setVisible(true);
-				frame.getContentPane().add(gamePanel);
-				enableButtons.actionPerformed(null);
-				
-				gamePanel.paintComponent(gamePanel.getGraphics());
-				gamePanel.requestFocusInWindow();
-				
-			}
-		});
-		btnNewGame.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnNewGame.setBounds(550, 50, 90, 25);
-		frame.getContentPane().add(btnNewGame);
-		
-		JButton createLevel = new JButton("Create Level");
-		createLevel.setBounds(510, 300, 170, 50);
-		createLevel.setFont(new Font("Courier New", Font.PLAIN, 11));
-		frame.getContentPane().add(createLevel);
-		createLevel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				createLevelWindow();
-			}
-		});
-		
-		
-		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		btnExit.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnExit.setBounds(550, 240, 90, 25);
-		frame.getContentPane().add(btnExit);
-		
-		JButton btnUp = new JButton("Up");
-		btnUp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnFunction(Direction.UP);
-			}
-		});
-		btnUp.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnUp.setBounds(560, 100, 70, 30);
-		frame.getContentPane().add(btnUp);
-		
-		JButton btnLeft = new JButton("Left");
-		btnLeft.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnFunction(Direction.LEFT);
-			}
-		});
-		btnLeft.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnLeft.setBounds(520, 140, 70, 30);
-		frame.getContentPane().add(btnLeft);
-		
-		JButton btnRight = new JButton("Right");
-		btnRight.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnFunction(Direction.RIGHT);
-			}
-		});
-		btnRight.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnRight.setBounds(600, 140, 70, 30);
-		frame.getContentPane().add(btnRight);
-		
-		JButton btnDown = new JButton("Down");
-		btnDown.setFont(new Font("Courier New", Font.PLAIN, 11));
-		btnDown.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnFunction(Direction.DOWN);
-			}
-		});
-		btnDown.setBounds(560, 180, 70, 30);
-		frame.getContentPane().add(btnDown);
-		
-		
-		disableButtons = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnUp.setEnabled(false);
-				btnDown.setEnabled(false);
-				btnLeft.setEnabled(false);
-				btnRight.setEnabled(false);
-				gamePanel.setEnabled(false);
-			}
-		};
-		
-		enableButtons = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnUp.setEnabled(true);
-				btnDown.setEnabled(true);
-				btnLeft.setEnabled(true);
-				btnRight.setEnabled(true);
-				gamePanel.setEnabled(true);
-			}
-		};
-		
-		
-		
-		
-		createdLevels = new ArrayList<Game>();
-		startGame();
-		gamePanel = new GamePanel(game.get(level));
-		gamePanel.setBounds(30, 65, 320, 320);
-		gamePanel.setVisible(true);
-		enableButtons.actionPerformed(null);
-		
-		gamePanel.requestFocusInWindow();
-		
-		gamePanel.addKeyListener(new KeyListener() {
-				@Override
-				public void keyTyped(KeyEvent e) {}
-				
-				@Override
-				public void keyReleased(KeyEvent e) {}
-				
-				@Override
-				public void keyPressed(KeyEvent e) {
-					 switch(e.getKeyCode()){
-					 
-				        case KeyEvent.VK_LEFT:
-				        	btnLeft.getActionListeners()[0].actionPerformed(null);
-				            break;
-				        case KeyEvent.VK_RIGHT:
-				        	btnRight.getActionListeners()[0].actionPerformed(null);
-				            break;
-				        case KeyEvent.VK_UP:
-				        	btnUp.getActionListeners()[0].actionPerformed(null);
-				            break;
-				        case KeyEvent.VK_DOWN:
-				        	btnDown.getActionListeners()[0].actionPerformed(null);
-				            break;
-				        }
-				}
-			});
-		
-		
 	}
 	
 	public void addGame(Game game) {
 		this.createdLevels.add(game);
 	}
 	
-	public void createLevelWindow() {
+	private void createLevelWindow() {
 		levelEditor.start();
 	}
 	
 	private void loseGame() {
 		gamePanel.paintComponent(gamePanel.getGraphics());
 		gameStatus.setText("You lost...");
-		disableButtons.actionPerformed(null);
+		disableButtons();
 		gamePanel.requestFocusInWindow();
 	}
 	
@@ -295,7 +278,7 @@ public class DKeepGUI {
 		gamePanel.paintComponent(gamePanel.getGraphics());
 		if (level == game.size() - 1) {
 			gameStatus.setText("You won!");
-			disableButtons.actionPerformed(null);
+			disableButtons();
 			gamePanel.requestFocusInWindow();
 		} else {
 			level++;
@@ -308,22 +291,9 @@ public class DKeepGUI {
 		}
 	}
 	
-	private void startGame() {
-		game = new ArrayList<Game>();
-		level = 0;
-		
-		char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},
-				{'X','H',' ',' ','I',' ','X',' ',' ','X'},
-				{'X','X','X',' ','X','X','X',' ',' ','X'},
-				{'X',' ','I',' ','I',' ','X',' ',' ','X'},
-				{'X','X','X',' ','X','X','X',' ',' ','X'},
-				{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-				{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},
-				{'X','X','X',' ','X','X','X','X',' ','X'},
-				{'X',' ','I',' ','I',' ','X',' ',' ','X'},
-				{'X','X','X','X','X','X','X','X','X','X'}
-				};
-		
+	private void startGame1() {
+		char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},{'X','H',' ',' ','I',' ','X',' ',' ','X'},{'X','X','X',' ','X','X','X',' ',' ','X'},{'X',' ','I',' ','I',' ','X',' ',' ','X'},{'X','X','X',' ','X','X','X',' ',' ','X'},
+				{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},{'X','X','X',' ','X','X','X','X',' ','X'},{'X',' ','I',' ','I',' ','X',' ',' ','X'},{'X','X','X','X','X','X','X','X','X','X'}};
 		
 		Game level1 = new Game(map1);
 		HashSet<Door> doors1 = new HashSet<Door>();
@@ -345,26 +315,16 @@ public class DKeepGUI {
 		} else {
 			guard1 = new Rookie(new Coordinate(1, 8));
 		}
-		Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,
-				Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,
-				Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,
-				Direction.RIGHT, Direction.RIGHT, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP };
+		Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,Direction.RIGHT, Direction.RIGHT, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP };
 		guard1.setWalkPath(guardMovement);
 		level1.addEntity(guard1);
 		Coordinate[] winningCoords1 = {new Coordinate(5,0),new Coordinate(6,0)};
 		level1.addWinningCoords(winningCoords1);
 		game.add(level1);
-		
-		char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-				{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, 
-				{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+	}
+	
+	private void startGame2() {
+		char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 		
 		Game level2 = new Game(map2);
 		Key key1 = new Key(new Coordinate(1, 8));
@@ -379,12 +339,20 @@ public class DKeepGUI {
 		level2.addEntity(new Weapon(new Coordinate(8,2)));
 		game.add(level2);
 	}
+	
+	private void startGame() {
+		game = new ArrayList<Game>();
+		level = 0;
+		startGame1();
+		startGame2();
+	}
 
 	private void resetGame() throws CloneNotSupportedException {
 		startGame();
 		for (Game g : createdLevels) {
 			game.add(new Game(new GameMap(g.getGameMap().getCoordToEntityMap(),g.getGameMap().getWinningCoords(),(Hero) g.getHero(),g.getGameMap().getX(),g.getGameMap().getY())));
 		}
+		gamePanel.setBounds(30, 65, 320, 320);
 	}
 	
 	private void btnFunction(Direction d) {
@@ -399,6 +367,54 @@ public class DKeepGUI {
 				loseGame();
 			}
 		}
+	}
+	
+	private void createButtonUP() {
+		btnUp = new JButton("Up");
+		btnUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFunction(Direction.UP);
+			}
+		});
+		btnUp.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnUp.setBounds(560, 100, 70, 30);
+		frame.getContentPane().add(btnUp);
+	}
+	
+	private void createButtonDOWN() {
+		btnDown = new JButton("Down");
+		btnDown.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFunction(Direction.DOWN);
+			}
+		});
+		btnDown.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnDown.setBounds(560, 180, 70, 30);
+		frame.getContentPane().add(btnDown);
+	}
+	
+	private void createButtonLEFT() {
+		btnLeft = new JButton("Left");
+		btnLeft.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFunction(Direction.LEFT);
+			}
+		});
+		btnLeft.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnLeft.setBounds(520, 140, 70, 30);
+		frame.getContentPane().add(btnLeft);
+	}
+	
+	private void createButtonRIGHT() {
+		btnRight = new JButton("Right");
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnFunction(Direction.RIGHT);
+			}
+		});
+		btnRight.setFont(new Font("Courier New", Font.PLAIN, 11));
+		btnRight.setBounds(600, 140, 70, 30);
+		frame.getContentPane().add(btnRight);
 	}
 
 

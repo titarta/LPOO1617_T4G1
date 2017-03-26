@@ -45,39 +45,22 @@ public class GamePanel extends JPanel{
 		
 		try {
 		hero = ImageIO.read(new File("src/dkeep/gui/Images/hero.png"));
-		
 		armedHero = ImageIO.read(new File("src/dkeep/gui/Images/armedHero.png"));
-		
 		armedHeroWithKey = ImageIO.read(new File("src/dkeep/gui/Images/armedHeroWithKey.png"));
-		
 		heroWithKey = ImageIO.read(new File("src/dkeep/gui/Images/heroWithKey.png"));
-		
 		floor = ImageIO.read(new File("src/dkeep/gui/Images/floor.png"));
-		
 		closedDoor = ImageIO.read(new File("src/dkeep/gui/Images/closedDoor.png"));
-		
 		openedDoor = ImageIO.read(new File("src/dkeep/gui/Images/openDoor.png"));
-		
 		guard = ImageIO.read(new File("src/dkeep/gui/Images/guard.png"));
-		
 		sleepingGuard = ImageIO.read(new File("src/dkeep/gui/Images/guardSleeping.png"));
-		
 		weapon = ImageIO.read(new File("src/dkeep/gui/Images/weapon.png"));
-		
 		ogre = ImageIO.read(new File("src/dkeep/gui/Images/ogre.png"));
-		
 		stunnedOgre = ImageIO.read(new File("src/dkeep/gui/Images/ogreStunned.png"));
-		
 		wall = ImageIO.read(new File("src/dkeep/gui/Images/wall.png"));
-		
 		key = ImageIO.read(new File("src/dkeep/gui/Images/key.png"));
-		
 		lever = ImageIO.read(new File("src/dkeep/gui/Images/lever.png"));
-		
 		armedHeroWithKey = ImageIO.read(new File("src/dkeep/gui/Images/armedHeroWithKey.png"));
-		
 		club = ImageIO.read(new File("src/dkeep/gui/Images/club.png"));
-		
 		brokenKey = ImageIO.read(new File("src/dkeep/gui/Images/brokenKey.png"));
 		} catch (IOException e) {
 			System.out.print("Couldn't load textures");

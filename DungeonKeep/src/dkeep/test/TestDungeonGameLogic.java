@@ -264,6 +264,28 @@ public class TestDungeonGameLogic {
 			{'I',' ',' ',' ','X'},
 			{'X','X','X','X','X'}};
 	
+	@Test (timeout=1000)
+	public void testDrunkenGuard() {
+		Game game = new Game(map3);
+		Direction[] walkpath= {Direction.DOWN,Direction.DOWN,Direction.UP,Direction.UP};
+		Drunken drunk = new Drunken(new Coordinate(3,1));
+		drunk.setWalkPath(walkpath);
+		while(true) {
+			game.moveGuard(drunk);
+			if (drunk.isSleeping()) {
+				game.moveGuard(drunk);
+				game.moveGuard(drunk);
+				game.moveGuard(drunk);
+				if (!drunk.isSleeping()) {
+					return;
+				} else {
+					assertTrue(false);
+				}
+				
+			}
+		}
+	}
+	
 	@Test
 	public void testUpdateGame() throws GameEndException {
 		Game game = new Game(map3);
@@ -300,7 +322,6 @@ public class TestDungeonGameLogic {
 			game.moveGuard(rookie);
 			game.moveGuard(drunk);
 			game.moveGuard(suspicious);
-			game.printMap();
 		}
 		assertEquals(rookie.getCoordinate(), new Coordinate(1,1));
 	}
@@ -314,8 +335,99 @@ public class TestDungeonGameLogic {
 	}
 	
 	@Test
-	public void testClones() {
-		Hero hero = new Hero(new Coordinate(0,0));
+	public void testGame1() {
+char map1[][] = {{'X','X','X','X','X','X','X','X','X','X'},{'X','H',' ',' ','I',' ','X',' ',' ','X'},{'X','X','X',' ','X','X','X',' ',' ','X'},{'X',' ','I',' ','I',' ','X',' ',' ','X'},{'X','X','X',' ','X','X','X',' ',' ','X'},{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},{' ',' ',' ',' ',' ',' ',' ',' ',' ','X'},{'X','X','X',' ','X','X','X','X',' ','X'},{'X',' ','I',' ','I',' ','X',' ',' ','X'},{'X','X','X','X','X','X','X','X','X','X'}};
+		
+		Game level0 = new Game(map1);
+		HashSet<Door> doors = new HashSet<Door>();
+		Door door1 = new Door(new Coordinate(5,0));
+		Door door2 = new Door(new Coordinate(6,0));
+		doors.add(door1);
+		doors.add(door2);
+		Lever lever = new Lever(new Coordinate(8, 7), doors);
+		level0.addEntity(door1);
+		level0.addEntity(door2);
+		level0.addEntity(lever);
+		Guard guard1 = new Rookie(new Coordinate(1, 8));
+		Direction guardMovement[] = { Direction.LEFT, Direction.DOWN, Direction.DOWN, Direction.DOWN, Direction.DOWN,
+				Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT, Direction.LEFT,
+				Direction.DOWN, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT, Direction.RIGHT,
+				Direction.RIGHT, Direction.RIGHT, Direction.UP, Direction.UP, Direction.UP, Direction.UP, Direction.UP };
+		guard1.setWalkPath(guardMovement);
+		level0.addEntity(guard1);
+		Coordinate[] winningCoords1 = {new Coordinate(5,0),new Coordinate(6,0)};
+		level0.addWinningCoords(winningCoords1);
+		level0.printMap();
+		try {
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.UP);
+			level0.moveHero(Direction.UP);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.DOWN);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.RIGHT);
+			level0.moveHero(Direction.UP);
+			level0.moveHero(Direction.UP);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+			level0.moveHero(Direction.LEFT);
+		} catch (GameEndException e) {
+			assertTrue(e.getResult());
+			return;
+		}
+		assertTrue(false);
+	}
+	
+	@Test (timeout=1000)
+	public void testOgreKillHero() {
+		char map2[][] = { { 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+				{ 'I', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' }, { 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+		
+		Game level1 = new Game(map2);
+		Key key1 = new Key(new Coordinate(1, 8));
+		level1.addEntity(key1);
+		for (int i = 0; i < 2; i++) {
+			Ogre ogre = new Ogre(new Coordinate(1, 4), true);
+			level1.addEntity(ogre);
+			level1.getEnemies().add(ogre);
+			level1.addEntity(ogre.getClub());
+		}
+		Coordinate[] winningCoords2 = {new Coordinate(1,0)};
+		level1.addWinningCoords(winningCoords2);
+		level1.addEntity(new Weapon(new Coordinate(8,2)));
+		while(true) {
+			try {
+				level1.updateGame(Direction.DOWN);
+			} catch (GameEndException e) {
+				assertFalse(e.getResult());
+				return;
+			}
+		}
+		
 	}
 	
 	

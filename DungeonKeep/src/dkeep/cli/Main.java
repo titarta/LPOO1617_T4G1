@@ -107,7 +107,5 @@ public class Main {
 			}
 			games.get(gameNumber).printMap();
 		}
-		
 	}
-
 }
