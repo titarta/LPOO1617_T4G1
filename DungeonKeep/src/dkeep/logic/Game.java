@@ -84,7 +84,7 @@ public class Game implements java.io.Serializable{
 	/**
 	 * Getter that uses a gameMap getter - its is used in some cases, so it is avoided the get of the map.
 	 * It returns all the enemies in the game (ogres and guards);
-	 * @return HashSet<Entity>
+	 * @return 
 	 */
 	public HashSet<Entity> getEnemies() {
 		return gameMap.getEnemies();
@@ -94,7 +94,7 @@ public class Game implements java.io.Serializable{
 	 * Function that moves the Ogre randomly and also its club.
 	 * Calls placeClub.
 	 * @param ogre
-	 * @return boolean
+	 * @return
 	 */
 	public boolean moveOgre(Ogre ogre) {
 		if (ogre.isStunned()) {
@@ -145,7 +145,7 @@ public class Game implements java.io.Serializable{
 	 * Moves a guard using it's walkpath. Also updates the guard position in the walkpath.
 	 * Gives the guard the chance of deploying their events (sleep, and go backwards for example). Walkpath is always conveniently updated.
 	 * @param ent
-	 * @return boolean
+	 * @return
 	 */
 	public boolean moveGuard(Entity ent) {
 		if (!(ent instanceof Guard)) {
@@ -167,7 +167,7 @@ public class Game implements java.io.Serializable{
 	 * Moves the hero. Also checks all collisions between the hero and the other entities.
 	 * If the hero loses or wins the game in the movement, an exception is thrown with a boolean of the game ending (true if win, false if loss).
 	 * @param dir
-	 * @return boolean
+	 * @return
 	 * @throws GameEndException
 	 */
 	public boolean moveHero(Direction dir) throws GameEndException {
@@ -235,7 +235,7 @@ public class Game implements java.io.Serializable{
 	/**
 	 * Adds the entity to the game.
 	 * @param ent
-	 * @return boolean
+	 * @return
 	 */
 	public boolean addEntity(Entity ent) {
 		if (gameMap.coordBlocksMovement(ent.getCoordinate())) {
