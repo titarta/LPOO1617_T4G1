@@ -15,7 +15,7 @@ Rafael Ricardo Damasceno, up201504638, up201504638@fe.up.pt
 
 ### Behavioural aspects
 
-![](
+![](https://github.com/titarta/LPOO1617_T4G1/raw/master/Defend/README-res/StateMachine.png)
 
 ### Design Patterns
 
