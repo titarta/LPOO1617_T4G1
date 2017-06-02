@@ -45,9 +45,19 @@ public class GameScreen extends ScreenMother {
         this.floorView = new FloorView(game);
         this.enemyView = new EnemyView(game);
         stage.addListener(new ActorGestureListener() {
+
+            @Override
+            public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchDown(event, x, y, pointer, button);
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+            }
+
             @Override
             public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-                super.pan(event, x, y, deltaX, deltaY);
                 controller.createProjectile(deltaX, deltaY);
             }
         });

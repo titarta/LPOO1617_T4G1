@@ -47,7 +47,8 @@ public class GameController {
     }
 
     public void createProjectile (float deltaX, float deltaY) {
-
+        System.out.println(deltaX);
+        System.out.println(deltaY);
     }
 
 }
