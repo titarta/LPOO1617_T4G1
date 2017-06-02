@@ -48,7 +48,7 @@ public class GameScreen extends ScreenMother {
             @Override
             public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
                 super.pan(event, x, y, deltaX, deltaY);
-                controller.createProjectile(x, y, deltaX, deltaY);
+                controller.createProjectile(deltaX, deltaY);
             }
         });
     }
@@ -56,8 +56,7 @@ public class GameScreen extends ScreenMother {
     @Override
     public void render(float delta) {
 
-
-        Gdx.gl.glClearColor( 103/255f, 69/255f, 117/255f, 1 );
+        Gdx.gl.glClearColor( 0.95f, 0.95f, 0.95f, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         game.batch.begin();

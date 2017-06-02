@@ -46,7 +46,7 @@ public class GameController {
         return world;
     }
 
-    public void createProjectile (float x, float y, float deltaX, float deltaY) {
+    public void createProjectile (float deltaX, float deltaY) {
 
     }
 
