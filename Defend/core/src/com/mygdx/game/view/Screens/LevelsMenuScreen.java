@@ -6,6 +6,7 @@ import com.mygdx.game.module.GameModel;
 
 import java.util.ArrayList;
 
+import Utils.EnemyEntry;
 import Utils.MenuOption;
 
 /**
@@ -18,7 +19,7 @@ public class LevelsMenuScreen extends MenuScreen {
         super(game);
         options = new ArrayList<MenuOption>();
         GameModel g = new GameModel();
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g)), "Level 1", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), new ArrayList<EnemyEntry>()), "Level 1", game));
         options.add(new MenuOption(null, "Level 2", game));
         options.add(new MenuOption(null, "Level 3", game));
         options.add(new MenuOption(null, "Level 4", game));

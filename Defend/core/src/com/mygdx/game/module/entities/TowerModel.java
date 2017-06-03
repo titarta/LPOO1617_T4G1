@@ -7,6 +7,6 @@ package com.mygdx.game.module.entities;
 public class TowerModel extends EntityModel {
 
     public TowerModel() {
-        super(20, 20, 0);
+        super(60, 120, 0);
     }
 }

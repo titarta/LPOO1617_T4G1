@@ -22,16 +22,15 @@ public class GameModel {
         tower = new TowerModel();
         floor = new FloorModel();
         enemies = new ArrayList<EnemyModel>();
-        enemies.add(new EnemyModel(1));
         projectiles = new ArrayList<ProjectileModel>();
     }
 
-    public void addEnemyModel() {
-        enemies.add(new EnemyModel(1));
+    public void addEnemyModel(EnemyModel e) {
+        enemies.add(e);
     }
 
-    public void addProjectileModel(float rotation) {
-        projectiles.add(new ProjectileModel(rotation));
+    public void addProjectileModel(ProjectileModel model) {
+        projectiles.add(model);
     }
 
     public TowerModel getTower() {

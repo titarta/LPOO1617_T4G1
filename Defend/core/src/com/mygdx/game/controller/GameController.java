@@ -4,8 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.controller.entities.EnemyBody;
+import com.mygdx.game.controller.entities.FloorBody;
+import com.mygdx.game.controller.entities.ProjectileBody;
 import com.mygdx.game.module.GameModel;
-import com.mygdx.game.module.entities.EntityModel;
+import com.mygdx.game.module.entities.*;
+
+import java.util.ArrayList;
 
 /**
  * Created by Tiago on 28/05/2017.
@@ -15,9 +20,13 @@ public class GameController {
 
     private final World world;
     private float accumulator;
+    private ArrayList<EnemyBody> enemies;
+
 
     public GameController(GameModel model) {
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, -200), true);
+        new FloorBody(world, model.getFloor());
+        enemies = new ArrayList<EnemyBody>();
 
     }
 
@@ -28,6 +37,7 @@ public class GameController {
             world.step(1/60f, 6, 2);
             accumulator -= 1/60f;
         }
+        enemiesWalk(delta);
 
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
@@ -46,9 +56,25 @@ public class GameController {
         return world;
     }
 
-    public void createProjectile (float deltaX, float deltaY) {
-        System.out.println(deltaX);
-        System.out.println(deltaY);
+    public void createEnemyBody(EnemyModel e) {
+        EnemyBody enemyBody = new EnemyBody(world, e);
+        enemies.add(enemyBody);
+    }
+
+    public void createProjectileBody(ProjectileModel p, float x, float y) {
+        ProjectileBody pBody = new ProjectileBody(world, p);
+        pBody.setVelocity(x*20000, y*20000);
+    }
+
+    public void enemiesWalk(float delta) {
+        for(EnemyBody e : enemies) {
+            if (e.getX() <= 115) {
+                e.setVelocity(0, 0);
+            } else {
+                e.setVelocity(-60, 0);
+            }
+
+        }
     }
 
 }

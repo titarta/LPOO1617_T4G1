@@ -17,6 +17,6 @@ public class EnemyBody extends EntityBody {
      */
     public EnemyBody(World world, EntityModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
-        createFixture(body, new float[]{0,0, 15,0, 0,30, 15,30}, 15, 30, 1f, 0.4f, 0.5f);
+        createFixture(body, new float[]{0,0, 30,0, 0,30, 30,30}, 15, 30, 1f, 0f, 0.5f);
     }
 }

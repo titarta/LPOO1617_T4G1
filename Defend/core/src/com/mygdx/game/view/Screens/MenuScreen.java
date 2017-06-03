@@ -54,6 +54,7 @@ public class MenuScreen extends ScreenMother implements Screen {
     public void resize(int width, int height) {
         menuPort.update(width,height);
         menuCam.update();
+        stage.setViewport(menuPort);
     }
 
     @Override

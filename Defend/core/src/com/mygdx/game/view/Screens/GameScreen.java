@@ -13,11 +13,13 @@ import com.mygdx.game.module.GameModel;
 import com.mygdx.game.module.entities.EnemyModel;
 import com.mygdx.game.module.entities.EntityModel;
 import com.mygdx.game.module.entities.ProjectileModel;
-import com.mygdx.game.view.Screens.entities.EnemyView;
-import com.mygdx.game.view.Screens.entities.FloorView;
-import com.mygdx.game.view.Screens.entities.TowerView;
+import com.mygdx.game.view.Screens.entities.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
+
+import Utils.EnemyEntry;
 
 /**
  * Created by Tiago on 04/05/2017.
@@ -31,34 +33,46 @@ public class GameScreen extends ScreenMother {
     private TowerView towerView;
     private FloorView floorView;
     private EnemyView enemyView;
+    private ProjectileView projectileView;
+    private ArrayList<EnemyEntry> levelMap;
+    private float timeElapsed;
+    private int enemyIndex;
+    private float deltaX;
+    private float deltaY;
 
 
 
-
-    public GameScreen(DefendGame game, GameModel model, final GameController controller) {
+    public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level) {
         super(game);
         this.game = game;
         this.model = model;
         this.controller = controller;
+        this.levelMap = level;
+        this.timeElapsed = 0;
+        this.enemyIndex = 0;
+        this.deltaX = 0;
+        this.deltaY = 0;
 
         this.towerView = new TowerView(game);
         this.floorView = new FloorView(game);
         this.enemyView = new EnemyView(game);
+        this.projectileView = new ProjectileView(game);
+        addEnemy(1);
         stage.addListener(new ActorGestureListener() {
 
             @Override
             public void touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchDown(event, x, y, pointer, button);
+                startProjectilePath();
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
+                endProjectilePath();
             }
 
             @Override
             public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-                controller.createProjectile(deltaX, deltaY);
+                updateProjectilePath(deltaX, deltaY);
             }
         });
     }
@@ -69,20 +83,60 @@ public class GameScreen extends ScreenMother {
         Gdx.gl.glClearColor( 0.95f, 0.95f, 0.95f, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
+        controller.update(delta);
+        spawnEnemies(delta);
+
         game.batch.begin();
         drawEntities();
         game.batch.end();
     }
 
     private void drawEntities() {
-        //ArrayList<EnemyModel> enemies = model.getEnemies();
-        //ArrayList<ProjectileModel> projectiles = model.getProjectiles();
         floorView.update(model.getFloor());
         floorView.draw(game.batch);
         towerView.update(model.getTower());
         towerView.draw(game.batch);
-        model.getEnemies().get(0).step();
-        enemyView.update(model.getEnemies().get(0));
-        enemyView.draw(game.batch);
+        for (EnemyModel e : model.getEnemies()) {
+            enemyView.update(e);
+            enemyView.draw(game.batch);
+        }
+        for (ProjectileModel p : model.getProjectiles()) {
+            projectileView.update(p);
+            projectileView.draw(game.batch);
+        }
+    }
+
+    private void spawnEnemies(float delta) {
+        timeElapsed += delta;
+        /*
+        if (timeElapsed < levelMap.get(enemyIndex).getTime()) {
+            return;
+        }*/
+
+    }
+
+    private void startProjectilePath() {
+        deltaX = 0;
+        deltaY = 0;
+    }
+
+    private void updateProjectilePath(float deltaX, float deltaY) {
+        this.deltaX += deltaX;
+        this.deltaY += deltaY;
+    }
+
+    private void endProjectilePath () {
+        if (deltaY == 0) {
+            return;
+        }
+        ProjectileModel p = new ProjectileModel(((float) (1/(Math.atan(deltaX/deltaY)))));
+        model.addProjectileModel(p);
+        controller.createProjectileBody(p, -deltaX, -deltaY);
+    }
+
+    private void addEnemy(int power) {
+        EnemyModel e = new EnemyModel(power);
+        model.addEnemyModel(e);
+        controller.createEnemyBody(e);
     }
 }

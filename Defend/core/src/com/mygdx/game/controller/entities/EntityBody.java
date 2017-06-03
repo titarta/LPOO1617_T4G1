@@ -39,20 +39,17 @@ public abstract class EntityBody {
      * @param body The body the fixture is to be attached to.
      * @param vertexes The vertexes defining the fixture in pixels so it is
      *                 easier to get them from a bitmap image.
-     * @param width The width of the bitmap the vertexes where extracted from.
-     * @param height The height of the bitmap the vertexes where extracted from.
      * @param density The density of the fixture. How heavy it is in relation to its area.
      * @param friction The friction of the fixture. How slippery it is.
      * @param restitution The restitution of the fixture. How much it bounces.
      */
     final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution) {
-        // Transform pixels into meters, center and invert the y-coordinate
+
         for (int i = 0; i < vertexes.length; i++) {
             if (i % 2 == 0) vertexes[i] -= width / 2;   // center the vertex x-coordinate
             if (i % 2 != 0) vertexes[i] -= height / 2;  // center the vertex y-coordinate
 
             if (i % 2 != 0) vertexes[i] *= -1;          // invert the y-coordinate
-
         }
 
         PolygonShape polygon = new PolygonShape();
@@ -135,5 +132,9 @@ public abstract class EntityBody {
      */
     public Object getUserData() {
         return body.getUserData();
+    }
+
+    public void setVelocity(float x, float y) {
+        body.setLinearVelocity(x, y);
     }
 }

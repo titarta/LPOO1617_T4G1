@@ -51,7 +51,7 @@ abstract class EntityView {
      * @param model the model used to update this view
      */
     public void update(EntityModel model) {
-        sprite.setPosition(model.getX(), model.getY());
+        sprite.setCenter(model.getX(), model.getY());
         sprite.setRotation((float) Math.toDegrees(model.getRotation()));
     }
 }

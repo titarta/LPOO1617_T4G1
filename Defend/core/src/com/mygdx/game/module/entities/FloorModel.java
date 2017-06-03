@@ -7,6 +7,6 @@ package com.mygdx.game.module.entities;
 public class FloorModel extends EntityModel {
 
     public FloorModel() {
-        super(0, 0, 0);
+        super(450, 10, 0);
     }
 }
