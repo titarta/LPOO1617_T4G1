@@ -126,12 +126,12 @@ public class GameScreen extends ScreenMother {
     }
 
     private void endProjectilePath () {
-        if (deltaY == 0) {
+        if (deltaY == 0 && deltaX == 0) {
             return;
         }
-        ProjectileModel p = new ProjectileModel(((float) (1/(Math.atan(deltaX/deltaY)))));
+        ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))));
         model.addProjectileModel(p);
-        controller.createProjectileBody(p, -deltaX, -deltaY);
+        controller.createProjectileBody(p, -deltaX*10, -deltaY*10);
     }
 
     private void addEnemy(int power) {

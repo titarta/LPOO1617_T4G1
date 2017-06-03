@@ -63,7 +63,7 @@ public class GameController {
 
     public void createProjectileBody(ProjectileModel p, float x, float y) {
         ProjectileBody pBody = new ProjectileBody(world, p);
-        pBody.setVelocity(x*20000, y*20000);
+        pBody.setVelocity(x, y);
     }
 
     public void enemiesWalk(float delta) {
