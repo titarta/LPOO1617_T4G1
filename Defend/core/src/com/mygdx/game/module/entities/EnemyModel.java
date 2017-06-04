@@ -2,6 +2,8 @@ package com.mygdx.game.module.entities;
 
 import com.mygdx.game.GameLogic.Enemy;
 
+import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
+
 /**
  * Created by Tiago on 28/05/2017.
  */

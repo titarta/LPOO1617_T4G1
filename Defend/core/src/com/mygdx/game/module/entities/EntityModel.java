@@ -1,5 +1,7 @@
 package com.mygdx.game.module.entities;
 
+import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
+
 /**
  * Created by Tiago on 28/05/2017.
  */
@@ -28,8 +30,8 @@ public abstract class EntityModel {
      * @param rotation The current rotation of this entity in radians.
      */
     EntityModel(float x, float y, float rotation) {
-        this.x = x;
-        this.y = y;
+        this.x = x*PIXEL_TO_METER;
+        this.y = y*PIXEL_TO_METER;
         this.rotation = rotation;
     }
 

@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.module.entities.EntityModel;
 
+import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
+
 /**
  * Created by Tiago on 29/05/2017.
  */
@@ -51,7 +53,7 @@ abstract class EntityView {
      * @param model the model used to update this view
      */
     public void update(EntityModel model) {
-        sprite.setCenter(model.getX(), model.getY());
+        sprite.setCenter(model.getX() / PIXEL_TO_METER, model.getY() / PIXEL_TO_METER);
         sprite.setRotation((float) Math.toDegrees(model.getRotation()));
     }
 }

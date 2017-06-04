@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.module.entities.EntityModel;
 
+import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
+
 /**
  * Created by Tiago on 28/05/2017.
  */
@@ -50,6 +52,8 @@ public abstract class EntityBody {
             if (i % 2 != 0) vertexes[i] -= height / 2;  // center the vertex y-coordinate
 
             if (i % 2 != 0) vertexes[i] *= -1;          // invert the y-coordinate
+
+            vertexes[i] *= PIXEL_TO_METER;
         }
 
         PolygonShape polygon = new PolygonShape();
@@ -134,23 +138,8 @@ public abstract class EntityBody {
         return body.getUserData();
     }
 
-    public void updateVelocity(float moduleMax, float x, float y) {
-        if (body.getLinearVelocity().len() < moduleMax) {
-            body.applyForceToCenter(x, y, true);
-        }
-    }
-
     public void setVelocity(float x, float y) {
         body.setLinearVelocity(x,y);
-        System.out.println(getX());
-        System.out.println(getY());
-        System.out.println(x);
-        System.out.println(y);
-        System.out.println(body.getLinearVelocity().len());
-    }
-
-    public void emulateAirResistanceOnProjectile () {
-        body.applyForce(- 0.08f * body.getLinearVelocity().x, - 0.08f * body.getLinearVelocity().y, 10, 1.5f, true);
     }
 
     public void printVelocity() {

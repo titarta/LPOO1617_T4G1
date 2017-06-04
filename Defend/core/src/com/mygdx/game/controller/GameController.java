@@ -3,16 +3,9 @@ package com.mygdx.game.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.controller.entities.EnemyBody;
-import com.mygdx.game.controller.entities.EntityBody;
 import com.mygdx.game.controller.entities.FloorBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
 import com.mygdx.game.module.GameModel;
@@ -20,6 +13,8 @@ import com.mygdx.game.module.entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
 /**
  * Created by Tiago on 28/05/2017.
@@ -36,7 +31,7 @@ public class GameController {
     private ArrayList<Body> bodiesToDestroy;
 
     public GameController(GameModel model) {
-        world = new World(new Vector2(0, -200), true);
+        world = new World(new Vector2(0, -9.8f), true);
         new FloorBody(world, model.getFloor());
         enemies = new ArrayList<EnemyBody>();
         projectiles = new ArrayList<ProjectileBody>();
@@ -50,16 +45,14 @@ public class GameController {
         float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
         while (accumulator >= 1/60f) {
-            world.step(1/60f, 60, 20);
+            world.step(1/60f, 4, 2);
             accumulator -= 1/60f;
         }
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);
         }
         bodiesToDestroy.clear();
-        enemiesWalk(delta);
-        projectilesMove(delta);
-
+        enemiesWalk();
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         for (Body body : bodies) {
@@ -88,23 +81,17 @@ public class GameController {
         ProjectileBody pBody = new ProjectileBody(world, p);
         projectiles.add(pBody);
         projectilesMap.put(pBody.getBody(), pBody);
-        pBody.setVelocity(x, y);
+        pBody.setVelocity(x*0.04f, y*0.04f);
 
     }
 
-    public void enemiesWalk(float delta) {
+    public void enemiesWalk() {
         for(EnemyBody e : enemies) {
-            if (e.getX() <= 115) {
+            if (e.getX() <= 115*PIXEL_TO_METER) {
                 e.setVelocity(0, 0);
             } else {
-                e.setVelocity(-40, 0);
+                e.setVelocity(-40*PIXEL_TO_METER, 0);
             }
-        }
-    }
-
-    private void projectilesMove(float delta) {
-        for(ProjectileBody p : projectiles) {
-            p.emulateAirResistanceOnProjectile();
         }
     }
 

@@ -2,6 +2,7 @@ package com.mygdx.game.view.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -31,6 +32,7 @@ import Utils.EnemyEntry;
 
 public class GameScreen extends ScreenMother {
 
+    public final static float PIXEL_TO_METER = 0.05f;
     private final DefendGame game;
     private final GameModel model;
     private final GameController controller;
@@ -44,6 +46,7 @@ public class GameScreen extends ScreenMother {
     private float deltaX;
     private float deltaY;
     private Projectile projectileDamage;
+    private boolean endFlag;
 
 
     public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level) {
@@ -57,12 +60,11 @@ public class GameScreen extends ScreenMother {
         this.enemyIndex = 0;
         this.deltaX = 0;
         this.deltaY = 0;
-
+        this.endFlag = false;
         this.towerView = new TowerView(game);
         this.floorView = new FloorView(game);
         this.enemyView = new EnemyView(game);
         this.projectileView = new ProjectileView(game);
-        addEnemy(1);
         stage.addListener(new ActorGestureListener() {
 
             @Override
@@ -112,12 +114,18 @@ public class GameScreen extends ScreenMother {
     }
 
     private void spawnEnemies(float delta) {
+        if  (endFlag) {
+            return;
+        }
         timeElapsed += delta;
-        /*
         if (timeElapsed < levelMap.get(enemyIndex).getTime()) {
             return;
-        }*/
-
+        }
+        addEnemy(levelMap.get(enemyIndex).getPower());
+        enemyIndex++;
+        if (enemyIndex == levelMap.size()) {
+            endFlag = true;
+        }
     }
 
     private void startProjectilePath() {
@@ -136,7 +144,7 @@ public class GameScreen extends ScreenMother {
         }
         ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))), new Projectile(50, 50, 0));
         model.addProjectileModel(p);
-        controller.createProjectileBody(p, -deltaX*10, -deltaY*10);
+        controller.createProjectileBody(p, -deltaX, -deltaY);
     }
 
     private void addEnemy(int power) {
@@ -207,5 +215,9 @@ public class GameScreen extends ScreenMother {
     private void eraseProjectileEntity(ProjectileBody ent) {
         controller.deleteProjectileBody(ent);
         model.deleteProjectileModel(((ProjectileModel) ent.getUserData()));
+    }
+
+    private void endGame() {
+
     }
 }

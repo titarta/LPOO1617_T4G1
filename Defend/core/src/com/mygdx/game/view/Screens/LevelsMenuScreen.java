@@ -19,7 +19,7 @@ public class LevelsMenuScreen extends MenuScreen {
         super(game);
         options = new ArrayList<MenuOption>();
         GameModel g = new GameModel();
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), new ArrayList<EnemyEntry>()), "Level 1", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level1()), "Level 1", game));
         options.add(new MenuOption(null, "Level 2", game));
         options.add(new MenuOption(null, "Level 3", game));
         options.add(new MenuOption(null, "Level 4", game));
@@ -61,5 +61,13 @@ public class LevelsMenuScreen extends MenuScreen {
     @Override
     public void dispose() {
 
+    }
+
+    private ArrayList<EnemyEntry> level1() {
+        ArrayList<EnemyEntry> level = new ArrayList<EnemyEntry>();
+        for (int i = 0; i < 30; i = i + 3) {
+            level.add(new EnemyEntry(i, 1));
+        }
+        return level;
     }
 }

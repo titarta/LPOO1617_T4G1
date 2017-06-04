@@ -17,8 +17,7 @@ public class ProjectileBody extends EntityBody {
      */
     public ProjectileBody(World world, EntityModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
-        createFixture(body, new float[]{0,0, 10,0, 0,3, 10,3}, 20, 3, 1f, 0.4f, 0.5f);
-        createFixture(body, new float[]{10,0, 20,0, 10,3, 20,3}, 20, 3, 1f, 0.4f, 0.5f);
+        createFixture(body, new float[]{2.5f,0, 4.267f,0.732f, 5,2.5f, 4.267f,4.267f, 2.5f,5, 0.732f,4.267f, 0,2.5f, 0.732f,0.732f}, 5, 5, 1f, 0.4f, 0.5f);
         body.setBullet(true);
     }
 }
