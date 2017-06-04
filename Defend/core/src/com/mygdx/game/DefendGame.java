@@ -14,7 +14,7 @@ import com.mygdx.game.view.Screens.MainMenuScreen;
 import com.mygdx.game.view.Screens.MenuScreen;
 
 public class DefendGame extends Game {
-	private GameInfo gameInfo;
+	public GameInfo gameInfo;
 	private MainMenuScreen mainMenu;
 	private AssetManager assetManager;
 	public int VIEWPORT_HEIGHT = 400;

@@ -1,6 +1,7 @@
 package com.mygdx.game.module;
 
 import com.mygdx.game.module.entities.EnemyModel;
+import com.mygdx.game.module.entities.EntityModel;
 import com.mygdx.game.module.entities.FloorModel;
 import com.mygdx.game.module.entities.ProjectileModel;
 import com.mygdx.game.module.entities.TowerModel;
@@ -48,4 +49,13 @@ public class GameModel {
     public ArrayList<ProjectileModel> getProjectiles() {
         return projectiles;
     }
+
+    public void deleteEnemyModel (EnemyModel e) {
+        enemies.remove(e);
+    }
+
+    public void deleteProjectileModel (ProjectileModel p) {
+        projectiles.remove(p);
+    }
+
 }

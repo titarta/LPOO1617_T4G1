@@ -3,16 +3,20 @@ package com.mygdx.game.view.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.GameLogic.Projectile;
 import com.mygdx.game.controller.GameController;
+import com.mygdx.game.controller.entities.*;
 import com.mygdx.game.module.GameModel;
-import com.mygdx.game.module.entities.EnemyModel;
-import com.mygdx.game.module.entities.EntityModel;
-import com.mygdx.game.module.entities.ProjectileModel;
+import com.mygdx.game.module.entities.*;
 import com.mygdx.game.view.Screens.entities.*;
 
 import java.util.ArrayList;
@@ -39,7 +43,7 @@ public class GameScreen extends ScreenMother {
     private int enemyIndex;
     private float deltaX;
     private float deltaY;
-
+    private Projectile projectileDamage;
 
 
     public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level) {
@@ -47,6 +51,7 @@ public class GameScreen extends ScreenMother {
         this.game = game;
         this.model = model;
         this.controller = controller;
+        createContactListener();
         this.levelMap = level;
         this.timeElapsed = 0;
         this.enemyIndex = 0;
@@ -129,7 +134,7 @@ public class GameScreen extends ScreenMother {
         if (deltaY == 0 && deltaX == 0) {
             return;
         }
-        ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))));
+        ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))), new Projectile(50, 50, 0));
         model.addProjectileModel(p);
         controller.createProjectileBody(p, -deltaX*10, -deltaY*10);
     }
@@ -138,5 +143,69 @@ public class GameScreen extends ScreenMother {
         EnemyModel e = new EnemyModel(power);
         model.addEnemyModel(e);
         controller.createEnemyBody(e);
+    }
+
+    private void createContactListener() {
+        controller.getWorld().setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+
+                EntityModel a = ((EntityModel) contact.getFixtureA().getBody().getUserData());
+                EntityModel b = ((EntityModel) contact.getFixtureB().getBody().getUserData());
+
+                if (a.getType() == b.getType()) {
+                    return;
+                }
+                if (a.getType() == "Floor" && b.getType() == "Enemy") {
+                    return;
+                }
+                if (a.getType() == "Projectile" && b.getType() == "Enemy") {
+                    if(((EnemyModel) b).getAttacked(((ProjectileModel) a).attacks())) {
+                        eraseEnemyEntity(controller.getEnemyBody(contact.getFixtureB().getBody()));
+                    }
+                    eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureA().getBody()));
+                    return;
+                }
+                if (a.getType() == "Enemy" && b.getType() == "Projectile") {
+                    if(((EnemyModel) a).getAttacked(((ProjectileModel) b).attacks())) {
+                        eraseEnemyEntity(controller.getEnemyBody(contact.getFixtureA().getBody()));
+                    }
+                    eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureB().getBody()));
+                    return;
+                }
+                if (b.getType() == "Projectile") {
+                    eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureB().getBody()));
+                }
+                if (a.getType() == "Projectile") {
+                    eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureA().getBody()));
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
+    }
+
+    private void eraseEnemyEntity(EnemyBody ent) {
+        controller.deleteEnemyBody(ent);
+        model.deleteEnemyModel(((EnemyModel) ent.getUserData()));
+    }
+
+    private void eraseProjectileEntity(ProjectileBody ent) {
+        controller.deleteProjectileBody(ent);
+        model.deleteProjectileModel(((ProjectileModel) ent.getUserData()));
     }
 }

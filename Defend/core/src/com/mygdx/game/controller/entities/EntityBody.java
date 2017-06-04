@@ -149,7 +149,15 @@ public abstract class EntityBody {
         System.out.println(body.getLinearVelocity().len());
     }
 
+    public void emulateAirResistanceOnProjectile () {
+        body.applyForce(- 0.08f * body.getLinearVelocity().x, - 0.08f * body.getLinearVelocity().y, 10, 1.5f, true);
+    }
+
     public void printVelocity() {
         System.out.println(body.getLinearVelocity().len());
+    }
+
+    public Body getBody() {
+        return body;
     }
 }

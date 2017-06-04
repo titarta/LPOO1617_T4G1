@@ -85,4 +85,6 @@ public abstract class EntityModel {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
+
+    public String getType() { return "";}
 }

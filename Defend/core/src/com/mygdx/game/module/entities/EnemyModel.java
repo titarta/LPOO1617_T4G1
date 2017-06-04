@@ -14,4 +14,13 @@ public class EnemyModel extends EntityModel {
         super(700, 35, 0);
         enemyStats = new Enemy(power);
     }
+
+    @Override
+    public String getType() {
+        return "Enemy";
+    }
+
+    public boolean getAttacked(int damage) {
+        return enemyStats.getsAttacked(damage);
+    }
 }

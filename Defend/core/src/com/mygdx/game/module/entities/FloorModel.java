@@ -9,4 +9,9 @@ public class FloorModel extends EntityModel {
     public FloorModel() {
         super(450, 10, 0);
     }
+
+    @Override
+    public String getType() {
+        return "Floor";
+    }
 }
