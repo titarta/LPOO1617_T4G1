@@ -134,7 +134,22 @@ public abstract class EntityBody {
         return body.getUserData();
     }
 
+    public void updateVelocity(float moduleMax, float x, float y) {
+        if (body.getLinearVelocity().len() < moduleMax) {
+            body.applyForceToCenter(x, y, true);
+        }
+    }
+
     public void setVelocity(float x, float y) {
-        body.setLinearVelocity(x, y);
+        body.setLinearVelocity(x,y);
+        System.out.println(getX());
+        System.out.println(getY());
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(body.getLinearVelocity().len());
+    }
+
+    public void printVelocity() {
+        System.out.println(body.getLinearVelocity().len());
     }
 }

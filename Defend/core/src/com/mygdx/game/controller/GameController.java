@@ -1,7 +1,9 @@
 package com.mygdx.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.controller.entities.EnemyBody;
@@ -21,12 +23,14 @@ public class GameController {
     private final World world;
     private float accumulator;
     private ArrayList<EnemyBody> enemies;
+    private ArrayList<ProjectileBody> projectiles;
 
 
     public GameController(GameModel model) {
         world = new World(new Vector2(0, -200), true);
         new FloorBody(world, model.getFloor());
         enemies = new ArrayList<EnemyBody>();
+        projectiles = new ArrayList<ProjectileBody>();
 
     }
 
@@ -34,10 +38,11 @@ public class GameController {
         float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
         while (accumulator >= 1/60f) {
-            world.step(1/60f, 6, 2);
+            world.step(1/60f, 60, 20);
             accumulator -= 1/60f;
         }
         enemiesWalk(delta);
+        projectilesMove(delta);
 
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
@@ -46,6 +51,7 @@ public class GameController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
     }
+
 
     /**
      * Returns the world controlled by this controller. Needed for debugging purposes only.
@@ -63,7 +69,9 @@ public class GameController {
 
     public void createProjectileBody(ProjectileModel p, float x, float y) {
         ProjectileBody pBody = new ProjectileBody(world, p);
+        projectiles.add(pBody);
         pBody.setVelocity(x, y);
+
     }
 
     public void enemiesWalk(float delta) {
@@ -71,10 +79,16 @@ public class GameController {
             if (e.getX() <= 115) {
                 e.setVelocity(0, 0);
             } else {
-                e.setVelocity(-60, 0);
+                e.updateVelocity(60, -600, 0);
             }
-
         }
     }
+
+    private void projectilesMove(float delta) {
+        for(ProjectileBody p : projectiles) {
+            p.printVelocity();
+        }
+    }
+
 
 }
