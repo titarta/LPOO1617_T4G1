@@ -1,6 +1,5 @@
 package com.mygdx.game.controller;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,16 +8,15 @@ import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.FloorBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
 import com.mygdx.game.module.GameModel;
-import com.mygdx.game.module.entities.*;
+import com.mygdx.game.module.entities.EnemyModel;
+import com.mygdx.game.module.entities.EntityModel;
+import com.mygdx.game.module.entities.ProjectileModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
-
-/**
- * Created by Tiago on 28/05/2017.
- */
 
 public class GameController {
 
@@ -28,7 +26,7 @@ public class GameController {
     private ArrayList<ProjectileBody> projectiles;
     private HashMap<Body, EnemyBody> enemiesMap;
     private HashMap<Body, ProjectileBody> projectilesMap;
-    private ArrayList<Body> bodiesToDestroy;
+    private HashSet<Body> bodiesToDestroy;
 
     public GameController(GameModel model) {
         world = new World(new Vector2(0, -9.8f), true);
@@ -37,13 +35,14 @@ public class GameController {
         projectiles = new ArrayList<ProjectileBody>();
         enemiesMap = new HashMap<Body, EnemyBody>();
         projectilesMap = new HashMap<Body, ProjectileBody>();
-        bodiesToDestroy = new ArrayList<Body>();
-
+        bodiesToDestroy = new HashSet<Body>();
     }
 
     public void update(float delta) {
         float frameTime = Math.min(delta, 0.25f);
+
         accumulator += frameTime;
+
         while (accumulator >= 1/60f) {
             world.step(1/60f, 4, 2);
             accumulator -= 1/60f;
@@ -52,14 +51,18 @@ public class GameController {
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);
         }
+        bodiesToDestroy.clear();
+
         enemiesWalk();
+
         Array<Body> bodies = new Array<Body>();
+
         world.getBodies(bodies);
         for (Body body : bodies) {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
-        bodiesToDestroy.clear();
+
     }
 
 
@@ -86,7 +89,7 @@ public class GameController {
 
     }
 
-    public void enemiesWalk() {
+    private void enemiesWalk() {
         for(EnemyBody e : enemies) {
             if (e.getX() <= 115*PIXEL_TO_METER) {
                 e.setVelocity(0, 0);
@@ -104,7 +107,6 @@ public class GameController {
 
     public void deleteProjectileBody(ProjectileBody p) {
         bodiesToDestroy.add(p.getBody());
-        //TODO tá a crashar aqui (linha 105)
         projectiles.remove(p);
         projectilesMap.remove(p.getBody());
     }

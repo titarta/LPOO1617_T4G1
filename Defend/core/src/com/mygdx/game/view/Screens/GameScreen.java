@@ -2,41 +2,37 @@ package com.mygdx.game.view.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.GameLogic.Projectile;
 import com.mygdx.game.controller.GameController;
-import com.mygdx.game.controller.entities.*;
+import com.mygdx.game.controller.entities.EnemyBody;
+import com.mygdx.game.controller.entities.ProjectileBody;
 import com.mygdx.game.module.GameModel;
-import com.mygdx.game.module.entities.*;
-import com.mygdx.game.view.Screens.entities.*;
+import com.mygdx.game.module.entities.EnemyModel;
+import com.mygdx.game.module.entities.EntityModel;
+import com.mygdx.game.module.entities.ProjectileModel;
+import com.mygdx.game.view.Screens.entities.EnemyView;
+import com.mygdx.game.view.Screens.entities.FloorView;
+import com.mygdx.game.view.Screens.entities.ProjectileView;
+import com.mygdx.game.view.Screens.entities.TowerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
 
 import Utils.EnemyEntry;
 
-/**
- * Created by Tiago on 04/05/2017.
- */
-
 public class GameScreen extends ScreenMother {
 
-    private ScreenMother returnScreen;
     public final static float PIXEL_TO_METER = 0.05f;
     private final DefendGame game;
     private final GameModel model;
     private final GameController controller;
+    private ScreenMother returnScreen;
     private TowerView towerView;
     private FloorView floorView;
     private EnemyView enemyView;
@@ -50,7 +46,7 @@ public class GameScreen extends ScreenMother {
     private boolean endFlag;
 
 
-    public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
+    GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
         super(game);
         this.game = game;
         this.model = model;
@@ -163,30 +159,30 @@ public class GameScreen extends ScreenMother {
                 EntityModel a = ((EntityModel) contact.getFixtureA().getBody().getUserData());
                 EntityModel b = ((EntityModel) contact.getFixtureB().getBody().getUserData());
 
-                if (a.getType() == b.getType()) {
+                if (a.getType().equals(b.getType())) {
                     return;
                 }
-                if (a.getType() == "Floor" && b.getType() == "Enemy") {
+                if (a.getType().equals("Floor") && b.getType().equals("Enemy")) {
                     return;
                 }
-                if (a.getType() == "Projectile" && b.getType() == "Enemy") {
+                if (a.getType().equals("Projectile") && b.getType().equals("Enemy")) {
                     if(((EnemyModel) b).getAttacked(((ProjectileModel) a).attacks())) {
                         eraseEnemyEntity(controller.getEnemyBody(contact.getFixtureB().getBody()));
                     }
                     eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureA().getBody()));
                     return;
                 }
-                if (a.getType() == "Enemy" && b.getType() == "Projectile") {
+                if (a.getType().equals("Enemy") && b.getType().equals("Projectile")) {
                     if(((EnemyModel) a).getAttacked(((ProjectileModel) b).attacks())) {
                         eraseEnemyEntity(controller.getEnemyBody(contact.getFixtureA().getBody()));
                     }
                     eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureB().getBody()));
                     return;
                 }
-                if (b.getType() == "Projectile") {
+                if (b.getType().equals("Projectile")) {
                     eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureB().getBody()));
                 }
-                if (a.getType() == "Projectile") {
+                if (a.getType().equals("Projectile")) {
                     eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureA().getBody()));
                 }
 
@@ -209,11 +205,13 @@ public class GameScreen extends ScreenMother {
     }
 
     private void eraseEnemyEntity(EnemyBody ent) {
+        if (ent == null) return;
         controller.deleteEnemyBody(ent);
         model.deleteEnemyModel(((EnemyModel) ent.getUserData()));
     }
 
     private void eraseProjectileEntity(ProjectileBody ent) {
+        if (ent == null) return;
         controller.deleteProjectileBody(ent);
         model.deleteProjectileModel(((ProjectileModel) ent.getUserData()));
     }
