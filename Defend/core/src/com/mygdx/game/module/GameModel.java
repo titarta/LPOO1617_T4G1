@@ -1,5 +1,6 @@
 package com.mygdx.game.module;
 
+import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.module.entities.EnemyModel;
 import com.mygdx.game.module.entities.EntityModel;
 import com.mygdx.game.module.entities.FloorModel;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class GameModel {
 
+    private GameInfo gameInfo;
     private TowerModel tower;
     private FloorModel floor;
     private ArrayList<EnemyModel> enemies;

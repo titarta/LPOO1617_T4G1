@@ -5,14 +5,12 @@ public class StatsGroup{
     private int defense;
     private int damage;
     private double critChance;
-    private double critDamage;
 
-    public StatsGroup(int hp, int defense, int damage, double critChance, double critDamage, double cd) {
+    public StatsGroup(int hp, int defense, int damage, double critChance) {
         this.hp = hp;
         this.defense = defense;
         this.damage = damage;
         this.critChance = critChance;
-        this.critDamage = critDamage;
     }
 
     public int getHp() {
@@ -31,10 +29,6 @@ public class StatsGroup{
         return critChance;
     }
 
-    public double getCritDamage() {
-        return critDamage;
-    }
-
     public void setHp(int hp) {
         this.hp = hp;
     }
@@ -51,16 +45,11 @@ public class StatsGroup{
         this.critChance = critChance;
     }
 
-    public void setCritDamage(double critDamage) {
-        this.critDamage = critDamage;
-    }
-
     public void add(StatsGroup statsIncrease) {
         this.hp += statsIncrease.getHp();
         this.defense += statsIncrease.getDefense();
         this.damage += statsIncrease.getDamage();
         this.critChance += statsIncrease.getCritChance();
-        this.critDamage += statsIncrease.getCritDamage();
     }
 
     public void reset() {
@@ -68,7 +57,6 @@ public class StatsGroup{
         this.defense = 0;
         this.damage = 0;
         this.critChance = 0;
-        this.critDamage = 0;
     }
 
 
