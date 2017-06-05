@@ -1,0 +1,11 @@
+exclude:
+- /DungeonKeep/.*
+- /HelloWorld/.*
+- /Defend/android/.*
+- /Defend/html/.*
+- /Defend/ios/.*
+- /Defend/desktop/.*
+- /Defend/README-res/.*
+component_depth: 7
+languages:
+- java
