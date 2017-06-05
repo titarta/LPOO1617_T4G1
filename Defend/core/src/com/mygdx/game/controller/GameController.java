@@ -47,11 +47,11 @@ public class GameController {
         while (accumulator >= 1/60f) {
             world.step(1/60f, 4, 2);
             accumulator -= 1/60f;
+
         }
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);
         }
-        bodiesToDestroy.clear();
         enemiesWalk();
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
@@ -59,6 +59,7 @@ public class GameController {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
+        bodiesToDestroy.clear();
     }
 
 
@@ -103,6 +104,7 @@ public class GameController {
 
     public void deleteProjectileBody(ProjectileBody p) {
         bodiesToDestroy.add(p.getBody());
+        //TODO tá a crashar aqui (linha 105)
         projectiles.remove(p);
         projectilesMap.remove(p.getBody());
     }

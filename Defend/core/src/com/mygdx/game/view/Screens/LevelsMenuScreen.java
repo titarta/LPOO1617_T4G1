@@ -19,11 +19,11 @@ public class LevelsMenuScreen extends MenuScreen {
         super(game);
         options = new ArrayList<MenuOption>();
         GameModel g = new GameModel();
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level1()), "Level 1", game));
-        options.add(new MenuOption(null, "Level 2", game));
-        options.add(new MenuOption(null, "Level 3", game));
-        options.add(new MenuOption(null, "Level 4", game));
-        options.add(new MenuOption(null, "Level 5", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(1)), "Level 1", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(2)), "Level 2", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(3)), "Level 3", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(4)), "Level 4", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(5)), "Level 5", game));
         options.add(new MenuOption(returnScreen, "Back", game));
         createButtons();
     }
@@ -63,10 +63,10 @@ public class LevelsMenuScreen extends MenuScreen {
 
     }
 
-    private ArrayList<EnemyEntry> level1() {
+    private ArrayList<EnemyEntry> level(int number) {
         ArrayList<EnemyEntry> level = new ArrayList<EnemyEntry>();
         for (int i = 0; i < 30; i = i + 3) {
-            level.add(new EnemyEntry(i, 1));
+            level.add(new EnemyEntry(i, number));
         }
         return level;
     }
