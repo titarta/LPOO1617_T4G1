@@ -3,6 +3,7 @@ package com.mygdx.game.view.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,37 +13,25 @@ import java.util.ArrayList;
 
 import Utils.MenuOption;
 
-/**
- * Created by Tiago on 06/05/2017.
- */
-
 public class MenuScreen extends ScreenMother implements Screen {
 
-    protected ArrayList<MenuOption> options;
+    ArrayList<MenuOption> options;
     private ArrayList<TextButton> buttons;
     private Texture back;
     private Skin buttonsSkin;
+    private boolean buttonFlag;
 
 
-    public MenuScreen(DefendGame game) {
+    MenuScreen(DefendGame game) {
         super(game);
         back = new Texture("MainMenu/fundoMenu.png");
         buttonsSkin = new Skin(Gdx.files.internal("MainMenu/uiskin.json"));
         buttons = new ArrayList<TextButton>();
-    }
-
-    @Override
-    public void show() {
-
+        buttonFlag = false;
     }
 
     @Override
     public void render(float delta) {
-        for (int i = 0; i < buttons.size(); i++) {
-            if(buttons.get(i).isPressed()) {
-               buttonClickEvent(i);
-            }
-        }
         game.batch.begin();
         game.batch.draw(back,0,0);
         game.batch.end();
@@ -57,34 +46,27 @@ public class MenuScreen extends ScreenMother implements Screen {
         stage.setViewport(menuPort);
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
-
-    protected void createButtons() {
+    void createButtons() {
         for (int i = 0; i < options.size(); i++) {
             TextButton button = new TextButton(options.get(i).getName(), buttonsSkin);
             button.setWidth(150);
             button.setHeight(50);
             button.setX(50);
             button.setY(300 - 50*i);
-            button.addListener(new ClickListener());
+            button.addListener(new ClickListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    buttonFlag = true;
+                    return true;
+                }
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    if (buttonFlag) {
+                        buttonFlag = false;
+                        buttonClickEvent((int)(6 - Math.floor(event.getStageY()/50)));
+                    }
+                }
+            });
             buttons.add(button);
             stage.addActor(button);
         }

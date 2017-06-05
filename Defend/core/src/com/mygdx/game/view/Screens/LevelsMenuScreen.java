@@ -9,13 +9,10 @@ import java.util.ArrayList;
 import Utils.EnemyEntry;
 import Utils.MenuOption;
 
-/**
- * Created by Tiago on 28/05/2017.
- */
 
-public class LevelsMenuScreen extends MenuScreen {
+class LevelsMenuScreen extends MenuScreen {
 
-    public LevelsMenuScreen(DefendGame game, ScreenMother returnScreen) {
+    LevelsMenuScreen(DefendGame game, ScreenMother returnScreen) {
         super(game);
         options = new ArrayList<MenuOption>();
         GameModel g = new GameModel();
@@ -29,39 +26,10 @@ public class LevelsMenuScreen extends MenuScreen {
     }
 
     @Override
-    public void show() {
-
-    }
-
-    @Override
     public void render(float delta) {
         super.render(1);
     }
 
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 
     private ArrayList<EnemyEntry> level(int number) {
         ArrayList<EnemyEntry> level = new ArrayList<EnemyEntry>();

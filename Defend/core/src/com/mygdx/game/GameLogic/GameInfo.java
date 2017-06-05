@@ -2,13 +2,9 @@ package com.mygdx.game.GameLogic;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tiago on 01/05/2017.
- */
-
 public class GameInfo implements java.io.Serializable{
     private int money;
-    private StatsGroup towerStats;
+    public StatsGroup towerStats;
 
     public GameInfo () {
         money = 0;

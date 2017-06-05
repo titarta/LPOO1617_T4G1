@@ -1,13 +1,18 @@
 package com.mygdx.game.view.Screens;
 
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.GameLogic.StatsGroup;
 
-/**
- * Created by Tiago on 04/05/2017.
- */
 
-public class CritChanceUpgradeScreen extends UpgradeScreen{
-    public CritChanceUpgradeScreen(DefendGame game) {
-        super(game);
+
+class CritChanceUpgradeScreen extends UpgradeScreen{
+
+    CritChanceUpgradeScreen(DefendGame game, ScreenMother backScreen) {
+        super(game, "Critical Chance", backScreen, new StatsGroup(0, 0, 0, 5));
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
     }
 }

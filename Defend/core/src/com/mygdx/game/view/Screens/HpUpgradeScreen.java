@@ -1,13 +1,16 @@
 package com.mygdx.game.view.Screens;
 
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.GameLogic.StatsGroup;
 
-/**
- * Created by Tiago on 04/05/2017.
- */
 
-public class HpUpgradeScreen extends UpgradeScreen {
-    public HpUpgradeScreen(DefendGame game) {
-        super(game);
+class HpUpgradeScreen extends UpgradeScreen {
+    HpUpgradeScreen(DefendGame game, ScreenMother backScreen) {
+        super(game, "Health", backScreen, new StatsGroup(50, 0, 0, 0));
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
     }
 }
