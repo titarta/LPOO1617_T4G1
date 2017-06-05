@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.module.entities.EnemyModel;
 import com.mygdx.game.module.entities.EntityModel;
 
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
@@ -18,6 +19,9 @@ public abstract class EntityBody {
      * The Box2D body that supports this body.
      */
     final Body body;
+    final short CATEGORY_ENEMY = 0x0001;  // 0000000000000001 in binary
+    final short CATEGORY_PROJECTILE = 0x0002; // 0000000000000010 in binary
+    final short CATEGORY_FLOOR = 0x0004; // 0000000000000100 in binary
 
     /**
      * Constructs a body representing a model in a certain world.
@@ -45,7 +49,7 @@ public abstract class EntityBody {
      * @param friction The friction of the fixture. How slippery it is.
      * @param restitution The restitution of the fixture. How much it bounces.
      */
-    final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution) {
+    final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution, short collisionMask, short collisionType) {
 
         for (int i = 0; i < vertexes.length; i++) {
             if (i % 2 == 0) vertexes[i] -= width / 2;   // center the vertex x-coordinate
@@ -65,6 +69,8 @@ public abstract class EntityBody {
         fixtureDef.density = density;
         fixtureDef.friction = friction;
         fixtureDef.restitution = restitution;
+        fixtureDef.filter.maskBits = collisionMask;
+        fixtureDef.filter.categoryBits = collisionType;
 
         body.createFixture(fixtureDef);
 

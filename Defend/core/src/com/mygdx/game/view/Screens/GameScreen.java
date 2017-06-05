@@ -32,6 +32,7 @@ import Utils.EnemyEntry;
 
 public class GameScreen extends ScreenMother {
 
+    private ScreenMother returnScreen;
     public final static float PIXEL_TO_METER = 0.05f;
     private final DefendGame game;
     private final GameModel model;
@@ -49,7 +50,7 @@ public class GameScreen extends ScreenMother {
     private boolean endFlag;
 
 
-    public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level) {
+    public GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
         super(game);
         this.game = game;
         this.model = model;
@@ -65,6 +66,7 @@ public class GameScreen extends ScreenMother {
         this.floorView = new FloorView(game);
         this.enemyView = new EnemyView(game);
         this.projectileView = new ProjectileView(game);
+        this.returnScreen = returnScreen;
         stage.addListener(new ActorGestureListener() {
 
             @Override
@@ -197,7 +199,6 @@ public class GameScreen extends ScreenMother {
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
-
             }
 
             @Override

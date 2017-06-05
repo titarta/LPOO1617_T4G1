@@ -19,11 +19,11 @@ public class LevelsMenuScreen extends MenuScreen {
         super(game);
         options = new ArrayList<MenuOption>();
         GameModel g = new GameModel();
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(1)), "Level 1", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(2)), "Level 2", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(3)), "Level 3", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(4)), "Level 4", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(5)), "Level 5", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(1), this), "Level 1", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(2), this), "Level 2", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(3), this), "Level 3", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(4), this), "Level 4", game));
+        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(5), this), "Level 5", game));
         options.add(new MenuOption(returnScreen, "Back", game));
         createButtons();
     }

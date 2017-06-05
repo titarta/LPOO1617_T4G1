@@ -17,6 +17,6 @@ public class FloorBody extends EntityBody {
      */
     public FloorBody(World world, EntityModel model) {
         super(world, model, BodyDef.BodyType.StaticBody);
-        createFixture(body, new float[]{0,0, 900,0, 0,20, 900,20}, 900, 20, 1f, 0.4f, 0.5f);
+        createFixture(body, new float[]{0,0, 900,0, 0,20, 900,20}, 900, 20, 1f, 0.4f, 0.5f, (short)-1, CATEGORY_FLOOR);
     }
 }
