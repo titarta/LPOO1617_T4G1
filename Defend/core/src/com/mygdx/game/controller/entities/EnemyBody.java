@@ -5,9 +5,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.module.entities.EntityModel;
 
 /**
- * Created by Tiago on 28/05/2017.
+ * Class that creates an enemy body to live in a world.
  */
-
 public class EnemyBody extends EntityBody {
     /**
      * Constructs a body representing a model in a certain world.

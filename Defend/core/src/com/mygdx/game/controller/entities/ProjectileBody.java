@@ -4,6 +4,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.module.entities.EntityModel;
 
+/**
+ * Class that creates a projectile body to live in a world.
+ */
 public class ProjectileBody extends EntityBody {
     /**
      * Constructs a body representing a model in a certain world.

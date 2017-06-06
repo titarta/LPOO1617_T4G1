@@ -10,13 +10,29 @@ import com.mygdx.game.module.entities.EntityModel;
 
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
+/**
+ * Class responsible to wrapping the body of a world.
+ *
+ * <p>
+ *     Has a method to create a fixture for the body, method which is called by subclasses.
+ * </p>
+ */
 public abstract class EntityBody {
     /**
      * The Box2D body that supports this body.
      */
     final Body body;
+    /**
+     * Enemy Bit for collision mask
+     */
     final short CATEGORY_ENEMY = 0x0001;  // 0000000000000001 in binary
+    /**
+     * Projectile Bit for collision mask
+     */
     final short CATEGORY_PROJECTILE = 0x0002; // 0000000000000010 in binary
+    /**
+     * Floor Bit for collision mask
+     */
     final short CATEGORY_FLOOR = 0x0004; // 0000000000000100 in binary
 
     /**
@@ -140,10 +156,21 @@ public abstract class EntityBody {
         return body.getUserData();
     }
 
+    /**
+     * Wraps the setLinearVelocity method from the Box2D body class.
+     *
+     * @param x the new velocity in x axis
+     * @param y the new velocity in y axis
+     */
     public void setVelocity(float x, float y) {
         body.setLinearVelocity(x,y);
     }
 
+    /**
+     * Getter for body
+     *
+     * @return the body which is being wrapped.
+     */
     public Body getBody() {
         return body;
     }

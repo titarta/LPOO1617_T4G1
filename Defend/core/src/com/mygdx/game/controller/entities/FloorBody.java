@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.module.entities.EntityModel;
 
 /**
- * Created by Tiago on 28/05/2017.
+ * Class that creates the floor body.
  */
 
 public class FloorBody extends EntityBody {
