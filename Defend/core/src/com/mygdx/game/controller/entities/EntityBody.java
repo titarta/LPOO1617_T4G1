@@ -106,47 +106,7 @@ public abstract class EntityBody {
     public float getY() {
         return body.getPosition().y;
     }
-
-    /**
-     * Wraps the getAngle method from the Box2D body class.
-     *
-     * @return the angle of rotation of this body.
-     */
-    public float getAngle() {
-        return body.getAngle();
-    }
-
-    /**
-     * Wraps the setTransform method from the Box2D body class.
-     *
-     * @param x the new x-coordinate for this body
-     * @param y the new y-coordinate for this body
-     * @param angle the new rotation angle for this body
-     */
-    public void setTransform(float x, float y, float angle) {
-        body.setTransform(x, y, angle);
-    }
-
-    /**
-     * Wraps the setAngularVelocity method from the Box2D body class.
-     *
-     * @param omega the new angular velocity angle for this body
-     */
-    public void setAngularVelocity(float omega) {
-        body.setAngularVelocity(omega);
-    }
-
-    /**
-     * Wraps the applyForceToCenter method from the Box2D body class.
-     *
-     * @param forceX the x-component of the force to be applied
-     * @param forceY the y-component of the force to be applied
-     * @param awake should the body be awaken
-     */
-    public void applyForceToCenter(float forceX, float forceY, boolean awake) {
-        body.applyForceToCenter(forceX, forceY, awake);
-    }
-
+    
     /**
      * Wraps the getUserData method from the Box2D body class.
      *

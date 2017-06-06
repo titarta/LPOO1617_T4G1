@@ -2,14 +2,37 @@ package com.mygdx.game.GameLogic;
 
 import java.io.Serializable;
 
+/**
+ * Class that stores staistic information relative to a object (only tower).
+ */
 public class StatsGroup implements  java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Hit points.
+     */
     private int hp;
+    /**
+     * Defense which subtracts damage each hit.
+     */
     private int defense;
+    /**
+     * Damage given.
+     */
     private int damage;
+    /**
+     * Chance of giving twice the damage.
+     */
     private double critChance;
 
+    /**
+     * Constructor of StatsGroup.
+     *
+     * @param hp hp of group.
+     * @param defense defense of group.
+     * @param damage damage of group.
+     * @param critChance crit chance of group.
+     */
     public StatsGroup(int hp, int defense, int damage, double critChance) {
         this.hp = hp;
         this.defense = defense;
@@ -37,6 +60,10 @@ public class StatsGroup implements  java.io.Serializable{
         this.hp = hp;
     }
 
+    /**
+     * Add the stats passed as parameter to our StatsGroup.
+     * @param statsIncrease stats to add.
+     */
     public void add(StatsGroup statsIncrease) {
         this.hp += statsIncrease.getHp();
         this.defense += statsIncrease.getDefense();
