@@ -1,6 +1,5 @@
 package com.mygdx.game.view.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,7 @@ import com.mygdx.game.DefendGame;
 
 import java.util.ArrayList;
 
-import Utils.MenuOption;
+import com.mygdx.game.Utils.MenuOption;
 
 public class MenuScreen extends ScreenMother implements Screen {
 

@@ -1,13 +1,9 @@
-package Utils;
+package com.mygdx.game.Utils;
 
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.view.Screens.MenuScreen;
 import com.mygdx.game.view.Screens.ScreenMother;
-
-/**
- * Created by Tiago on 14/05/2017.
- */
 
 public class MenuOption {
     private ScreenMother nextScreen;

@@ -1,14 +1,12 @@
 package com.mygdx.game.view.Screens;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.DefendGame;
-import com.mygdx.game.controller.GameController;
 import com.mygdx.game.module.GameModel;
 
 import java.util.ArrayList;
 
-import Utils.EnemyEntry;
-import Utils.MenuOption;
+import com.mygdx.game.Utils.EnemyEntry;
+import com.mygdx.game.Utils.MenuOption;
 
 
 class LevelsMenuScreen extends MenuScreen {

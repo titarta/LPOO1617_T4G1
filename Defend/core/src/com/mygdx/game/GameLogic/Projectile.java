@@ -1,6 +1,6 @@
 package com.mygdx.game.GameLogic;
 
-import Utils.Chance;
+import com.mygdx.game.Utils.Chance;
 
 public class Projectile {
     private int damage;

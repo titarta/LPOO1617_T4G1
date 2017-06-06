@@ -1,8 +1,4 @@
-package Utils;
-
-/**
- * Created by Tiago on 03/06/2017.
- */
+package com.mygdx.game.Utils;
 
 public class EnemyEntry {
     private float time;

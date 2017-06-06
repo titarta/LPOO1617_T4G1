@@ -9,9 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.mygdx.game.DefendGame;
-import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.GameLogic.Projectile;
-import com.mygdx.game.GameLogic.StatsGroup;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
@@ -26,7 +24,7 @@ import com.mygdx.game.view.Screens.entities.TowerView;
 
 import java.util.ArrayList;
 
-import Utils.EnemyEntry;
+import com.mygdx.game.Utils.EnemyEntry;
 
 public class GameScreen extends ScreenMother {
 
