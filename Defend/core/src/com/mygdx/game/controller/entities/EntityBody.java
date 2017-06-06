@@ -10,10 +10,6 @@ import com.mygdx.game.module.entities.EntityModel;
 
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
-/**
- * Created by Tiago on 28/05/2017.
- */
-
 public abstract class EntityBody {
     /**
      * The Box2D body that supports this body.
@@ -29,7 +25,7 @@ public abstract class EntityBody {
      * @param world The world this body lives on.
      * @param model The model representing the body.
      */
-    public EntityBody(World world, EntityModel model, BodyDef.BodyType bodyType) {
+    EntityBody(World world, EntityModel model, BodyDef.BodyType bodyType) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(model.getX(), model.getY());
@@ -146,10 +142,6 @@ public abstract class EntityBody {
 
     public void setVelocity(float x, float y) {
         body.setLinearVelocity(x,y);
-    }
-
-    public void printVelocity() {
-        System.out.println(body.getLinearVelocity().len());
     }
 
     public Body getBody() {

@@ -9,7 +9,9 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.GameLogic.Projectile;
+import com.mygdx.game.GameLogic.StatsGroup;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
@@ -30,8 +32,8 @@ public class GameScreen extends ScreenMother {
 
     public final static float PIXEL_TO_METER = 0.05f;
     private final DefendGame game;
-    private final GameModel model;
-    private final GameController controller;
+    private GameModel model;
+    private GameController controller;
     private ScreenMother returnScreen;
     private TowerView towerView;
     private FloorView floorView;
@@ -39,25 +41,20 @@ public class GameScreen extends ScreenMother {
     private ProjectileView projectileView;
     private ArrayList<EnemyEntry> levelMap;
     private float timeElapsed;
+    private int timeElapsedInt;
     private int enemyIndex;
     private float deltaX;
     private float deltaY;
-    private Projectile projectileDamage;
     private boolean endFlag;
+    private int defense;
+    private int hp;
 
 
-    GameScreen(DefendGame game, GameModel model, final GameController controller, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
+    GameScreen(DefendGame game, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
         super(game);
         this.game = game;
-        this.model = model;
-        this.controller = controller;
-        createContactListener();
         this.levelMap = level;
-        this.timeElapsed = 0;
-        this.enemyIndex = 0;
-        this.deltaX = 0;
-        this.deltaY = 0;
-        this.endFlag = false;
+        reset();
         this.towerView = new TowerView(game);
         this.floorView = new FloorView(game);
         this.enemyView = new EnemyView(game);
@@ -88,12 +85,27 @@ public class GameScreen extends ScreenMother {
         Gdx.gl.glClearColor( 0.95f, 0.95f, 0.95f, 1 );
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
-        controller.update(delta);
+        if (controller.update(delta, endFlag)) {
+            endGame();
+        }
+
         spawnEnemies(delta);
+        checkEnemiesDamage();
 
         game.batch.begin();
         drawEntities();
         game.batch.end();
+    }
+
+    private void checkEnemiesDamage() {
+        if (timeElapsed < timeElapsedInt + 1) {
+            return;
+        }
+        timeElapsedInt++;
+        hp = controller.enemiesAtack(hp, defense);
+        if (hp <= 0) {
+            endGame();
+        }
     }
 
     private void drawEntities() {
@@ -140,7 +152,7 @@ public class GameScreen extends ScreenMother {
         if (deltaY == 0 && deltaX == 0) {
             return;
         }
-        ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))), new Projectile(50, 50, 0));
+        ProjectileModel p = new ProjectileModel(((float) (Math.atan2(-deltaY, -deltaX))), new Projectile(game.gameInfo.towerStats.getDamage(), game.gameInfo.towerStats.getCritChance()));
         model.addProjectileModel(p);
         controller.createProjectileBody(p, -deltaX, -deltaY);
     }
@@ -206,6 +218,7 @@ public class GameScreen extends ScreenMother {
 
     private void eraseEnemyEntity(EnemyBody ent) {
         if (ent == null) return;
+        game.gameInfo.addMoney(20);
         controller.deleteEnemyBody(ent);
         model.deleteEnemyModel(((EnemyModel) ent.getUserData()));
     }
@@ -217,6 +230,21 @@ public class GameScreen extends ScreenMother {
     }
 
     private void endGame() {
+        game.setScreen(returnScreen);
+        Gdx.input.setInputProcessor(returnScreen.stage);
+    }
 
+    void reset() {
+        this.timeElapsed = 0;
+        this.enemyIndex = 0;
+        this.deltaX = 0;
+        this.deltaY = 0;
+        this.timeElapsedInt = 0;
+        this.endFlag = false;
+        hp = game.gameInfo.towerStats.getHp();
+        defense = game.gameInfo.towerStats.getDefense();
+        model = new GameModel();
+        controller = new GameController(model);
+        createContactListener();
     }
 }

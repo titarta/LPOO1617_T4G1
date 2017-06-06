@@ -4,10 +4,6 @@ import com.mygdx.game.GameLogic.Enemy;
 
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
-/**
- * Created by Tiago on 28/05/2017.
- */
-
 public class EnemyModel extends EntityModel {
 
     private Enemy enemyStats;
@@ -20,6 +16,10 @@ public class EnemyModel extends EntityModel {
     @Override
     public String getType() {
         return "Enemy";
+    }
+
+    public int getDamage() {
+        return enemyStats.getDamage();
     }
 
     public boolean getAttacked(int damage) {

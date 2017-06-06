@@ -1,5 +1,6 @@
 package com.mygdx.game.view.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -79,6 +80,9 @@ public class MenuScreen extends ScreenMother implements Screen {
         } else {
             game.setScreen(options.get(index).getNextScreen());
             Gdx.input.setInputProcessor(((ScreenMother)options.get(index).getNextScreen()).stage);
+            if (options.get(index).getNextScreen().getClass() == GameScreen.class) {
+                ((GameScreen) options.get(index).getNextScreen()).reset();
+            }
         }
     }
 }

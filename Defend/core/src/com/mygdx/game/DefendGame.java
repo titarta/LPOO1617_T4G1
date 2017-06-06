@@ -13,6 +13,10 @@ import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.view.Screens.MainMenuScreen;
 import com.mygdx.game.view.Screens.MenuScreen;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 public class DefendGame extends Game {
 	public GameInfo gameInfo;
 	private MainMenuScreen mainMenu;
@@ -21,8 +25,22 @@ public class DefendGame extends Game {
 	private int VIEWPORT_WIDTH = 600;
 	public SpriteBatch batch;
 
-	public DefendGame() {
-		gameInfo = new GameInfo();
+	public DefendGame() throws ClassNotFoundException {
+		try {
+			FileInputStream fileIn = new FileInputStream("../../core/src/tmp/gamestate.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			gameInfo = (GameInfo)in.readObject();
+			in.close();
+			fileIn.close();
+			System.out.println(gameInfo.getMoney());
+			System.out.println(gameInfo.getCritEvNumber());
+			System.out.println(gameInfo.getDamageEvNumber());
+			System.out.println(gameInfo.getDefenseEvNumber());
+			System.out.println(gameInfo.getHpEvNumber());
+			System.out.println(gameInfo.towerStats.getDamage());
+		}catch(IOException i) {
+			gameInfo = new GameInfo();
+		}
 	}
 
 	public int getViewportHeight() {

@@ -1,5 +1,6 @@
 package com.mygdx.game.view.Screens;
 
+import com.badlogic.gdx.Gdx;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.module.GameModel;
@@ -11,16 +12,19 @@ import Utils.MenuOption;
 
 
 class LevelsMenuScreen extends MenuScreen {
+    private GameModel g;
+    private ScreenMother returnScreen;
 
     LevelsMenuScreen(DefendGame game, ScreenMother returnScreen) {
         super(game);
         options = new ArrayList<MenuOption>();
-        GameModel g = new GameModel();
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(1), this), "Level 1", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(2), this), "Level 2", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(3), this), "Level 3", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(4), this), "Level 4", game));
-        options.add(new MenuOption(new GameScreen(game, g, new GameController(g), level(5), this), "Level 5", game));
+        this.returnScreen = returnScreen;
+        g = new GameModel();
+        options.add(new MenuOption(new GameScreen(game, level(1), this), "Level 1", game));
+        options.add(new MenuOption(new GameScreen(game, level(2), this), "Level 2", game));
+        options.add(new MenuOption(new GameScreen(game, level(3), this), "Level 3", game));
+        options.add(new MenuOption(new GameScreen(game, level(4), this), "Level 4", game));
+        options.add(new MenuOption(new GameScreen(game, level(5), this), "Level 5", game));
         options.add(new MenuOption(returnScreen, "Back", game));
         createButtons();
     }

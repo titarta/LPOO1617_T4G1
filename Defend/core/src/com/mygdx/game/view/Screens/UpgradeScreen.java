@@ -30,7 +30,7 @@ class UpgradeScreen extends ScreenMother implements Screen {
     UpgradeScreen(DefendGame game, String statName, ScreenMother screen, StatsGroup statsIncrease) {
         super(game);
         upgradeCost = 100;
-        evolutionNumber = 1;
+        evolutionNumber = 0;
         background = new Texture("MainMenu/fundoUpgrade.png");
         buttonsSkin = new Skin(Gdx.files.internal("MainMenu/uiskin.json"));
         backScreen = screen;
@@ -104,19 +104,31 @@ class UpgradeScreen extends ScreenMother implements Screen {
     private void increaseCost() {
         evolutionNumber++;
         upgradeCost = evolutionNumber*100;
-        System.out.println(upgradeCost);
         buttonUpgrade.setText("Cost: " + upgradeCost);
     }
 
     private void upgradeHandler() {
-        game.gameInfo.towerStats.add(statsIncrease);
+        if (game.gameInfo.getMoney() < upgradeCost) {
+            return;
+        }
+        game.gameInfo.spendMoney(upgradeCost);
+        game.gameInfo.upgradeStat(statsIncrease);
         increaseCost();
     }
 
-    private void backHandler() {
+    protected void backHandler() {
         game.setScreen(backScreen);
         Gdx.input.setInputProcessor(backScreen.stage);
     }
 
+    void setEvolutionNumber(int evolutionNumber) {
+        this.evolutionNumber = evolutionNumber;
+        upgradeCost = evolutionNumber*100;
+        buttonUpgrade.setText("Cost: " + upgradeCost);
+    }
+
+    int getEvolutionNumber() {
+        return evolutionNumber;
+    }
 
 }

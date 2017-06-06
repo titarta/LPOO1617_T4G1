@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.GameLogic.GameInfo;
+import com.mygdx.game.GameLogic.StatsGroup;
 import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.FloorBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
@@ -38,7 +40,7 @@ public class GameController {
         bodiesToDestroy = new HashSet<Body>();
     }
 
-    public void update(float delta) {
+    public boolean update(float delta, boolean endFlag) {
         float frameTime = Math.min(delta, 0.25f);
 
         accumulator += frameTime;
@@ -58,11 +60,23 @@ public class GameController {
         Array<Body> bodies = new Array<Body>();
 
         world.getBodies(bodies);
+
+        if (bodies.size == 1 && endFlag) {
+            return true;
+        }
         for (Body body : bodies) {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
+            verifyBounds(body);
         }
 
+        return false;
+
+    }
+
+    private void verifyBounds(Body body) {
+        if (body.getPosition().y < 0)
+            world.destroyBody(body);
     }
 
 
@@ -119,4 +133,17 @@ public class GameController {
         return projectilesMap.get(b);
     }
 
+    public int enemiesAtack(int hp, int defense) {
+        for (EnemyBody e : enemies) {
+            if (((EnemyModel) e.getUserData()).getX() >= 130*PIXEL_TO_METER) {
+                continue;
+            }
+            int aux = ((EnemyModel) e.getUserData()).getDamage() - defense;
+            if (aux > 0) {
+                System.out.println(aux);
+                hp -= aux;
+            }
+        }
+        return hp;
+    }
 }

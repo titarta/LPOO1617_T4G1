@@ -1,6 +1,10 @@
 package com.mygdx.game.GameLogic;
 
-public class StatsGroup{
+import java.io.Serializable;
+
+public class StatsGroup implements  java.io.Serializable{
+    private static final long serialVersionUID = 1L;
+
     private int hp;
     private int defense;
     private int damage;
@@ -33,31 +37,10 @@ public class StatsGroup{
         this.hp = hp;
     }
 
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = damage;
-    }
-
-    public void setCritChance(double critChance) {
-        this.critChance = critChance;
-    }
-
     public void add(StatsGroup statsIncrease) {
         this.hp += statsIncrease.getHp();
         this.defense += statsIncrease.getDefense();
         this.damage += statsIncrease.getDamage();
         this.critChance += statsIncrease.getCritChance();
     }
-
-    public void reset() {
-        this.hp = 0;
-        this.defense = 0;
-        this.damage = 0;
-        this.critChance = 0;
-    }
-
-
 }

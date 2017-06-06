@@ -9,13 +9,8 @@ import com.mygdx.game.module.entities.TowerModel;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tiago on 28/05/2017.
- */
-
 public class GameModel {
 
-    private GameInfo gameInfo;
     private TowerModel tower;
     private FloorModel floor;
     private ArrayList<EnemyModel> enemies;
