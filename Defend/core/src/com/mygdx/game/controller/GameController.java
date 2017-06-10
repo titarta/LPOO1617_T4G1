@@ -1,11 +1,10 @@
 package com.mygdx.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.GameLogic.GameInfo;
-import com.mygdx.game.GameLogic.StatsGroup;
 import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.FloorBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
@@ -219,6 +218,7 @@ public class GameController {
             int aux = ((EnemyModel) e.getUserData()).getDamage() - defense;
             if (aux > 0) {
                 hp -= aux;
+                Gdx.input.vibrate(250);
             }
         }
         return hp;
