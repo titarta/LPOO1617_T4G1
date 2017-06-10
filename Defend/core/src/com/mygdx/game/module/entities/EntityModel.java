@@ -3,7 +3,11 @@ package com.mygdx.game.module.entities;
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
 /**
- * Created by Tiago on 28/05/2017.
+ * Class that stores enemy information.
+ *
+ * <p>
+ *     Stores position, rotation and, in some cases, stats.
+ * </p>
  */
 
 public abstract class EntityModel {
@@ -73,10 +77,20 @@ public abstract class EntityModel {
         this.y = y;
     }
 
+    /**
+     * Sets y position of this entity.
+     *
+     * @param y The y-coordinate of this entity in meters.
+     */
     public void setY(float y) {
         this.y = y;
     }
 
+    /**
+     * Sets x position of this entity.
+     *
+     * @param x The x-coordinate of this entity in meters.
+     */
     public void setX(float x) { this.x = x; }
 
     /**
@@ -88,5 +102,10 @@ public abstract class EntityModel {
         this.rotation = rotation;
     }
 
+    /**
+     * Function that returns the type of entity, in string format. Used to avoid using instanceof.
+     *
+     * @return String equivalent to entity type name.
+     */
     public String getType() { return "";}
 }

@@ -116,6 +116,7 @@ public class GameScreen extends ScreenMother {
             enemyView.draw(game.batch);
         }
         for (ProjectileModel p : model.getProjectiles()) {
+            p.rotate();
             projectileView.update(p);
             projectileView.draw(game.batch);
         }
@@ -230,6 +231,7 @@ public class GameScreen extends ScreenMother {
     private void endGame() {
         game.setScreen(returnScreen);
         Gdx.input.setInputProcessor(returnScreen.stage);
+        returnScreen.updateLabelText();
     }
 
     void reset() {

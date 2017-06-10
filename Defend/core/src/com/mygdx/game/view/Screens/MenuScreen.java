@@ -39,12 +39,7 @@ public class MenuScreen extends ScreenMother implements Screen {
         stage.draw();
     }
 
-    @Override
-    public void resize(int width, int height) {
-        menuPort.update(width,height);
-        menuCam.update();
-        stage.setViewport(menuPort);
-    }
+
 
     void createButtons() {
         for (int i = 0; i < options.size(); i++) {
@@ -81,6 +76,8 @@ public class MenuScreen extends ScreenMother implements Screen {
             Gdx.input.setInputProcessor(((ScreenMother)options.get(index).getNextScreen()).stage);
             if (options.get(index).getNextScreen().getClass() == GameScreen.class) {
                 ((GameScreen) options.get(index).getNextScreen()).reset();
+            } else {
+                ((ScreenMother) options.get(index).getNextScreen()).updateLabelText();
             }
         }
     }

@@ -19,7 +19,6 @@ android {
     }
     defaultConfig {
         applicationId 'com.titarta.defend'
-        minSdkVersion 23
         targetSdkVersion 23
     }
     productFlavors {

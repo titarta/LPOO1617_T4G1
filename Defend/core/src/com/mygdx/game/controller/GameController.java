@@ -107,7 +107,6 @@ public class GameController {
         }
         for (Body body : bodies) {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
-            ((EntityModel) body.getUserData()).setRotation(body.getAngle());
             verifyBounds(body);
         }
         return false;
@@ -149,7 +148,6 @@ public class GameController {
         ProjectileBody pBody = new ProjectileBody(world, p);
         projectilesMap.put(pBody.getBody(), pBody);
         pBody.setVelocity(x*0.04f, y*0.04f);
-
     }
 
     /**

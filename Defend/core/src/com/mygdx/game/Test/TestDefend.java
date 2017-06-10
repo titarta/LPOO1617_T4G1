@@ -2,13 +2,18 @@ package com.mygdx.game.Test;
 
 
 import com.mygdx.game.GameLogic.*;
+import com.mygdx.game.controller.GameController;
+import com.mygdx.game.module.GameModel;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestDefend {
+@RunWith(MockitoJUnitRunner.class)
+public class TestDefend extends TestBackend {
 
     @Test
     public void testNoCritDamage() {
@@ -56,7 +61,7 @@ public class TestDefend {
     }
 
     @Test
-    public void testGameInfoInfochange() {
+    public void testGameInfochange() {
         GameInfo game = new GameInfo();
         game.addMoney(400);
         game.spendMoney(200);
@@ -69,6 +74,12 @@ public class TestDefend {
         assertEquals(game.getDamageEvNumber(), 3);
         game.setDefenseEvNumber(3);
         assertEquals(game.getDefenseEvNumber(), 3);
+    }
+
+    @Test
+    public void createFloor() {
+        GameController controller = new GameController(new GameModel());
+        assertEquals(controller.getWorld().getBodyCount(), 1);
     }
 
 }

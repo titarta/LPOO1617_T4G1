@@ -32,12 +32,6 @@ public class DefendGame extends Game {
 			gameInfo = (GameInfo)in.readObject();
 			in.close();
 			fileIn.close();
-			System.out.println(gameInfo.getMoney());
-			System.out.println(gameInfo.getCritEvNumber());
-			System.out.println(gameInfo.getDamageEvNumber());
-			System.out.println(gameInfo.getDefenseEvNumber());
-			System.out.println(gameInfo.getHpEvNumber());
-			System.out.println(gameInfo.towerStats.getDamage());
 		}catch(IOException i) {
 			gameInfo = new GameInfo();
 		}

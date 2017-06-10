@@ -51,10 +51,10 @@ class UpgradeScreen extends ScreenMother implements Screen {
     }
 
     private void createLabel(String statName) {
-        label = new Label(statName, buttonsSkin);
-        this.label.setPosition(200, 250);
-        this.label.setWidth(200);
-        this.label.setHeight(100);
+        label = new Label(statName, labelSkin);
+        label.setPosition(300 - 5*statName.length(), 250);
+        label.setFontScaleX(1.4f);
+        label.setFontScaleY(1.4f);
         stage.addActor(label);
     }
 
@@ -114,11 +114,13 @@ class UpgradeScreen extends ScreenMother implements Screen {
         game.gameInfo.spendMoney(upgradeCost);
         game.gameInfo.upgradeStat(statsIncrease);
         increaseCost();
+        this.updateLabelText();
     }
 
     protected void backHandler() {
         game.setScreen(backScreen);
         Gdx.input.setInputProcessor(backScreen.stage);
+        backScreen.updateLabelText();
     }
 
     void setEvolutionNumber(int evolutionNumber) {
