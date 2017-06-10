@@ -2,6 +2,7 @@ package com.mygdx.game.Test;
 
 
 import com.mygdx.game.GameLogic.*;
+import com.mygdx.game.Utils.Chance;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.module.GameModel;
 
@@ -17,6 +18,7 @@ public class TestDefend extends TestBackend {
 
     @Test
     public void testNoCritDamage() {
+        Chance.initialize();
         Projectile projectile = new Projectile(50, 0);
         Enemy enemy = new Enemy(1);
         enemy.getsAttacked(projectile.calculatesDamage());
@@ -25,13 +27,17 @@ public class TestDefend extends TestBackend {
 
     @Test(timeout=100)
     public void testCritDamage() {
+        Chance.initialize();
+        int damage = 50, critChance = 50;
         Projectile projectile = new Projectile(50, 50);
         Enemy enemy = new Enemy(1);
-        enemy.setHp(100000);
-        for(int i = 0; i < 1000; i++) {
+        int hp = 150000;
+        enemy.setHp(hp);
+        int tries = 1000;
+        for(int i = 0; i < tries; i++) {
             enemy.getsAttacked(projectile.calculatesDamage());
         }
-        assertTrue(enemy.getHp() > 0.2*100000 && enemy.getHp() < 0.3*100000);
+        assertTrue(enemy.getHp() > hp - tries * damage * 2 && enemy.getHp() < hp - tries * damage);
     }
 
     @Test
