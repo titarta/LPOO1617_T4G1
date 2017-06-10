@@ -18,6 +18,11 @@ public class Enemy {
     private int damage;
 
     /**
+     * Enemy money drop.
+     */
+    private int money;
+
+    /**
      * Constructor that calculates enemy health and damage based on one integer.
      *
      * @param power enemy power level (his stats are based on it).
@@ -25,6 +30,7 @@ public class Enemy {
     public Enemy(int power) {
         hp = 100*(power);
         damage = 10*(power + 2);
+        money = 40*power;
     }
 
     /**
@@ -54,6 +60,10 @@ public class Enemy {
     public boolean getsAttacked (int damage) {
         this.hp -= damage;
         return (this.hp <= 0);
+    }
+
+    public int getMoney() {
+        return money;
     }
 
     /**

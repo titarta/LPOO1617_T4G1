@@ -50,6 +50,15 @@ public class EnemyModel extends EntityModel {
     }
 
     /**
+     * Returns enemy money drop.
+     *
+     * @return Money the enemy gives.
+     */
+    public int getMoney() {
+        return enemyStats.getMoney();
+    }
+
+    /**
      * Subtracts value to enemy health.
      *
      * @param damage Value to be subtracted.
