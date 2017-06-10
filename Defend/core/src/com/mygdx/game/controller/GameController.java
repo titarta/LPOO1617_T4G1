@@ -213,7 +213,7 @@ public class GameController {
      */
     public int enemiesAtack(int hp, int defense) {
         for (EnemyBody e : enemies) {
-            if (((EnemyModel) e.getUserData()).getX() >= 110*PIXEL_TO_METER) {
+            if (((EnemyModel) e.getUserData()).getX() >= 130*PIXEL_TO_METER) {
                 continue;
             }
             int aux = ((EnemyModel) e.getUserData()).getDamage() - defense;
