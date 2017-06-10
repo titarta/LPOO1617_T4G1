@@ -28,16 +28,23 @@ public class TestDefend extends TestBackend {
     @Test(timeout=100)
     public void testCritDamage() {
         Chance.initialize();
-        int damage = 50, critChance = 50;
-        Projectile projectile = new Projectile(50, 50);
+        int damage = 1, critChance = (int) Math.round(Math.random() * 100);
         Enemy enemy = new Enemy(1);
         int hp = 150000;
         enemy.setHp(hp);
-        int tries = 1000;
+        int tries = (int) Math.round(Math.random() * 7500);
         for(int i = 0; i < tries; i++) {
-            enemy.getsAttacked(projectile.calculatesDamage());
+            enemy.getsAttacked(new Projectile(damage, critChance).calculatesDamage());
         }
-        assertTrue(enemy.getHp() > hp - tries * damage * 2 && enemy.getHp() < hp - tries * damage);
+        double probability = (double) critChance / 100;
+        double binomialVariance = 0.775 * Math.sqrt(probability * (1 - probability) / tries); // 1.96 is for confidence interval of 50% (25% * 2)
+        double estimatedValue = hp - tries * damage * (1 + probability);
+        System.out.printf("Probability: %.3f\n" +
+                "Binomial variance: %.3f\n" +
+                "Estimated HP: %.1f\n" +
+                "HP variance: %.1f\n" +
+                "Actual HP: %d\n", probability,  binomialVariance, estimatedValue, estimatedValue * binomialVariance, enemy.getHp());
+        assertTrue(enemy.getHp() >= estimatedValue -  estimatedValue * binomialVariance && enemy.getHp() <= estimatedValue +  estimatedValue * binomialVariance);
     }
 
     @Test

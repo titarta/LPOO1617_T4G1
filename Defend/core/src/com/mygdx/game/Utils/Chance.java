@@ -2,7 +2,7 @@ package com.mygdx.game.Utils;
 
 import java.util.Random;
 
-public class Chance {
+public final class Chance {
 
     /**
      * Random values generator.
@@ -20,7 +20,7 @@ public class Chance {
     /**
      * Function that returns true or false, given a chance. It is used to calculate whether an attack is critical strike or not.
      *
-     * @param chance Porbability of function returning true.
+     * @param chance Probability of function returning true.
      * @return True or false.
      */
     public static boolean giveChance(double chance) {
