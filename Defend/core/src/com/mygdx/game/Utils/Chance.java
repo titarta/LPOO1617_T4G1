@@ -10,7 +10,7 @@ public class Chance {
     private Random rand;
 
     /**
-     * Constructor. Initializes Random.
+     * Creates a empty class (with random) to use giveChance().
      */
     public Chance() {
         rand = new Random();
@@ -19,7 +19,7 @@ public class Chance {
     /**
      * Function that returns true or false, given a chance. It is used to calculate whether an attack is critical strike or not.
      *
-     * @param chance Porbability of function returning true.
+     * @param chance Probability of function returning true.
      * @return True or false.
      */
     public boolean giveChance(double chance) {

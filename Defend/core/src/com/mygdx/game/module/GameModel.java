@@ -35,7 +35,7 @@ public class GameModel {
     private ArrayList<ProjectileModel> projectiles;
 
     /**
-     * Constuctor tha initialize arrays and the tower and floor model.
+     * Creates the game model and initializes all his attributes.
      */
     public GameModel() {
         tower = new TowerModel();

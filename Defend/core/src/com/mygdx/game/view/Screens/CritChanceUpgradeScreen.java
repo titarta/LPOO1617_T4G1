@@ -3,8 +3,9 @@ package com.mygdx.game.view.Screens;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.GameLogic.StatsGroup;
 
-
-
+/**
+ *
+ */
 class CritChanceUpgradeScreen extends UpgradeScreen{
 
     CritChanceUpgradeScreen(DefendGame game, ScreenMother backScreen) {

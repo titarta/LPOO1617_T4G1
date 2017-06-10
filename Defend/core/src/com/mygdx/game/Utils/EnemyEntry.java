@@ -21,7 +21,7 @@ public class EnemyEntry {
     private int power;
 
     /**
-     * Constructor.
+     * Creates a enemy entry.
      *
      * @param time Time of spawn.
      * @param power Enemy power.
@@ -31,10 +31,20 @@ public class EnemyEntry {
         this.power = power;
     }
 
+    /**
+     * Getter for time.
+     *
+     * @return Time of spawn.
+     */
     public float getTime() {
         return time;
     }
 
+    /**
+     * Getter for power.
+     *
+     * @return Enemy power.
+     */
     public int getPower() {
         return power;
     }

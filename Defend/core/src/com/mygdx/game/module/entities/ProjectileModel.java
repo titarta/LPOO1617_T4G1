@@ -17,7 +17,7 @@ public class ProjectileModel extends EntityModel {
     private Projectile stats;
 
     /**
-     * Constructor. Always set the position in the top of the tower.
+     * Creates the projectile model. Always set the position in the top of the tower.
      *
      * @param rotation Projectile angle of rotation.
      * @param stats Projectile damage and crit chance.

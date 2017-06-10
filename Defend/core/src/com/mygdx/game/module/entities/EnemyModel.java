@@ -19,7 +19,7 @@ public class EnemyModel extends EntityModel {
     private Enemy enemyStats;
 
     /**
-     * Constructor. Set the position of the enemy always out of visible screen.
+     * Creates an enemy model. Set the position of the enemy always out of visible screen.
      *
      * @param power Stat that decides enemy hp and damage.
      */

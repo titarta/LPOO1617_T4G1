@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.DefendGame;
 
 /**
- * Created by Tiago on 29/05/2017.
+ * Class that handles projectiles sprites.
  */
 
 public class TowerView extends EntityView {
@@ -19,6 +19,13 @@ public class TowerView extends EntityView {
         super(game);
     }
 
+    /**
+     * Creates Tower sprite.
+     *
+     * @param game the game this view belongs to. Needed to access the
+     *             asset manager to get textures.
+     * @return Tower sprite.
+     */
     @Override
     public Sprite createSprite(DefendGame game) {
         Texture texture = game.getAssetManager().get("tower.png");

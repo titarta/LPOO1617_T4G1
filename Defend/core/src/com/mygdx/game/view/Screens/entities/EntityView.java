@@ -8,9 +8,8 @@ import com.mygdx.game.module.entities.EntityModel;
 import static com.mygdx.game.view.Screens.GameScreen.PIXEL_TO_METER;
 
 /**
- * Created by Tiago on 29/05/2017.
+ * Class that handles a sprite from an entity.
  */
-
 abstract class EntityView {
     /**
      * The sprite representing this entity view.
