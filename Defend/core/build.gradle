@@ -15,7 +15,7 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     //compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
-    compile "net.onedaybeard.artemis:artemis-odb-serializer-json-libgdx:2.0.0"
+    //compile "net.onedaybeard.artemis:artemis-odb-serializer-json-libgdx:2.0.0"
 
     // These are new!
     testCompile "junit:junit:4.12"
