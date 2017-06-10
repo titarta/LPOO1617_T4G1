@@ -3,18 +3,20 @@ package com.mygdx.game.GameLogic;
 import com.mygdx.game.Utils.Chance;
 
 public class Projectile {
-    private int damage;
-    private double critChance;
-    private Chance chance;
+    private final int damage;
+    private final boolean crit;
 
     public Projectile(int damage, double critChance) {
         this.damage = damage;
-        this.critChance = critChance;
-        this.chance = new Chance();
+        this.crit = Chance.giveChance(critChance);
+    }
+
+    public boolean isCrit() {
+        return crit;
     }
 
     public int calculatesDamage() {
-        if (chance.giveChance(critChance)) {
+        if (this.crit) {
             return damage * 2;
         } else {
             return damage;

@@ -46,6 +46,10 @@ public class ProjectileModel extends EntityModel {
         return stats.calculatesDamage();
     }
 
+    public boolean isCrit() {
+        return stats.isCrit();
+    }
+
     /**
      * Rotates the sprite of projectiles.
      */

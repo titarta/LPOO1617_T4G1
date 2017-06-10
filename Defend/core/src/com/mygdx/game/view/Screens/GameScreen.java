@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.GameLogic.Projectile;
+import com.mygdx.game.Utils.EnemyEntry;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.controller.entities.EnemyBody;
 import com.mygdx.game.controller.entities.ProjectileBody;
@@ -23,8 +24,6 @@ import com.mygdx.game.view.Screens.entities.ProjectileView;
 import com.mygdx.game.view.Screens.entities.TowerView;
 
 import java.util.ArrayList;
-
-import com.mygdx.game.Utils.EnemyEntry;
 
 public class GameScreen extends ScreenMother {
 
@@ -177,7 +176,10 @@ public class GameScreen extends ScreenMother {
                     return;
                 }
                 if (a.getType().equals("Projectile") && b.getType().equals("Enemy")) {
-                    if(((EnemyModel) b).getAttacked(((ProjectileModel) a).attacks())) {
+                    if (((ProjectileModel) a).isCrit()) {
+                        System.out.println("I critted!");
+                    }
+                    if (((EnemyModel) b).getAttacked(((ProjectileModel) a).attacks())) {
                         eraseEnemyEntity(controller.getEnemyBody(contact.getFixtureB().getBody()));
                     }
                     eraseProjectileEntity(controller.getProjectileBody(contact.getFixtureA().getBody()));

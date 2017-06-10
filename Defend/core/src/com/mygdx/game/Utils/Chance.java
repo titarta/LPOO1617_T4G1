@@ -7,12 +7,13 @@ public class Chance {
     /**
      * Random values generator.
      */
-    private Random rand;
+    private static Random rand;
+
 
     /**
-     * Constructor. Initializes Random.
+     * Initializes random;
      */
-    public Chance() {
+    public static void initialize() {
         rand = new Random();
     }
 
@@ -22,7 +23,7 @@ public class Chance {
      * @param chance Porbability of function returning true.
      * @return True or false.
      */
-    public boolean giveChance(double chance) {
+    public static boolean giveChance(double chance) {
         double value = rand.nextDouble() * 100;
         return chance >= value;
     }

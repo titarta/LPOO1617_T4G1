@@ -4,14 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.GameLogic.GameInfo;
+import com.mygdx.game.Utils.Chance;
 import com.mygdx.game.view.Screens.MainMenuScreen;
-import com.mygdx.game.view.Screens.MenuScreen;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,13 +16,14 @@ import java.io.ObjectInputStream;
 
 public class DefendGame extends Game {
 	public GameInfo gameInfo;
+	public SpriteBatch batch;
 	private MainMenuScreen mainMenu;
 	private AssetManager assetManager;
 	private int VIEWPORT_HEIGHT = 400;
 	private int VIEWPORT_WIDTH = 600;
-	public SpriteBatch batch;
 
 	public DefendGame() throws ClassNotFoundException {
+		Chance.initialize();
 		try {
 			FileInputStream fileIn = new FileInputStream("../../core/src/tmp/gamestate.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
