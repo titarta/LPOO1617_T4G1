@@ -16,18 +16,45 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
- * Created by Tiago on 27/05/2017.
+ * Wraps Screen class, and added some attributes common to every Screen.
  */
-
 public abstract class ScreenMother implements Screen {
+
+    /**
+     * Instance of game, with the assetManager and gameInfo.
+     */
     protected DefendGame game;
+
+    /**
+     * Viewport.
+     */
     protected Viewport menuPort;
+
+    /**
+     * Camera.
+     */
     protected OrthographicCamera menuCam;
+
+    /**
+     * Stage.
+     */
     public Stage stage;
+
+    /**
+     * Skin of the label where current money is displayed.
+     */
     public Skin labelSkin;
+
+    /**
+     * Label where current money is displayed.
+     */
     public Label moneyLabel;
 
-
+    /**
+     * Creates a class which wraps Screen.
+     *
+     * @param game Instance of game.
+     */
     public ScreenMother(DefendGame game) {
         this.game = game;
         menuCam = new OrthographicCamera(game.getViewportWidth(), game.getViewportHeight());
@@ -47,6 +74,12 @@ public abstract class ScreenMother implements Screen {
 
     }
 
+    /**
+     * Overrides Screen method resize.
+     *
+     * @param width New game width.
+     * @param height New game height.
+     */
     @Override
     public void resize(int width, int height) {
         menuPort.update(width,height);
@@ -74,6 +107,9 @@ public abstract class ScreenMother implements Screen {
 
     }
 
+    /**
+     * Saves the game and updates the label where money is displayed.
+     */
     public void updateGameInfo() {
         moneyLabel.setText("Money: " + game.gameInfo.getMoney());
         try {
@@ -87,6 +123,9 @@ public abstract class ScreenMother implements Screen {
         }
     }
 
+    /**
+     * Creates the label where money is displayed.
+     */
     private void createLabel() {
         moneyLabel = new Label("Money: " + game.gameInfo.getMoney(), labelSkin);
         moneyLabel.setPosition(470, 370);

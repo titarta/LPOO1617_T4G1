@@ -8,16 +8,20 @@ import java.util.ArrayList;
 import com.mygdx.game.Utils.EnemyEntry;
 import com.mygdx.game.Utils.MenuOption;
 
-
+/**
+ * Lobby menu screen.
+ */
 class LevelsMenuScreen extends MenuScreen {
-    private GameModel g;
-    private ScreenMother returnScreen;
 
+    /**
+     * Creates level selection menu.
+     *
+     * @param game Instance of game.
+     * @param returnScreen Previous screen.
+     */
     LevelsMenuScreen(DefendGame game, ScreenMother returnScreen) {
         super(game);
         options = new ArrayList<MenuOption>();
-        this.returnScreen = returnScreen;
-        g = new GameModel();
         options.add(new MenuOption(new GameScreen(game, level(1), this), "Level 1"));
         options.add(new MenuOption(new GameScreen(game, level(2), this), "Level 2"));
         options.add(new MenuOption(new GameScreen(game, level(3), this), "Level 3"));
@@ -27,12 +31,22 @@ class LevelsMenuScreen extends MenuScreen {
         createButtons();
     }
 
+    /**
+     * Overrides render method from screenMother.
+     *
+     * @param delta Not used.
+     */
     @Override
     public void render(float delta) {
         super.render(1);
     }
 
-
+    /**
+     * Creates an arrayList if EnemyEntry to create the level.
+     *
+     * @param number Power of the enemies.
+     * @return The list of EnemyEntry.
+     */
     private ArrayList<EnemyEntry> level(int number) {
         ArrayList<EnemyEntry> level = new ArrayList<EnemyEntry>();
         for (int i = 0; i < 30; i = i + 3) {

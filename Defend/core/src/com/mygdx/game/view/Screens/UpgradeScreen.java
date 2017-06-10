@@ -94,7 +94,7 @@ class UpgradeScreen extends ScreenMother implements Screen {
     }
 
     /**
-     * Override of render methos of ScreenMother.
+     * Override of render method of ScreenMother.
      * Draws the back ground and handles buttons and labels.
      *
      * @param delta Not used.
@@ -108,6 +108,11 @@ class UpgradeScreen extends ScreenMother implements Screen {
         stage.draw();
     }
 
+    /**
+     * Creates a label indicating the stat we are upgrading.
+     *
+     * @param statName String wrote on the label.
+     */
     private void createLabel(String statName) {
         label = new Label(statName, labelSkin);
         label.setPosition(300 - 5*statName.length(), 250);
@@ -116,6 +121,9 @@ class UpgradeScreen extends ScreenMother implements Screen {
         stage.addActor(label);
     }
 
+    /**
+     * Create the two buttons of the screen.
+     */
     private void createButtons() {
         buttonUpgrade = new TextButton("Cost: " + upgradeCost, buttonsSkin);
         buttonUpgrade.setPosition(50, 100);
@@ -159,12 +167,18 @@ class UpgradeScreen extends ScreenMother implements Screen {
         stage.addActor(buttonBack);
     }
 
+    /**
+     * Updates the upgrade cost and evolution number.
+     */
     private void increaseCost() {
         evolutionNumber++;
         upgradeCost = evolutionNumber*100;
         buttonUpgrade.setText("Cost: " + upgradeCost);
     }
 
+    /**
+     * Increases the stats of tower.
+     */
     private void upgradeHandler() {
         if (game.gameInfo.getMoney() < upgradeCost) {
             return;
@@ -175,18 +189,31 @@ class UpgradeScreen extends ScreenMother implements Screen {
         this.updateGameInfo();
     }
 
+    /**
+     * Sets the screen to the previous one.
+     */
     protected void backHandler() {
         game.setScreen(backScreen);
         Gdx.input.setInputProcessor(backScreen.stage);
         backScreen.updateGameInfo();
     }
 
+    /**
+     * Sets evolution number and corresponded upgrade cost.
+     *
+     * @param evolutionNumber Evolution number to be setted.
+     */
     void setEvolutionNumber(int evolutionNumber) {
         this.evolutionNumber = evolutionNumber;
         upgradeCost = evolutionNumber*100;
         buttonUpgrade.setText("Cost: " + upgradeCost);
     }
 
+    /**
+     * Getter for evolution number.
+     *
+     * @return Evolution number.
+     */
     int getEvolutionNumber() {
         return evolutionNumber;
     }

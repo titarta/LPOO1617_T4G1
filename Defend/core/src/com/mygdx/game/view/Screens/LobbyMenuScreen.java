@@ -7,10 +7,16 @@ import java.util.ArrayList;
 
 import com.mygdx.game.Utils.MenuOption;
 
-
-
+/**
+ * Lobby menu screen.
+ */
 class LobbyMenuScreen extends MenuScreen implements Screen {
 
+    /**
+     * Creates lobby menu.
+     *
+     * @param game Instance of game.
+     */
     LobbyMenuScreen(DefendGame game, ScreenMother returnScreen) {
         super(game);
         options = new ArrayList<MenuOption>();
@@ -23,6 +29,11 @@ class LobbyMenuScreen extends MenuScreen implements Screen {
         createButtons();
     }
 
+    /**
+     * Overrides render method from screenMother.
+     *
+     * @param delta Not used.
+     */
     @Override
     public void render(float delta) {
         super.render(1);

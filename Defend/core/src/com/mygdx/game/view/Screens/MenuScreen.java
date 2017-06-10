@@ -13,15 +13,41 @@ import java.util.ArrayList;
 
 import com.mygdx.game.Utils.MenuOption;
 
+/**
+ * Screen that handles the normal menus.
+ */
 public class MenuScreen extends ScreenMother implements Screen {
 
+    /**
+     * Information about the various options of the menu.
+     */
     ArrayList<MenuOption> options;
+
+    /**
+     * ArrayList of the TextButtons which make the menu.
+     */
     private ArrayList<TextButton> buttons;
+
+    /**
+     * Background texture.
+     */
     private Texture back;
+
+    /**
+     * Skin of buttons who make the menu.
+     */
     private Skin buttonsSkin;
+
+    /**
+     * Used to implement buttons correctly.
+     */
     private boolean buttonFlag;
 
-
+    /**
+     * Creates the menu screen.
+     *
+     * @param game Instance of game.
+     */
     MenuScreen(DefendGame game) {
         super(game);
         back = new Texture("MainMenu/fundoMenu.png");
@@ -30,6 +56,12 @@ public class MenuScreen extends ScreenMother implements Screen {
         buttonFlag = false;
     }
 
+    /**
+     * Override render function from ScreenMother.
+     * Draws the back ground and handles buttons and labels.
+     *
+     * @param delta Not used.
+     */
     @Override
     public void render(float delta) {
         game.batch.begin();
@@ -39,8 +71,9 @@ public class MenuScreen extends ScreenMother implements Screen {
         stage.draw();
     }
 
-
-
+    /**
+     * Creates the buttons which consist the menu.
+     */
     void createButtons() {
         for (int i = 0; i < options.size(); i++) {
             TextButton button = new TextButton(options.get(i).getName(), buttonsSkin);
@@ -67,6 +100,11 @@ public class MenuScreen extends ScreenMother implements Screen {
         }
     }
 
+    /**
+     * Handles the user input.
+     *
+     * @param index Button user presses.
+     */
     private void buttonClickEvent(int index) {
         this.dispose();
         if (options.get(index).getNextScreen() == null) {
