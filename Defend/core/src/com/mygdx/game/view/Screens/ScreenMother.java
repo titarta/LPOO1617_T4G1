@@ -11,6 +11,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.DefendGame;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * Created by Tiago on 27/05/2017.
  */
@@ -70,8 +74,17 @@ public abstract class ScreenMother implements Screen {
 
     }
 
-    public void updateLabelText() {
+    public void updateGameInfo() {
         moneyLabel.setText("Money: " + game.gameInfo.getMoney());
+        try {
+            FileOutputStream fileOut =  new FileOutputStream("../../core/src/tmp/gamestate.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(game.gameInfo);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            System.out.println("Couldn't save the game");
+        }
     }
 
     private void createLabel() {

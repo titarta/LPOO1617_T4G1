@@ -233,7 +233,7 @@ public class GameScreen extends ScreenMother {
     private void endGame() {
         game.setScreen(returnScreen);
         Gdx.input.setInputProcessor(returnScreen.stage);
-        returnScreen.updateLabelText();
+        returnScreen.updateGameInfo();
     }
 
     void reset() {

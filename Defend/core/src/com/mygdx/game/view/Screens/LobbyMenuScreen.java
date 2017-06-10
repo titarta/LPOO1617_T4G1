@@ -14,12 +14,12 @@ class LobbyMenuScreen extends MenuScreen implements Screen {
     LobbyMenuScreen(DefendGame game, ScreenMother returnScreen) {
         super(game);
         options = new ArrayList<MenuOption>();
-        options.add(new MenuOption(new LevelsMenuScreen(game, this), "Levels", game));
-        options.add(new MenuOption(new HpUpgradeScreen(game, this), "Health upgrade", game));
-        options.add(new MenuOption(new DamageUpgradeScreen(game, this), "Damage upgrade", game));
-        options.add(new MenuOption(new DefenseUpgradeScreen(game, this), "Defense upgrade", game));
-        options.add(new MenuOption(new CritChanceUpgradeScreen(game, this), "Crit chance upgrade", game));
-        options.add(new MenuOption(returnScreen, "Back", game));
+        options.add(new MenuOption(new LevelsMenuScreen(game, this), "Levels"));
+        options.add(new MenuOption(new HpUpgradeScreen(game, this), "Health upgrade"));
+        options.add(new MenuOption(new DamageUpgradeScreen(game, this), "Damage upgrade"));
+        options.add(new MenuOption(new DefenseUpgradeScreen(game, this), "Defense upgrade"));
+        options.add(new MenuOption(new CritChanceUpgradeScreen(game, this), "Crit chance upgrade"));
+        options.add(new MenuOption(returnScreen, "Back"));
         createButtons();
     }
 

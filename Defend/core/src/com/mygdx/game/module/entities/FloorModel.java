@@ -6,7 +6,7 @@ package com.mygdx.game.module.entities;
 public class FloorModel extends EntityModel {
 
     /**
-     * Constructor. Sets it position in the bottom of the screen.
+     * Creates the floor model. Sets it position in the bottom of the screen.
      */
     public FloorModel() {
         super(450, 10, 0);

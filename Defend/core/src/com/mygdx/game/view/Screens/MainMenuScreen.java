@@ -14,10 +14,9 @@ public class MainMenuScreen extends MenuScreen implements Screen{
     public MainMenuScreen(DefendGame game) {
         super(game);
         options = new ArrayList<MenuOption>();
-        options.add(new MenuOption(new LobbyMenuScreen(game, this), "Start Game", game));
-        options.add(new MenuOption(new SaveGame(game, this), "Save Game", game));
-        options.add(new MenuOption(new ClearSave(game, this), "Clear save and exit", game));
-        options.add(new MenuOption(null, "Exit", game));
+        options.add(new MenuOption(new LobbyMenuScreen(game, this), "Start Game"));
+        options.add(new MenuOption(new ClearSave(game), "Clear save and exit"));
+        options.add(new MenuOption(null, "Exit"));
         createButtons();
     }
 

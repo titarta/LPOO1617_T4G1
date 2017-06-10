@@ -3,30 +3,82 @@ package com.mygdx.game.view.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.DefendGame;
 import com.mygdx.game.GameLogic.StatsGroup;
 
+/**
+ * Screen that handles the menu where the user upgrade the tower stats.
+ */
 class UpgradeScreen extends ScreenMother implements Screen {
+
+    /**
+     * Cost of an upgrade, increase with number of upgrades made.
+     */
     private int upgradeCost;
+
+    /**
+     * Number of upgrades made + 1 (number of the upgrade we are going to buy).
+     */
     private int evolutionNumber;
+
+    /**
+     * Skin for the TextButtons.
+     */
     private Skin buttonsSkin;
+
+    /**
+     * Background texture.
+     */
     private Texture background;
+
+    /**
+     * Button of upgrade.
+     */
     private TextButton buttonUpgrade;
+
+    /**
+     * Button to go back.
+     */
     private TextButton buttonBack;
+
+    /**
+     * Label indicating the stat we are upgrading.
+     */
     private Label label;
+
+    /**
+     * Screen that called this screen (LobbyScreen).
+     */
     private ScreenMother backScreen;
+
+    /**
+     * Stats which are increased with each upgrade.
+     */
     private StatsGroup statsIncrease;
+
+    /**
+     * Used to implement upgrade button correctly.
+     */
     private boolean upgFlag;
+
+    /**
+     * Used to implement back button correctly.
+     */
     private boolean backFlag;
 
-
+    /**
+     * Creates the upgrade menu screen.
+     *
+     * @param game Instance of game, to acess tower stats.
+     * @param statName Name of the stat we are increasing, to appear in the label.
+     * @param screen Screen to return.
+     * @param statsIncrease Increase of stats per upgrade.
+     */
     UpgradeScreen(DefendGame game, String statName, ScreenMother screen, StatsGroup statsIncrease) {
         super(game);
         upgradeCost = 100;
@@ -41,6 +93,12 @@ class UpgradeScreen extends ScreenMother implements Screen {
         backFlag = false;
     }
 
+    /**
+     * Override of render methos of ScreenMother.
+     * Draws the back ground and handles buttons and labels.
+     *
+     * @param delta Not used.
+     */
     @Override
     public void render(float delta) {
         game.batch.begin();
@@ -114,13 +172,13 @@ class UpgradeScreen extends ScreenMother implements Screen {
         game.gameInfo.spendMoney(upgradeCost);
         game.gameInfo.upgradeStat(statsIncrease);
         increaseCost();
-        this.updateLabelText();
+        this.updateGameInfo();
     }
 
     protected void backHandler() {
         game.setScreen(backScreen);
         Gdx.input.setInputProcessor(backScreen.stage);
-        backScreen.updateLabelText();
+        backScreen.updateGameInfo();
     }
 
     void setEvolutionNumber(int evolutionNumber) {

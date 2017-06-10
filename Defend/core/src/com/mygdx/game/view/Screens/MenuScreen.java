@@ -77,7 +77,7 @@ public class MenuScreen extends ScreenMother implements Screen {
             if (options.get(index).getNextScreen().getClass() == GameScreen.class) {
                 ((GameScreen) options.get(index).getNextScreen()).reset();
             } else {
-                ((ScreenMother) options.get(index).getNextScreen()).updateLabelText();
+                ((ScreenMother) options.get(index).getNextScreen()).updateGameInfo();
             }
         }
     }
