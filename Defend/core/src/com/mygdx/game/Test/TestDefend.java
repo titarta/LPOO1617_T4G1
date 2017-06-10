@@ -23,15 +23,15 @@ public class TestDefend extends TestBackend {
         assertEquals(enemy.getHp(), 50);
     }
 
-    @Test(timeout=10000)
+    @Test(timeout=100)
     public void testCritDamage() {
-        Projectile projectile = new Projectile(50, 0.5);
+        Projectile projectile = new Projectile(50, 50);
         Enemy enemy = new Enemy(1);
         enemy.setHp(100000);
         for(int i = 0; i < 1000; i++) {
             enemy.getsAttacked(projectile.calculatesDamage());
         }
-        assertTrue(enemy.getHp() > 0.4*100000 && enemy.getHp() < 0.6*100000);
+        assertTrue(enemy.getHp() > 0.2*100000 && enemy.getHp() < 0.3*100000);
     }
 
     @Test
