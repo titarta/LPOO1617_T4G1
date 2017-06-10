@@ -155,7 +155,7 @@ public class GameController {
      */
     private void enemiesWalk() {
         for(EnemyBody e : enemies) {
-            if (e.getX() <= 115*PIXEL_TO_METER) {
+            if (e.getX() <= 90*PIXEL_TO_METER) {
                 e.setVelocity(0, 0);
             } else {
                 e.setVelocity(-40*PIXEL_TO_METER, 0);
@@ -213,7 +213,7 @@ public class GameController {
      */
     public int enemiesAtack(int hp, int defense) {
         for (EnemyBody e : enemies) {
-            if (((EnemyModel) e.getUserData()).getX() >= 130*PIXEL_TO_METER) {
+            if (((EnemyModel) e.getUserData()).getX() >= 110*PIXEL_TO_METER) {
                 continue;
             }
             int aux = ((EnemyModel) e.getUserData()).getDamage() - defense;

@@ -217,7 +217,7 @@ public class GameScreen extends ScreenMother {
 
     private void eraseEnemyEntity(EnemyBody ent) {
         if (ent == null) return;
-        game.gameInfo.addMoney(20);
+        game.gameInfo.addMoney(40);
         controller.deleteEnemyBody(ent);
         model.deleteEnemyModel(((EnemyModel) ent.getUserData()));
     }
