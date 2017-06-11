@@ -25,29 +25,113 @@ import com.mygdx.game.view.Screens.entities.TowerView;
 
 import java.util.ArrayList;
 
+/**
+ * Actual game screen.
+ *
+ * <p>
+ *     Screen that handles the levels.
+ * </p>
+ */
 public class GameScreen extends ScreenMother {
 
+    /**
+     * Pixel to meter ratio. Used to unlimit world velocity (it is limited to 120 units per second)
+     */
     public final static float PIXEL_TO_METER = 0.05f;
+
+    /**
+     * Instance of game.
+     */
     private final DefendGame game;
+
+    /**
+     * Game model, where most of the info is stored
+     */
     private GameModel model;
+
+    /**
+     * Controller which creates and updates a physic world.
+     */
     private GameController controller;
+
+    /**
+     * Screen that calls the game.
+     */
     private ScreenMother returnScreen;
+
+    /**
+     * Tower sprite wrapping class.
+     */
     private TowerView towerView;
+
+    /**
+     * Floor sprite wrapping class.
+     */
     private FloorView floorView;
+
+    /**
+     * Enemy sprite wrapping class.
+     */
     private EnemyView enemyView;
+
+    /**
+     * Projectile sprite wrapping class.
+     */
     private ProjectileView projectileView;
+
+    /**
+     * Enemies spawn time and power.
+     */
     private ArrayList<EnemyEntry> levelMap;
+
+    /**
+     * Time elapsed since the beginning of the game.
+     */
     private float timeElapsed;
+
+    /**
+     * Time elapsed in integer since the beginning of the game.
+     */
     private int timeElapsedInt;
+
+    /**
+     * Enemy to be spawned next.
+     */
     private int enemyIndex;
+
+    /**
+     * Value which stores the x-value of the movement made by the user.
+     */
     private float deltaX;
+
+    /**
+     * Value which stores the y-value of the movement made by the user.
+     */
     private float deltaY;
+
+    /**
+     * Flag that represents whether or not there are not any more enemies to spwn
+     */
     private boolean endFlag;
+
+    /**
+     * Tower defense.
+     */
     private int defense;
+
+    /**
+     * Tower hp.
+     */
     private int hp;
 
-
-    public GameScreen(DefendGame game, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
+    /**
+     * Creates the screen of a game.
+     *
+     * @param game Instance of game.
+     * @param level Enemies spawn time and power.
+     * @param returnScreen Screen to go back when game ends.
+     */
+    GameScreen(DefendGame game, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
         super(game);
         this.game = game;
         this.levelMap = level;
@@ -76,6 +160,11 @@ public class GameScreen extends ScreenMother {
         });
     }
 
+    /**
+     * Overrides render method from ScreenMother.
+     *
+     * @param delta Time passed since last render.
+     */
     @Override
     public void render(float delta) {
 
@@ -94,6 +183,9 @@ public class GameScreen extends ScreenMother {
         game.batch.end();
     }
 
+    /**
+     * Make enemies attack at each second.
+     */
     private void checkEnemiesDamage() {
         if (timeElapsed < timeElapsedInt + 1) {
             return;
@@ -105,6 +197,9 @@ public class GameScreen extends ScreenMother {
         }
     }
 
+    /**
+     * Draws all the entities.
+     */
     private void drawEntities() {
         floorView.update(model.getFloor());
         floorView.draw(game.batch);
@@ -121,6 +216,11 @@ public class GameScreen extends ScreenMother {
         }
     }
 
+    /**
+     * Handles enemy spawns using levelMap as reference.
+     *
+     * @param delta Time passed since last render.
+     */
     private void spawnEnemies(float delta) {
         if  (endFlag) {
             return;
@@ -136,16 +236,28 @@ public class GameScreen extends ScreenMother {
         }
     }
 
+    /**
+     * Used when user clicks or press the screen. It updates deltaX and deltaY to 0.
+     */
     private void startProjectilePath() {
         deltaX = 0;
         deltaY = 0;
     }
 
+    /**
+     * Used when a pan is detected. Updates deltaY and deltaX based on the pan.
+     *
+     * @param deltaX Distance covered in x-axis by the pan.
+     * @param deltaY Distance covered in y-axis by the pan.
+     */
     private void updateProjectilePath(float deltaX, float deltaY) {
         this.deltaX += deltaX;
         this.deltaY += deltaY;
     }
 
+    /**
+     * Creates the projectile based on deltaX and deltaY values.
+     */
     private void endProjectilePath () {
         if (deltaY == 0 && deltaX == 0) {
             return;
@@ -155,12 +267,20 @@ public class GameScreen extends ScreenMother {
         controller.createProjectileBody(p, -deltaX, -deltaY);
     }
 
+    /**
+     * Spawns an enemy in the game.
+     *
+     * @param power Enemy power.
+     */
     private void addEnemy(int power) {
         EnemyModel e = new EnemyModel(power);
         model.addEnemyModel(e);
         controller.createEnemyBody(e);
     }
 
+    /**
+     * Contact Listener ti check collision between bodies.
+     */
     private void createContactListener() {
         controller.getWorld().setContactListener(new ContactListener() {
             @Override
@@ -217,6 +337,11 @@ public class GameScreen extends ScreenMother {
         });
     }
 
+    /**
+     * Removes an enemy from the game.
+     *
+     * @param ent Enemy to be removed.
+     */
     private void eraseEnemyEntity(EnemyBody ent) {
         if (ent == null) return;
         game.gameInfo.addMoney(((EnemyModel) ent.getUserData()).getMoney());
@@ -224,18 +349,29 @@ public class GameScreen extends ScreenMother {
         model.deleteEnemyModel(((EnemyModel) ent.getUserData()));
     }
 
+    /**
+     * Removes a projectile from the game.
+     *
+     * @param ent Projectile to be removed.
+     */
     private void eraseProjectileEntity(ProjectileBody ent) {
         if (ent == null) return;
         controller.deleteProjectileBody(ent);
         model.deleteProjectileModel(((ProjectileModel) ent.getUserData()));
     }
 
+    /**
+     * Returns to the previous screen. Called when game ends.
+     */
     private void endGame() {
         game.setScreen(returnScreen);
         Gdx.input.setInputProcessor(returnScreen.stage);
         returnScreen.updateGameInfo();
     }
 
+    /**
+     * Reset values so the game can be replayed.
+     */
     void reset() {
         this.timeElapsed = 0;
         this.enemyIndex = 0;

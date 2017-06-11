@@ -62,6 +62,11 @@ public class Enemy {
         return (this.hp <= 0);
     }
 
+    /**
+     * Getter for money.
+     *
+     * @return Money that enemy drops.
+     */
     public int getMoney() {
         return money;
     }
