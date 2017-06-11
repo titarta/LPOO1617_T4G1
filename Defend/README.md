@@ -60,7 +60,8 @@ Actual game screen (level selection is similar to lobby and main menu)
 * Tower damage be consistent with stats
 * Tower attacking (spawn projectile)
 
-### Contribution and time spent
+## Contribution and time spent
 
 Rafael Damasceno: 30 hours, 50% contribution
+
 Tiago Carvalho: 30 hours, 50% contribution
