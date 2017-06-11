@@ -1,7 +1,5 @@
 package com.mygdx.game.GameLogic;
 
-import java.io.Serializable;
-
 /**
  * Class that stores staistic information relative to a object (only tower).
  */
@@ -44,20 +42,32 @@ public class StatsGroup implements  java.io.Serializable{
         return hp;
     }
 
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
     public int getDefense() {
         return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
     }
 
     public int getDamage() {
         return damage;
     }
 
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
     public double getCritChance() {
         return critChance;
     }
 
-    public void setHp(int hp) {
-        this.hp = hp;
+    public void setCritChance(double critChance) {
+        this.critChance = critChance;
     }
 
     /**

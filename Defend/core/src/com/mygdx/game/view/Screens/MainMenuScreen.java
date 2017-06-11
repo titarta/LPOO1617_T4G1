@@ -2,10 +2,9 @@ package com.mygdx.game.view.Screens;
 
 import com.badlogic.gdx.Screen;
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.Utils.MenuOption;
 
 import java.util.ArrayList;
-
-import com.mygdx.game.Utils.MenuOption;
 
 /**
  * Main menu screen.

@@ -3,7 +3,6 @@ package com.mygdx.game.view.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,44 +10,35 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.DefendGame;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
 /**
  * Wraps Screen class, and added some attributes common to every Screen.
  */
 public abstract class ScreenMother implements Screen {
 
     /**
-     * Instance of game, with the assetManager and gameInfo.
-     */
-    protected DefendGame game;
-
-    /**
-     * Viewport.
-     */
-    protected Viewport menuPort;
-
-    /**
-     * Camera.
-     */
-    protected OrthographicCamera menuCam;
-
-    /**
      * Stage.
      */
     public Stage stage;
-
     /**
      * Skin of the label where current money is displayed.
      */
     public Skin labelSkin;
-
     /**
      * Label where current money is displayed.
      */
     public Label moneyLabel;
+    /**
+     * Instance of game, with the assetManager and gameInfo.
+     */
+    protected DefendGame game;
+    /**
+     * Viewport.
+     */
+    protected Viewport menuPort;
+    /**
+     * Camera.
+     */
+    protected OrthographicCamera menuCam;
 
     /**
      * Creates a class which wraps Screen.
@@ -112,15 +102,7 @@ public abstract class ScreenMother implements Screen {
      */
     public void updateGameInfo() {
         moneyLabel.setText("Money: " + game.gameInfo.getMoney());
-        try {
-            FileOutputStream fileOut =  new FileOutputStream("../../core/src/tmp/gamestate.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(game.gameInfo);
-            out.close();
-            fileOut.close();
-        } catch (IOException i) {
-            System.out.println("Couldn't save the game");
-        }
+        game.gameInfo.writePrefs();
     }
 
     /**

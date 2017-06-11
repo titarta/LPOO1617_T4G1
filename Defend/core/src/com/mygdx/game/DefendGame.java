@@ -10,10 +10,6 @@ import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.Utils.Chance;
 import com.mygdx.game.view.Screens.MainMenuScreen;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 public class DefendGame extends Game {
 	public GameInfo gameInfo;
 	public SpriteBatch batch;
@@ -24,15 +20,6 @@ public class DefendGame extends Game {
 
 	public DefendGame() throws ClassNotFoundException {
 		Chance.initialize();
-		try {
-			FileInputStream fileIn = new FileInputStream("../../core/src/tmp/gamestate.ser");
-			ObjectInputStream in = new ObjectInputStream(fileIn);
-			gameInfo = (GameInfo)in.readObject();
-			in.close();
-			fileIn.close();
-		}catch(IOException i) {
-			gameInfo = new GameInfo();
-		}
 	}
 
 	public int getViewportHeight() {
@@ -45,6 +32,7 @@ public class DefendGame extends Game {
 
 	@Override
 	public void create () {
+		gameInfo = new GameInfo();
 		assetManager = new AssetManager();
 		assetManager.load("tower.png", Texture.class);
 		assetManager.load("enemy.png", Texture.class);

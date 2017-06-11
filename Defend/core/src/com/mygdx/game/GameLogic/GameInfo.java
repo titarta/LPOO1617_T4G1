@@ -1,14 +1,17 @@
 package com.mygdx.game.GameLogic;
 
-import java.util.ArrayList;
-import java.io.Serializable;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 
 /**
  * Class that stores all the information needed to be stored, in order to keep the user progress.
  */
 public class GameInfo implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
-
+    /**
+     * Tower stats.
+     */
+    public StatsGroup towerStats;
     /**
      * User money.
      */
@@ -29,13 +32,10 @@ public class GameInfo implements java.io.Serializable{
      * Evolution phase on defense upgrade.
      */
     private int defenseEvNumber;
-    /**
-     * Tower stats.
-     */
-    public StatsGroup towerStats;
+    private Preferences prefs;
 
     /**
-     * Default constructor. Called when starting a new game.
+     * Default constructor.
      */
     public GameInfo () {
         money = 0;
@@ -44,6 +44,62 @@ public class GameInfo implements java.io.Serializable{
         critEvNumber = 1;
         defenseEvNumber = 1;
         towerStats = new StatsGroup(200, 0, 50, 0);
+        initializePrefs();
+    }
+
+    /**
+     * Initializes preferences.
+     */
+    private void initializePrefs() {
+
+        prefs = Gdx.app.getPreferences("GameInfo");
+
+        if (prefs.getBoolean("exists", false)) {
+            readPrefs();
+        } else {
+            writePrefs();
+        }
+
+
+    }
+
+    /**
+     * Reads preferences file.
+     */
+    private void readPrefs() {
+        money = prefs.getInteger("money");
+        hpEvNumber = prefs.getInteger("hpEvNumber");
+        damageEvNumber = prefs.getInteger("damageEvNumber");
+        critEvNumber = prefs.getInteger("critEvNumber");
+        defenseEvNumber = prefs.getInteger("defenseEvNumber");
+        towerStats.setHp(prefs.getInteger("hp"));
+        towerStats.setDefense(prefs.getInteger("defense"));
+        towerStats.setDamage(prefs.getInteger("damage"));
+        towerStats.setCritChance(prefs.getFloat("critChance"));
+    }
+
+    /**
+     * Writes preferences file.
+     */
+    public void writePrefs() {
+        prefs.putBoolean("exists", true);
+        prefs.putInteger("money", money);
+        prefs.putInteger("hpEvNumber", hpEvNumber);
+        prefs.putInteger("damageEvNumber", damageEvNumber);
+        prefs.putInteger("critEvNumber", critEvNumber);
+        prefs.putInteger("defenseEvNumber", defenseEvNumber);
+        prefs.putInteger("hp", towerStats.getHp());
+        prefs.putInteger("defense", towerStats.getDefense());
+        prefs.putInteger("damage", towerStats.getDamage());
+        prefs.putFloat("critChance", (float) towerStats.getCritChance());
+        prefs.flush();
+    }
+
+    /**
+     * Resets preferences file.
+     */
+    public void resetPrefs() {
+        prefs.putBoolean("exists", false);
     }
 
     /**
@@ -53,6 +109,10 @@ public class GameInfo implements java.io.Serializable{
      */
     public int getMoney() {
         return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     /**
@@ -78,6 +138,7 @@ public class GameInfo implements java.io.Serializable{
      *
      * @param s stats to add.
      */
+
     public void upgradeStat (StatsGroup s) {
         towerStats.add(s);
     }
@@ -86,28 +147,28 @@ public class GameInfo implements java.io.Serializable{
         return hpEvNumber;
     }
 
-    public int getDamageEvNumber() {
-        return damageEvNumber;
-    }
-
-    public int getCritEvNumber() {
-        return critEvNumber;
-    }
-
-    public int getDefenseEvNumber() {
-        return defenseEvNumber;
-    }
-
     public void setHpEvNumber(int hpEvNumber) {
         this.hpEvNumber = hpEvNumber;
+    }
+
+    public int getDamageEvNumber() {
+        return damageEvNumber;
     }
 
     public void setDamageEvNumber(int damageEvNumber) {
         this.damageEvNumber = damageEvNumber;
     }
 
+    public int getCritEvNumber() {
+        return critEvNumber;
+    }
+
     public void setCritEvNumber(int critEvNumber) {
         this.critEvNumber = critEvNumber;
+    }
+
+    public int getDefenseEvNumber() {
+        return defenseEvNumber;
     }
 
     public void setDefenseEvNumber(int defenseEvNumber) {

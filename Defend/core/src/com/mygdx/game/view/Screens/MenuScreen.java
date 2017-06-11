@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.game.DefendGame;
+import com.mygdx.game.Utils.MenuOption;
 
 import java.util.ArrayList;
-
-import com.mygdx.game.Utils.MenuOption;
 
 /**
  * Screen that handles the normal menus.
