@@ -11,10 +11,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.resolutionStrategy.calcMeasures(2,2);
-		try {
-			initialize(new DefendGame(), config);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		initialize(new DefendGame(), config);
 	}
 }
