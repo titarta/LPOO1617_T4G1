@@ -5,6 +5,18 @@
         <option name="PATTERN" value="com.mygdx.game.Test.*" />
         <option name="ENABLED" value="true" />
       </pattern>
+      <pattern>
+        <option name="PATTERN" value="com.mygdx.game.GameLogic.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="com.mygdx.game.controller.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+      <pattern>
+        <option name="PATTERN" value="com.mygdx.game.module.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
     </extension>
     <module name="core" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

@@ -6,7 +6,15 @@ import com.mygdx.game.Utils.Chance;
  * Class responsible for storing projectile damage and crit damage.
  */
 public class Projectile {
+
+    /**
+     * Projectile damage.
+     */
     private final int damage;
+
+    /**
+     * Whether or not the projectile is going to be a critical strike.
+     */
     private final boolean crit;
 
     /**
@@ -20,6 +28,11 @@ public class Projectile {
         this.crit = Chance.giveChance(critChance);
     }
 
+    /**
+     * Getter for crit.
+     *
+     * @return whether or not the projectile is going to critical strike an enemy.
+     */
     public boolean isCrit() {
         return crit;
     }
