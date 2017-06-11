@@ -19,6 +19,11 @@ class HpUpgradeScreen extends UpgradeScreen {
         setEvolutionNumber(game.gameInfo.getHpEvNumber());
     }
 
+    @Override
+    int getValue() {
+        return game.gameInfo.towerStats.getHp();
+    }
+
     /**
      * Overrides render method from screenMother.
      *

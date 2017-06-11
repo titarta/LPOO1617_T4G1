@@ -10,10 +10,6 @@ import com.mygdx.game.GameLogic.GameInfo;
 import com.mygdx.game.Utils.Chance;
 import com.mygdx.game.view.Screens.MainMenuScreen;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 /**
  * Game start class.
  */
@@ -63,6 +59,7 @@ public class DefendGame extends Game {
 	@Override
 	public void create () {
 		gameInfo = new GameInfo();
+		gameInfo.initializePrefs();
 		assetManager = new AssetManager();
 		assetManager.load("tower.png", Texture.class);
 		assetManager.load("enemy.png", Texture.class);
@@ -74,6 +71,7 @@ public class DefendGame extends Game {
 		mainMenu = new MainMenuScreen(this);
 		setScreen(mainMenu);
 		Gdx.input.setInputProcessor(mainMenu.stage);
+		Gdx.input.setCatchBackKey(true);
 	}
 
 	/**

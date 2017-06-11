@@ -37,4 +37,9 @@ class DefenseUpgradeScreen extends UpgradeScreen {
         super.backHandler();
         game.gameInfo.setDefenseEvNumber(this.getEvolutionNumber());
     }
+
+    @Override
+    int getValue() {
+        return game.gameInfo.towerStats.getDefense();
+    }
 }

@@ -20,6 +20,11 @@ class DamageUpgradeScreen extends UpgradeScreen {
         setEvolutionNumber(game.gameInfo.getDamageEvNumber());
     }
 
+    @Override
+    int getValue() {
+        return game.gameInfo.towerStats.getDamage();
+    }
+
     /**
      * Overrides render method from screenMother.
      *

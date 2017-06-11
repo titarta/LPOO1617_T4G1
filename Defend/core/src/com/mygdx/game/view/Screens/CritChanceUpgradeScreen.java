@@ -19,6 +19,11 @@ class CritChanceUpgradeScreen extends UpgradeScreen{
         setEvolutionNumber(game.gameInfo.getCritEvNumber());
     }
 
+    @Override
+    int getValue() {
+        return (int) game.gameInfo.towerStats.getCritChance();
+    }
+
     /**
      * Overrides render method from screenMother.
      *

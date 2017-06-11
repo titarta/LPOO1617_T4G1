@@ -44,13 +44,12 @@ public class GameInfo implements java.io.Serializable{
         critEvNumber = 1;
         defenseEvNumber = 1;
         towerStats = new StatsGroup(200, 0, 50, 0);
-        initializePrefs();
     }
 
     /**
      * Initializes preferences.
      */
-    private void initializePrefs() {
+    public void initializePrefs() {
 
         prefs = Gdx.app.getPreferences("GameInfo");
 
@@ -100,6 +99,7 @@ public class GameInfo implements java.io.Serializable{
      */
     public void resetPrefs() {
         prefs.putBoolean("exists", false);
+        prefs.flush();
     }
 
     /**

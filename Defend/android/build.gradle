@@ -21,8 +21,11 @@ android {
     defaultConfig {
         applicationId 'com.titarta.defend'
         targetSdkVersion 23
+        //multiDexEnabled true
     }
     productFlavors {
+    }
+    dexOptions {
     }
 }
 // called every time gradle gets executed, takes the native dependencies of
@@ -124,5 +127,7 @@ idea {
         }
     }
 }
+
 dependencies {
+    // compile 'com.android.support:multidex:1.0.1'
 }

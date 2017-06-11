@@ -72,6 +72,11 @@ class UpgradeScreen extends ScreenMother implements Screen {
     private boolean backFlag;
 
     /**
+     * Name of stat
+     */
+    private String statName;
+
+    /**
      * Creates the upgrade menu screen.
      *
      * @param game Instance of game, to acess tower stats.
@@ -87,7 +92,8 @@ class UpgradeScreen extends ScreenMother implements Screen {
         buttonsSkin = new Skin(Gdx.files.internal("MainMenu/uiskin.json"));
         backScreen = screen;
         createButtons();
-        createLabel(statName);
+        this.statName = statName;
+        createLabel();
         this.statsIncrease = statsIncrease;
         upgFlag = false;
         backFlag = false;
@@ -110,12 +116,10 @@ class UpgradeScreen extends ScreenMother implements Screen {
 
     /**
      * Creates a label indicating the stat we are upgrading.
-     *
-     * @param statName String wrote on the label.
      */
-    private void createLabel(String statName) {
-        label = new Label(statName, labelSkin);
-        label.setPosition(300 - 5*statName.length(), 250);
+    private void createLabel() {
+        label = new Label(this.statName + ": " + getValue(), labelSkin);
+        label.setPosition(300 - 5 * this.statName.length(), 250);
         label.setFontScaleX(1.4f);
         label.setFontScaleY(1.4f);
         stage.addActor(label);
@@ -187,6 +191,7 @@ class UpgradeScreen extends ScreenMother implements Screen {
         game.gameInfo.upgradeStat(statsIncrease);
         increaseCost();
         this.updateGameInfo();
+        label.setText(this.statName + ": " + getValue());
     }
 
     /**
@@ -196,6 +201,15 @@ class UpgradeScreen extends ScreenMother implements Screen {
         game.setScreen(backScreen);
         Gdx.input.setInputProcessor(backScreen.stage);
         backScreen.updateGameInfo();
+    }
+
+    /**
+     * Getter for evolution number.
+     *
+     * @return Evolution number.
+     */
+    int getEvolutionNumber() {
+        return evolutionNumber;
     }
 
     /**
@@ -209,13 +223,8 @@ class UpgradeScreen extends ScreenMother implements Screen {
         buttonUpgrade.setText("Cost: " + upgradeCost);
     }
 
-    /**
-     * Getter for evolution number.
-     *
-     * @return Evolution number.
-     */
-    int getEvolutionNumber() {
-        return evolutionNumber;
+    int getValue() {
+        return 0;
     }
 
 }

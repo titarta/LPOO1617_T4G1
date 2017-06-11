@@ -1,30 +1,17 @@
 package com.mygdx.game.Test;
 
 
-import com.mygdx.game.DefendGame;
-import com.mygdx.game.GameLogic.*;
+import com.mygdx.game.GameLogic.Enemy;
+import com.mygdx.game.GameLogic.GameInfo;
+import com.mygdx.game.GameLogic.Projectile;
 import com.mygdx.game.Utils.Chance;
-import com.mygdx.game.Utils.EnemyEntry;
-import com.mygdx.game.controller.GameController;
-import com.mygdx.game.module.GameModel;
-import com.mygdx.game.module.entities.EnemyModel;
-import com.mygdx.game.module.entities.ProjectileModel;
-import com.mygdx.game.view.Screens.GameScreen;
-import com.mygdx.game.view.Screens.MainMenuScreen;
-import com.mygdx.game.view.Screens.ScreenMother;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class TestDefend extends TestBackend {
+public class TestDefend {
 
     @Test
     public void testNoCritDamage() {
