@@ -47,7 +47,7 @@ public class GameScreen extends ScreenMother {
     private int hp;
 
 
-    GameScreen(DefendGame game, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
+    public GameScreen(DefendGame game, ArrayList<EnemyEntry> level, ScreenMother returnScreen) {
         super(game);
         this.game = game;
         this.levelMap = level;

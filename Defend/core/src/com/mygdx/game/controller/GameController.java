@@ -93,7 +93,6 @@ public class GameController {
         while (accumulator >= 1/60f) {
             world.step(1/60f, 4, 2);
             accumulator -= 1/60f;
-
         }
         for (Body body : bodiesToDestroy) {
             world.destroyBody(body);

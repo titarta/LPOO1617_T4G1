@@ -1,16 +1,26 @@
 package com.mygdx.game.Test;
 
 
+import com.mygdx.game.DefendGame;
 import com.mygdx.game.GameLogic.*;
 import com.mygdx.game.Utils.Chance;
+import com.mygdx.game.Utils.EnemyEntry;
 import com.mygdx.game.controller.GameController;
 import com.mygdx.game.module.GameModel;
+import com.mygdx.game.module.entities.EnemyModel;
+import com.mygdx.game.module.entities.ProjectileModel;
+import com.mygdx.game.view.Screens.GameScreen;
+import com.mygdx.game.view.Screens.MainMenuScreen;
+import com.mygdx.game.view.Screens.ScreenMother;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -23,9 +33,10 @@ public class TestDefend extends TestBackend {
         Enemy enemy = new Enemy(1);
         enemy.getsAttacked(projectile.calculatesDamage());
         assertEquals(enemy.getHp(), 50);
+        assertEquals(projectile.isCrit(), false);
     }
 
-    @Test(timeout=100)
+    @Test(timeout = 100)
     public void testCritDamage() {
         Chance.initialize();
         int damage = 1, critChance = (int) Math.round(Math.random() * 100);
@@ -33,7 +44,7 @@ public class TestDefend extends TestBackend {
         int hp = 150000;
         enemy.setHp(hp);
         int tries = (int) Math.round(Math.random() * 7500);
-        for(int i = 0; i < tries; i++) {
+        for (int i = 0; i < tries; i++) {
             enemy.getsAttacked(new Projectile(damage, critChance).calculatesDamage());
         }
         double probability = (double) critChance / 100;
@@ -43,8 +54,8 @@ public class TestDefend extends TestBackend {
                 "Binomial variance: %.3f\n" +
                 "Estimated HP: %.1f\n" +
                 "HP variance: %.1f\n" +
-                "Actual HP: %d\n", probability,  binomialVariance, estimatedValue, estimatedValue * binomialVariance, enemy.getHp());
-        assertTrue(enemy.getHp() >= estimatedValue -  estimatedValue * binomialVariance && enemy.getHp() <= estimatedValue +  estimatedValue * binomialVariance);
+                "Actual HP: %d\n", probability, binomialVariance, estimatedValue, estimatedValue * binomialVariance, enemy.getHp());
+        assertTrue(enemy.getHp() >= estimatedValue - estimatedValue * binomialVariance && enemy.getHp() <= estimatedValue + estimatedValue * binomialVariance);
     }
 
     @Test
@@ -90,9 +101,9 @@ public class TestDefend extends TestBackend {
     }
 
     @Test
-    public void createFloor() {
-        GameController controller = new GameController(new GameModel());
-        assertEquals(controller.getWorld().getBodyCount(), 1);
+    public void testEnemyDroppedMoney() {
+        Enemy e = new Enemy(4);
+        assertEquals(e.getMoney(), 160);
     }
 
 }
